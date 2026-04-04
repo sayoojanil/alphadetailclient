@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AlphaDetail — Formulated to Finish</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+</head>
+<body>
+<!-- ══ LOADER ══ -->
+<div id="loader">
+  <div class="loader-glow"></div>
+  <div class="loader-brand"><img src="logo.png" alt="AlphaDetail" style="height: 60px; width: auto;"></div>
+  <div class="loader-bar-wrap"><div class="loader-bar"></div></div>
+</div>
+<!-- ══ SONNER ══ -->
+<div id="sonner" class="sonner-container"></div>
+<!-- ══ HEADER ══ -->
+<header>
+  <div class="logo-wrap" onclick="showPage('home')">
+    <img src="logo.png" alt="AlphaDetail Logo" class="logo-img">
+  </div>
+  <div class="nav-right">
+    <button class="nav-item" data-pg="home" onclick="showPage('home')">Home</button>
+    <button class="nav-item" data-pg="shop" onclick="showPage('shop')">Shop</button>
+    <div id="navAuth" style="display:flex;align-items:center;gap:4px;">
+      <button class="nav-item" data-pg="login" onclick="showPage('login')">Login</button>
+      <button class="nav-btn" onclick="showPage('register')">Register</button>
+    </div>
+    <div id="navUser" style="display:none;" class="nav-user">
+      <span class="nav-uname" id="navUname" onclick="showPage('profile')" style="cursor:pointer;text-decoration:underline;"></span>
+      <button class="nav-logout" onclick="showPage('logout')">Sign Out</button>
+    </div>
+    <button class="nav-cart" onclick="showPage('cart')"><i class="fa-solid fa-cart-shopping"></i> Cart <span class="cart-badge" id="cartBadge">0</span></button>
+    <button class="hamburger" onclick="toggleMob()"><span></span><span></span><span></span></button>
+  </div>
+</header>
+<div class="mob-menu" id="mobMenu">
+  <button class="mob-close-btn" onclick="closeMob()"><i class="fa-solid fa-xmark"></i></button>
+  <button class="mob-item" onclick="showPage('home');closeMob()">Home <i class="fa-solid fa-house" style="font-size: 18px;"></i></button>
+  <button class="mob-item" onclick="showPage('shop');closeMob()">Shop <i class="fa-solid fa-bag-shopping" style="font-size: 18px;"></i></button>
+  <button class="mob-item" onclick="showPage('cart');closeMob()">Cart <span class="count" id="mobCartBadge">0</span></button>
+  <button class="mob-item" id="mobLogin" onclick="showPage('login');closeMob()">Login <i class="fa-solid fa-right-to-bracket" style="font-size: 18px;"></i></button>
+  <button class="mob-item" id="mobReg" onclick="showPage('register');closeMob()">Register <i class="fa-solid fa-user-plus" style="font-size: 18px;"></i></button>
+  <button class="mob-item" id="mobProfile" style="display:none;" onclick="showPage('profile');closeMob()">Profile <i class="fa-solid fa-user-gear" style="font-size: 18px;"></i></button>
+  <button class="mob-item" id="mobLogout" style="display:none;color:var(--red);" onclick="doLogout();closeMob()">Sign Out <i class="fa-solid fa-arrow-right-from-bracket" style="font-size: 18px;"></i></button>
+</div>
+<!-- ════════════ HOME PAGE ════════════ -->
+<div class="page active" id="page-home">
+  <!-- HERO -->
+  <section class="hero-sec">
+    <div class="hero-bg-img"><img src="https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=1920&q=85" alt=""></div>
+    <div class="hero-grid"></div><div class="hero-vign"></div><div class="hero-glow"></div>
+    <div class="hero-content">
+      <div class="hero-eye">DIY Car Care &nbsp;·&nbsp; Formulated to Finish &nbsp;·&nbsp; Kerala, India</div>
+      <h1 class="hero-h1">ALPHA<em>DETAIL</em></h1>
+      <p class="hero-tagline">Professional Grade. Your Driveway.</p>
+      <p class="hero-p">Not every product deserves a place in your garage. <strong>Ours had to earn it.</strong> Seven imported formulas built for Indian roads, Indian heat, and Indian weather.</p>
+      <div class="hero-ctas">
+        <button class="btn-g" onclick="showPage('shop')">Shop All Products</button>
+        <button class="btn-o" onclick="document.getElementById('why-sec').scrollIntoView({behavior:'smooth'})">Our Standard</button>
+      </div>
+      <div class="hero-stats">
+        <div><div class="hs-num">7</div><div class="hs-lbl">Products</div></div>
+        <div><div class="hs-num">200+</div><div class="hs-lbl">Washes/Bottle</div></div>
+        <div><div class="hs-num">1:800</div><div class="hs-lbl">Dilution Ratio</div></div>
+        <div><div class="hs-num">₹5</div><div class="hs-lbl">Cost/Wash</div></div>
+      </div>
+    </div>
+    <div class="scroll-ind">
+      <div class="scroll-line"></div>
+      <span style="font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--muted);">Scroll</span>
+    </div>
+  </section>
+  <!-- MARQUEE -->
+  <div class="marquee-wrap" aria-hidden="true">
+    <div class="marquee-track">
+      <span class="mi">Nano Foam</span><span class="md">✦</span><span class="mi">Fusion Wash</span><span class="md">✦</span><span class="mi">Gleam-X</span><span class="md">✦</span><span class="mi">Hyper DRESS</span><span class="md">✦</span><span class="mi">Cabin Glow</span><span class="md">✦</span><span class="mi">Surface Revive</span><span class="md">✦</span><span class="mi">Graphene Tyre Coat</span><span class="md">✦</span><span class="mi">Formulated to Finish</span><span class="md">✦</span>
+      <span class="mi">Nano Foam</span><span class="md">✦</span><span class="mi">Fusion Wash</span><span class="md">✦</span><span class="mi">Gleam-X</span><span class="md">✦</span><span class="mi">Hyper DRESS</span><span class="md">✦</span><span class="mi">Cabin Glow</span><span class="md">✦</span><span class="mi">Surface Revive</span><span class="md">✦</span><span class="mi">Graphene Tyre Coat</span><span class="md">✦</span><span class="mi">Formulated to Finish</span><span class="md">✦</span>
+    </div>
+  </div>
+  <!-- FEATURED -->
+  <section class="sec-dark">
+    <div class="wrap">
+      <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:40px;flex-wrap:wrap;gap:14px;">
+        <div class="reveal"><div class="s-eye">Best Sellers</div><h2 class="s-h2">FEATURED PRODUCTS</h2></div>
+        <button class="btn-o reveal" onclick="showPage('shop')">View All →</button>
+      </div>
+      <div class="hf-grid" id="homeFeatured"></div>
+    </div>
+  </section>
+  <!-- CAR GALLERY STRIP -->
+  <div class="car-strip reveal">
+    <div class="cs-item"><img src="https://images.unsplash.com/photo-1617814076367-b759c7d7e738?w=800&q=80" alt=""><div class="cs-ov"></div><div class="cs-lbl">Formulated to Finish</div></div>
+    <div class="cs-item"><img src="https://images.unsplash.com/photo-1580274455191-1c62238fa333?w=800&q=80" alt=""><div class="cs-ov"></div><div class="cs-lbl">AlphaDetail</div></div>
+    <div class="cs-item"><img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=800&q=80" alt=""><div class="cs-ov"></div><div class="cs-lbl">Built for India</div></div>
+    <div class="cs-item"><img src="https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=800&q=80" alt=""><div class="cs-ov"></div><div class="cs-lbl">Pro Grade</div></div>
+    <div class="cs-item"><img src="https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=800&q=80" alt=""><div class="cs-ov"></div><div class="cs-lbl">Your Driveway</div></div>
+  </div>
+  <!-- WHY -->
+  <section class="sec" style="background:var(--grey);" id="why-sec">
+    <div class="wrap">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:50px;align-items:end;margin-bottom:44px;flex-wrap:wrap;">
+        <div class="reveal-l"><div class="s-eye">Why AlphaDetail</div><h2 class="s-h2">THE ALPHA<br>STANDARD</h2></div>
+        <p class="reveal-r" style="font-size:18px;color:#aaa;line-height:1.65;font-style:italic;border-left:3px solid var(--gold);padding-left:22px;">"Not every product deserves a place in your garage. <strong style="color:var(--white);font-style:normal;font-weight:500;">Ours had to earn it.</strong>"</p>
+      </div>
+      <div class="pillars-grid">
+        <div class="pillar reveal d1"><div class="p-bg-num">01</div><div class="p-icon"><i class="fa-solid fa-flask"></i></div><div class="p-name">Formulation First</div><p class="p-text">"Tested on real cars. In real Indian heat. Before it reached you."</p></div>
+        <div class="pillar reveal d2"><div class="p-bg-num">02</div><div class="p-icon"><i class="fa-solid fa-bullseye"></i></div><div class="p-name">Purpose-Built</div><p class="p-text">"One product. One job. Done right."</p></div>
+        <div class="pillar reveal d3"><div class="p-bg-num">03</div><div class="p-icon"><i class="fa-solid fa-shield-halved"></i></div><div class="p-name">Surface Respect</div><p class="p-text">"Safe on your paint, your coating, your investment."</p></div>
+        <div class="pillar reveal d4"><div class="p-bg-num">04</div><div class="p-icon"><i class="fa-solid fa-screwdriver-wrench"></i></div><div class="p-name">Detailer Tested</div><p class="p-text">"Built in driveways, not just laboratories."</p></div>
+        <div class="pillar reveal d5"><div class="p-bg-num">05</div><div class="p-icon"><i class="fa-solid fa-scale-balanced"></i></div><div class="p-name">Balanced Performance</div><p class="p-text">"Cleans deep. Never damages."</p></div>
+        <div class="pillar reveal d6"><div class="p-bg-num">06</div><div class="p-icon"><i class="fa-solid fa-thumbs-up"></i></div><div class="p-name">Consistency</div><p class="p-text">"Same result. First bottle. Fiftieth bottle."</p></div>
+        <div class="pillar reveal d7"><div class="p-bg-num">07</div><div class="p-icon"><i class="fa-solid fa-location-dot"></i></div><div class="p-name">Made for India</div><p class="p-text">"Built for 38°C summers, monsoon roads, and everything in between."</p></div>
+        <!-- <div class="pillar reveal d7" style="background:linear-gradient(135deg,#1a1500,#0e0e0e);border:1px solid rgba(201,168,76,.15);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:28px;"> -->
+          <!-- <div style="font-size:11px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:18px;">MSME · IDSS · UGC</div> -->
+          <!-- <div style="font-size:10px;color:var(--muted);line-height:1.7;font-style:italic;">"Registered, verified,<br>and built to last."</div> -->
+        <!-- </div> -->
+      </div>
+    </div>
+  </section>
+  <!-- BUNDLES -->
+  <section class="sec" style="background:var(--black);">
+    <div class="wrap">
+      <div class="reveal-l"><div class="s-eye">Save More</div><h2 class="s-h2">BUNDLE PACKAGES</h2><p class="s-desc">Everything you need, one order, best price — with automatic discount applied at cart.</p></div>
+      <div class="bundle-grid">
+        <!-- STARTER / BASIC -->
+        <div class="bcard reveal-l">
+          <div class="bcard-badge">Starter</div>
+          <div class="bcard-name">Alpha Starter Kit</div>
+          <p class="bcard-tagline">"Everything you need to get started. Nothing you don't."</p>
+          <ul class="bcard-items">
+            <li>Nano Foam — Vehicle Foam Shampoo · 473ml</li>
+            <li>Gleam-X — Glass Cleaner &amp; Protector · 473ml</li>
+            <li>Cabin Glow — Interior Surface Cleaner · 473ml</li>
+            <li>Surface Revive — Plastic &amp; Rubber Restorer · 473ml</li>
+          </ul>
+          <div class="bcard-price-wrap">
+            <div class="bcard-original">₹3,820</div>
+            <div class="bcard-discount-tag">5% AUTO DISCOUNT AT CART</div>
+            <div class="bcard-price">₹3,628</div>
+            <div class="bcard-save">You save ₹192 automatically</div>
+          </div>
+          <button class="bcard-btn-o" onclick="addBundleToCart('starter')">Add Bundle to Cart</button>
+        </div>
+        <!-- PRO -->
+        <div class="bcard bcard-feat reveal-r">
+          <div class="bcard-badge">Best Value <i class="fa-solid fa-star"></i></div>
+          <div class="bcard-name">Alpha Pro Kit</div>
+          <p class="bcard-tagline">"The complete AlphaDetail arsenal. Every surface. Inside and out."</p>
+          <ul class="bcard-items">
+            <li>Nano Foam — Vehicle Foam Shampoo · 473ml</li>
+            <li>Fusion Wash — Wash &amp; Wax · 473ml</li>
+            <li>Gleam-X — Glass Cleaner &amp; Protector · 473ml</li>
+            <li>Hyper DRESS — Multi-Surface Dressing · 473ml</li>
+            <li>Cabin Glow — Interior Surface Cleaner · 473ml</li>
+            <li>Surface Revive — Plastic &amp; Rubber Restorer · 473ml</li>
+            <li>Graphene Tyre Coat — Tyre Shine · 473ml</li>
+          </ul>
+          <div class="bcard-price-wrap">
+            <div class="bcard-original">₹8,222</div>
+            <div class="bcard-discount-tag">10% AUTO DISCOUNT AT CART</div>
+            <div class="bcard-price">₹7,400</div>
+            <div class="bcard-save">You save ₹822 automatically</div>
+          </div>
+          <button class="bcard-btn" onclick="addBundleToCart('pro')">Get Pro Kit →</button>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- PROMISE -->
+  <section class="promise-sec" id="promise-sec">
+    <div class="promise-bg"></div>
+    <div class="promise-inner">
+      <div class="promise-eye" id="promEye">The AlphaDetail Promise</div>
+      <div class="promise-divider" id="promDiv"></div>
+      <div class="promise-line l1" id="pl1">"Professional results.</div>
+      <div class="promise-line l2" id="pl2"><span>Your driveway.</span></div>
+      <div class="promise-line l3" id="pl3">Your schedule.</div>
+      <div class="promise-line l4" id="pl4"><span>Your price."</span></div>
+      <div class="promise-src" id="promSrc">AlphaDetail DIY Car Care Solutions — Kerala, India</div>
+    </div>
+  </section>
+  <!-- INDIA -->
+  <section class="india-sec">
+    <div class="india-bg"></div>
+    <div class="india-inner">
+      <div style="font-size:50px;color:var(--gold);" class="reveal"><i class="fa-solid fa-flag"></i></div>
+      <h2 class="india-h2 reveal">BUILT FOR<br><span>INDIA.</span></h2>
+      <p class="india-p reveal">Most car care products are engineered for <strong>European winters.</strong> Your car lives through <strong>38°C summers, 85% humidity,</strong> and monsoon roads. AlphaDetail is built for where you actually drive.</p>
+      <div class="india-stats reveal">
+        <div class="is-stat"><div class="is-num">38°C</div><div class="is-lbl">Summer Heat</div></div>
+        <div class="is-stat"><div class="is-num">85%</div><div class="is-lbl">Humidity</div></div>
+        <div class="is-stat"><div class="is-num">Kerala</div><div class="is-lbl">Home Ground</div></div>
+      </div>
+    </div>
+  </section>
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="ft-grid">
+      <div>
+        <div class="ft-brand">AlphaDetail</div>
+        <p class="ft-about">DIY Car Care Solutions LLP. Professional-grade imported formulas built for Indian conditions. Based in Kochi, Kerala.</p>
+        <div class="ft-contact"><div>📧 alphadetailf2f@gmail.com</div><div>🌐 alphadetailf2f.com</div><div>📍 Puthencruze, Kochi, Kerala</div></div>
+        <div class="ft-socials"><div class="ft-soc">f</div><div class="ft-soc">ig</div><div class="ft-soc">yt</div><div class="ft-soc">wa</div></div>
+      </div>
+      <div>
+        <div class="ft-col-h">Products</div>
+        <ul class="ft-links"><li><a onclick="showPage('shop')">Nano Foam</a></li><li><a onclick="showPage('shop')">Fusion Wash</a></li><li><a onclick="showPage('shop')">Gleam-X</a></li><li><a onclick="showPage('shop')">Hyper DRESS</a></li><li><a onclick="showPage('shop')">Cabin Glow</a></li><li><a onclick="showPage('shop')">Surface Revive</a></li><li><a onclick="showPage('shop')">Graphene Tyre Coat</a></li></ul>
+      </div>
+      <div>
+        <div class="ft-col-h">Quick Links</div>
+        <ul class="ft-links"><li><a onclick="showPage('home')">Home</a></li><li><a onclick="showPage('shop')">Shop</a></li><li><a onclick="showPage('cart')">Cart</a></li><li><a onclick="showPage('login')">Login</a></li><li><a onclick="showPage('register')">Register</a></li></ul>
+      </div>
+    </div>
+    <div class="ft-bottom"><div class="ft-copy">© 2024 AlphaDetail DIY Car Care Solutions LLP · All Rights Reserved</div></div>
+  </footer>
+</div>
+<!-- ════════════ SHOP PAGE ════════════ -->
+<div class="page" id="page-shop">
+  <div class="shop-hero">
+    <div class="wrap"><div class="s-eye">Series AL-S1</div><h1 class="s-h2">ALL PRODUCTS</h1><p class="s-desc">7 imported formulas. Each 473ml. Each built for one job.</p></div>
+  </div>
+  <div class="wrap shop-wrap-main">
+    <div class="shop-filters">
+      <div class="ftabs">
+        <button class="ftab act" onclick="filterP('all',this)">All (7)</button>
+        <button class="ftab" onclick="filterP('exterior',this)">Exterior</button>
+        <button class="ftab" onclick="filterP('interior',this)">Interior</button>
+        <button class="ftab" onclick="filterP('tyre',this)">Tyre &amp; Trim</button>
+      </div>
+      <select class="sort-sel" onchange="sortP(this.value)">
+        <option value="default">Sort: Featured</option>
+        <option value="low">Price: Low to High</option>
+        <option value="high">Price: High to Low</option>
+      </select>
+    </div>
+    <div class="shop-grid" id="shopGrid"></div>
+  </div>
+  <!-- PRODUCT DETAIL MODAL -->
+  <div class="pd-ov" id="pdOv" onclick="closePD(event)">
+    <div class="pd-modal">
+      <div class="pd-gal" style="position:relative;">
+        <button class="pd-close" onclick="closePD()">✕</button>
+        <div class="pd-main-wrap" id="pdMainWrap"></div>
+        <div class="pd-thumbs" id="pdThumbs"></div>
+      </div>
+      <div class="pd-info">
+        <div class="pd-code" id="pdCode"></div>
+        <div class="pd-name" id="pdName"></div>
+        <div class="pd-sub" id="pdSub"></div>
+        <div class="pd-ml">473ml</div>
+        <div class="pd-hook" id="pdHook"></div>
+        <div class="pd-desc" id="pdDesc"></div>
+        <div class="pd-ft-title">Key Benefits</div>
+        <ul class="pd-feats" id="pdFeats"></ul>
+        <div class="pd-bot"><div class="pd-price" id="pdPrice"></div><button class="pd-add" id="pdAddBtn">Add to Cart</button></div>
+      </div>
+    </div>
+  </div>
+  <footer class="site-footer"><div class="ft-bottom" style="padding-top:20px;border-top:1px solid var(--border);"><div class="ft-copy">© 2024 AlphaDetail DIY Car Care Solutions LLP</div></div></footer>
+</div>
+<!-- ════════════ CART PAGE ════════════ -->
+<div class="page" id="page-cart">
+  <div class="wrap" style="padding-top:48px;padding-bottom:80px;">
+    <div class="s-eye">Your Selection</div><h1 class="s-h2">SHOPPING CART</h1>
+    <div class="cart-layout">
+      <div>
+        <div class="cart-box">
+          <div class="cart-head"><div class="ch-lbl">Product</div><div class="ch-lbl">Price</div><div class="ch-lbl">Quantity</div><div class="ch-lbl">Total</div><div class="ch-lbl"></div></div>
+          <div class="cart-discount-notice" id="cartDiscNotice">
+            <span class="cdn-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></span>
+            <span class="cdn-text" id="cdnText">Bundle discount applied!</span>
+            <span class="cdn-amount" id="cdnAmount"></span>
+          </div>
+          <div id="cartList"></div>
+          <div class="cart-empty" id="cartEmpty"><div class="ce-icon"><i class="fa-solid fa-cart-shopping"></i></div><div class="ce-title">Your Cart is Empty</div><button class="btn-g" onclick="showPage('shop')">Browse Products</button></div>
+        </div>
+      </div>
+      <div class="sum-box">
+        <div class="sum-title">Order Summary</div>
+        <div class="sum-row"><span>Subtotal</span><span class="sum-val" id="sumSub">₹0</span></div>
+        <div class="sum-row"><span>Shipping</span><span class="sum-val" id="sumShip">₹0</span></div>
+        <div class="sum-discount-row" id="sumDiscRow">
+          <span id="sumDiscLabel">Bundle Discount</span>
+          <span class="sum-disc-val" id="sumDisc">-₹0</span>
+        </div>
+        <div class="sum-total"><span class="sum-total-lbl">Total</span><span class="sum-total-val" id="sumTotal">₹0</span></div>
+            <div class="coupon-row"><input class="coup-inp" id="coupInp" placeholder="Coupon code"><button class="coup-btn" onclick="applyCoupon()">Apply</button></div>
+        <button class="chk-btn" onclick="proceedCheckout()">Proceed to Checkout →</button>
+        <span class="cont-shop" onclick="showPage('shop')">← Continue Shopping</span>
+      </div>
+    </div>
+  </div>
+  <footer class="site-footer"><div class="ft-bottom" style="padding-top:20px;border-top:1px solid var(--border);"><div class="ft-copy">© 2024 AlphaDetail DIY Car Care Solutions LLP</div></div></footer>
+</div>
+<!-- ════════════ CHECKOUT PAGE ════════════ -->
+<div class="page" id="page-checkout">
+  <div class="wrap" style="padding-top:48px;padding-bottom:80px;">
+    <div class="s-eye">Almost There</div><h1 class="s-h2">CHECKOUT</h1>
+    <div class="order-success" id="orderSuccess">
+      <div class="osuc-icon"><i class="fa-solid fa-circle-check"></i></div>
+      <div class="osuc-title">ORDER PLACED!</div>
+      <div class="osuc-num">Order #<span id="orderNum"></span></div>
+      <p class="osuc-p">Thank you! Your AlphaDetail products are confirmed and will be dispatched shortly.</p>
+      <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+        <button class="btn-g" onclick="showPage('home');clearCart()">Back to Home</button>
+        <button class="btn-o" onclick="showPage('shop');clearCart()">Continue Shopping</button>
+      </div>
+    </div>
+    <div class="checkout-layout" id="chkContent">
+      <div>
+        <div class="chk-form">
+          <div class="chk-sec-h">Delivery Information</div>
+          <div class="fg2">
+            <div class="fg"><label class="fl">First Name *</label><input class="fi" id="cFirst" placeholder="John"><div class="fe" id="cFirstE">Required</div></div>
+            <div class="fg"><label class="fl">Last Name</label><input class="fi" id="cLast" placeholder="Doe"></div>
+          </div>
+          <div class="fg"><label class="fl">Email Address *</label><input class="fi" id="cEmail" type="email" placeholder="you@example.com"><div class="fe" id="cEmailE">Valid email required</div></div>
+          <div class="fg"><label class="fl">Phone Number *</label><input class="fi" id="cPhone" type="tel" placeholder="+91 98765 43210"><div class="fe" id="cPhoneE">Required</div></div>
+          <div class="fg"><label class="fl">Address *</label><input class="fi" id="cAddr" placeholder="House No., Street Name"><div class="fe" id="cAddrE">Required</div></div>
+          <div class="fg"><label class="fl">Area / Landmark</label><input class="fi" id="cAddr2" placeholder="Area or Landmark"></div>
+          <div class="fg2">
+            <div class="fg"><label class="fl">City *</label><input class="fi" id="cCity" placeholder="Kochi"><div class="fe" id="cCityE">Required</div></div>
+            <div class="fg"><label class="fl">PIN Code *</label><input class="fi" id="cPin" placeholder="682308"><div class="fe" id="cPinE">Required</div></div>
+          </div>
+          <div class="fg"><label class="fl">State</label><input class="fi" value="Kerala" readonly></div>
+          <div class="hr"></div>
+          <div class="chk-sec-h">Payment Method</div>
+          <div class="pay-opts">
+            <label class="pay-opt sel" id="pm-cod" onclick="selPM(this,'cod')"><input type="radio" name="pm" checked><span class="pay-lbl">Cash on Delivery</span><span class="pay-icon"><i class="fa-solid fa-money-bill-wave"></i></span></label>
+            <label class="pay-opt" id="pm-upi" onclick="selPM(this,'upi')"><input type="radio" name="pm"><span class="pay-lbl">UPI / PhonePe / GPay</span><span class="pay-icon"><i class="fa-solid fa-mobile-screen-button"></i></span></label>
+            <label class="pay-opt" id="pm-card" onclick="selPM(this,'card')"><input type="radio" name="pm"><span class="pay-lbl">Credit / Debit Card</span><span class="pay-icon"><i class="fa-solid fa-credit-card"></i></span></label>
+            <label class="pay-opt" id="pm-nb" onclick="selPM(this,'nb')"><input type="radio" name="pm"><span class="pay-lbl">Net Banking</span><span class="pay-icon"><i class="fa-solid fa-building-columns"></i></span></label>
+          </div>
+          <!-- <div id="upiF" style="display:none;margin-top:13px;"><div class="fg"><label class="fl">UPI ID</label><input class="fi" placeholder="name@upi"></div></div> -->
+          <div id="cardF" style="display:none;margin-top:13px;">
+            <div class="fg"><label class="fl">Card Number</label><input class="fi" placeholder="1234 5678 9012 3456"></div>
+            <div class="fg2"><div class="fg"><label class="fl">Expiry</label><input class="fi" placeholder="MM / YY"></div><div class="fg"><label class="fl">CVV</label><input class="fi" placeholder="•••"></div></div>
+          </div>
+          <div class="fe" id="chkGlobalE" style="font-size:12px;margin-top:12px;"></div>
+          <button class="place-btn" onclick="placeOrder()">Place Order →</button>
+        </div>
+      </div>
+      <div class="order-sum">
+        <div class="os-title">Your Order</div>
+        <div id="osItems"></div>
+        <div style="margin-top:14px;">
+          <div class="sum-row"><span>Subtotal</span><span class="sum-val" id="osSub">₹0</span></div>
+          <div class="sum-row"><span>Shipping</span><span class="sum-val" id="osShip">₹0</span></div>
+          <div class="sum-discount-row" id="osDiscRow"><span id="osDiscLabel">Bundle Discount</span><span class="sum-disc-val" id="osDisc">-₹0</span></div>
+          <div class="sum-total"><span class="sum-total-lbl">Total</span><span class="sum-total-val" id="osTotal">₹0</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <footer class="site-footer"><div class="ft-bottom" style="padding-top:20px;border-top:1px solid var(--border);"><div class="ft-copy">© 2024 AlphaDetail DIY Car Care Solutions LLP</div></div></footer>
+</div>
+<!-- ════════════ LOGIN PAGE ════════════ -->
+<div class="page" id="page-login">
+  <div class="auth-pg">
+    <div class="auth-bg-img"></div><div class="auth-glow"></div>
+    <div class="auth-box">
+      <div class="auth-brand">AlphaDetail</div>
+      <div class="auth-title">WELCOME BACK</div>
+      <p class="auth-sub">Sign in to your account to continue shopping</p>
+      <div class="auth-err" id="loginErr">Invalid email or password. Please try again.</div>
+      <div class="fg"><label class="fl">Email Address</label><input class="fi" type="email" id="lEmail" placeholder="you@example.com"><div class="fe" id="lEmailE">Enter a valid email</div></div>
+      <div class="fg"><label class="fl">Password</label><input class="fi" type="password" id="lPass" placeholder="Your password" onkeydown="if(event.key==='Enter')doLogin()"><div class="fe" id="lPassE">Min 6 characters</div></div>
+      <div class="fcheck"><input type="checkbox" id="remMe"><label for="remMe">Remember me</label></div>
+      <button class="auth-sub-btn" onclick="doLogin()">Sign In →</button>
+      <div class="auth-div"><span>or</span></div>
+      <div class="auth-switch">Don't have an account? <a onclick="showPage('register')">Create one free →</a></div>
+    </div>
+  </div>
+</div>
+<!-- ════════════ REGISTER PAGE ════════════ -->
+<div class="page" id="page-register">
+  <div class="auth-pg">
+    <div class="auth-bg-img"></div><div class="auth-glow"></div>
+    <div class="auth-box">
+      <div class="auth-brand">AlphaDetail</div>
+      <div class="auth-title">CREATE ACCOUNT</div>
+      <p class="auth-sub">Join AlphaDetail for exclusive deals &amp; order tracking</p>
+      <div class="fg2">
+        <div class="fg"><label class="fl">First Name</label><input class="fi" id="rFirst" placeholder="John"><div class="fe" id="rFirstE">Required</div></div>
+        <div class="fg"><label class="fl">Last Name</label><input class="fi" id="rLast" placeholder="Doe"></div>
+      </div>
+      <div class="fg"><label class="fl">Email Address</label><input class="fi" type="email" id="rEmail" placeholder="you@example.com"><div class="fe" id="rEmailE">Valid email required</div></div>
+      <div class="fg"><label class="fl">Phone Number</label><input class="fi" type="tel" id="rPhone" placeholder="+91 98765 43210"></div>
+      <div class="fg"><label class="fl">Password</label><input class="fi" type="password" id="rPass" placeholder="Min 6 characters"><div class="fe" id="rPassE">Min 6 characters</div></div>
+      <div class="fg"><label class="fl">Confirm Password</label><input class="fi" type="password" id="rConf" placeholder="Repeat password"><div class="fe" id="rConfE">Passwords do not match</div></div>
+      <div class="fcheck"><input type="checkbox" id="rTerms"><label for="rTerms">I agree to the Terms &amp; Privacy Policy</label></div>
+      <div class="fe" id="rTermsE" style="margin-top:-8px;margin-bottom:12px;">Please accept the terms</div>
+      <button class="auth-sub-btn" onclick="doRegister()">Create Account →</button>
+      <div class="auth-div"><span>or</span></div>
+      <div class="auth-switch">Already have an account? <a onclick="showPage('login')">Sign in →</a></div>
+    </div>
+  </div>
+</div>
+<!-- ════════════ PROFILE PAGE ════════════ -->
+<div class="page" id="page-profile">
+  <div class="wrap" style="padding-top:48px;padding-bottom:80px;">
+    <div class="s-eye">Member Area</div><h1 class="s-h2">MY PROFILE</h1>
+    <div class="profile-layout">
+      <div class="prof-sidebar">
+        <div class="prof-card">
+          <!-- <div class="prof-avatar"><i class="fa-solid fa-user"></i></div> -->
+          <div class="prof-name" id="profName">User Name</div>
+          <div class="prof-email" id="profEmail">email@example.com</div>
+          <div class="prof-email" id="profPhone">Phone</div>
+          <div class="prof-email" style="margin-top:8px;">Member since: <span id="profJoined" style="color:var(--white);">Date</span></div>
+          <div class="hr" style="margin:16px 0;"></div>
+          <div class="prof-stat">
+            <div class="ps-val" id="profOrderCount">0</div>
+            <div class="ps-lbl">Orders Placed</div>
+          </div>
+        </div>
+        <button class="mob-item" style="border:none;background:var(--mid);margin-top:12px;padding-left:20px;" onclick="doLogout()">Sign Out ⬅</button>
+      </div>
+      <div class="prof-main">
+        <div class="chk-sec-h" style="margin-top:0;">My Order History</div>
+        <div id="profOrdersList" class="prof-orders-list">
+          <div class="cart-empty" style="padding:40px 0;"><div class="ce-icon" style="font-size:30px;"><i class="fa-solid fa-box-open"></i></div><div class="ce-title" style="font-size:18px;">No orders yet</div><button class="btn-o" onclick="showPage('shop')">Start Shopping</button></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <footer class="site-footer"><div class="ft-bottom" style="padding-top:20px;border-top:1px solid var(--border);"><div class="ft-copy">© 2024 AlphaDetail DIY Car Care Solutions LLP</div></div></footer>
+</div>
+<!-- ════════════ LOGOUT PAGE ════════════ -->
+<div class="page" id="page-logout">
+  <div class="auth-pg">
+    <div class="auth-bg-img"></div><div class="auth-glow"></div>
+    <div class="auth-box" style="border-top-color:var(--red);text-align:center;">
+      <!-- <div style="font-size:44px;margin-bottom:13px;color:var(--gold);"><i class="fa-solid fa-door-open"></i></div> -->
+      <div class="auth-title">SIGN OUT?</div>
+      <p class="auth-sub" style="margin-bottom:26px;">Are you sure you want to sign out of your AlphaDetail account?</p>
+      <div style="display:flex;gap:10px;">
+        <button class="btn-r" style="flex:1;" onclick="doLogout()">Yes, Sign Out</button>
+        <button class="btn-o" style="flex:1;" onclick="showPage('home')">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- ══ HIDDEN PRODUCT IMAGES ══ -->
+<div style="display:none;">
+  <img id="uploaded_img_cabin"    src="" alt="Cabin Glow">
+  <img id="uploaded_img_fusion"   src="" alt="Fusion Wash">
+  <img id="uploaded_img_graphene" src="" alt="Graphene Tyre Coat">
+  <img id="uploaded_img_hyper"    src="" alt="Hyper DRESS">
+  <img id="uploaded_img_gleam"    src="" alt="Gleam-X">
+  <img id="uploaded_img_surface"  src="" alt="Surface Revive">
+  <img id="uploaded_img_nano"     src="" alt="Nano Foam">
+</div>
+<!-- ══ IMAGE UPLOADER ══ -->
+
+<script src="script.js"></script>
+</body>
+</html>

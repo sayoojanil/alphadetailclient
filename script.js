@@ -348,6 +348,10 @@ window.applyCoupon = function() {
 window.doLogin = async function() {
   const email = document.getElementById('lEmail').value.trim();
   const password = document.getElementById('lPass').value;
+  const btn = document.getElementById('loginBtn');
+  const ogText = btn ? btn.innerHTML : '';
+  if (btn) { btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Signing In...'; btn.disabled = true; }
+
   try {
     const data = await apiReq('/auth/login', {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
@@ -375,6 +379,8 @@ window.doLogin = async function() {
       errEl.classList.add('show');
       setTimeout(() => errEl.classList.remove('show'), 5000);
     }
+  } finally {
+    if (btn) { btn.innerHTML = ogText; btn.disabled = false; }
   }
 };
 
@@ -384,6 +390,10 @@ window.doRegister = async function() {
   const email = document.getElementById('rEmail').value.trim();
   const phone = document.getElementById('rPhone').value.trim();
   const password = document.getElementById('rPass').value;
+  const btn = document.getElementById('regBtn');
+  const ogText = btn ? btn.innerHTML : '';
+  if (btn) { btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Creating...'; btn.disabled = true; }
+  
   try {
     const data = await apiReq('/auth/register', {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
@@ -397,6 +407,8 @@ window.doRegister = async function() {
     showPage('home');
   } catch (e) {
     // Error is already toasted by apiReq
+  } finally {
+    if (btn) { btn.innerHTML = ogText; btn.disabled = false; }
   }
 };
 

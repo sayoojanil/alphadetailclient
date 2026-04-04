@@ -371,7 +371,7 @@
       <div class="fg"><label class="fl">Email Address</label><input class="fi" type="email" id="lEmail" placeholder="you@example.com"><div class="fe" id="lEmailE">Enter a valid email</div></div>
       <div class="fg"><label class="fl">Password</label><input class="fi" type="password" id="lPass" placeholder="Your password" onkeydown="if(event.key==='Enter')doLogin()"><div class="fe" id="lPassE">Min 6 characters</div></div>
       <div class="fcheck"><input type="checkbox" id="remMe"><label for="remMe">Remember me</label></div>
-      <button class="auth-sub-btn" onclick="doLogin()">Sign In →</button>
+      <button class="auth-sub-btn" id="loginBtn" onclick="doLogin()">Sign In →</button>
       <div class="auth-div"><span>or</span></div>
       <div class="auth-switch">Don't have an account? <a onclick="showPage('register')">Create one free →</a></div>
     </div>
@@ -395,7 +395,7 @@
       <div class="fg"><label class="fl">Confirm Password</label><input class="fi" type="password" id="rConf" placeholder="Repeat password"><div class="fe" id="rConfE">Passwords do not match</div></div>
       <div class="fcheck"><input type="checkbox" id="rTerms"><label for="rTerms">I agree to the Terms &amp; Privacy Policy</label></div>
       <div class="fe" id="rTermsE" style="margin-top:-8px;margin-bottom:12px;">Please accept the terms</div>
-      <button class="auth-sub-btn" onclick="doRegister()">Create Account →</button>
+      <button class="auth-sub-btn" id="regBtn" onclick="doRegister()">Create Account →</button>
       <div class="auth-div"><span>or</span></div>
       <div class="auth-switch">Already have an account? <a onclick="showPage('login')">Sign in →</a></div>
     </div>

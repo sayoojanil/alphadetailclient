@@ -196,12 +196,6 @@ window.closePD = function(e) {
 
 // ══ CART ══
 window.addToCart = function(id) {
-  if (!currentUser) {
-    redirectAfterAuth = 'shop'; 
-    showPage('login');
-    toast('Please sign in to start shopping!', { type: 'info', icon: 'fa-solid fa-user-lock' });
-    return;
-  }
   const p = PRODS.find(x => x.id === id);
   if (!p) return;
   const ex = cart.find(c => c.id === id);
@@ -215,12 +209,6 @@ window.addToCart = function(id) {
 };
 
 window.addBundleToCart = function(type) {
-  if (!currentUser) {
-    redirectAfterAuth = 'home';
-    showPage('login');
-    toast('Please sign in to take advantage of bundles!', { type: 'info', icon: 'fa-solid fa-user-lock' });
-    return;
-  }
   let bundleItems = [];
   if (type === 'starter') {
     bundleItems = ['nano', 'gleam', 'cabin', 'surface'];
@@ -496,7 +484,6 @@ async function renderProfile() {
 // ══ CHECKOUT & RAZORPAY ══
 window.proceedCheckout = function() {
   if (cart.length === 0) return toast('Cart is empty!', { type: 'error', icon: 'fa-solid fa-cart-shopping' });
-  if (!currentUser) { redirectAfterAuth = 'checkout'; showPage('login'); return; }
   showPage('checkout');
 };
 
@@ -528,6 +515,12 @@ window.selPM = function(el, method) {
 };
 
 window.placeOrder = async function() {
+  if (!currentUser) {
+    redirectAfterAuth = 'checkout';
+    showPage('login');
+    toast('Please sign in to place your order', { type: 'info', icon: 'fa-solid fa-user-lock' });
+    return;
+  }
   const sub = getSubtotal(), total = getFinalTotal();
   const addr = {
     first: document.getElementById('cFirst').value,

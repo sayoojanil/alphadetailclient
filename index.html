@@ -31,7 +31,7 @@
       <button class="nav-btn" onclick="showPage('register')">Register</button>
     </div>
     <div id="navUser" style="display:none;" class="nav-user">
-      <span class="nav-uname" id="navUname" onclick="showPage('profile')" style="cursor:pointer;text-decoration:underline;"></span>
+      <span class="nav-uname" id="navUname" onclick="showPage('profile')" style="cursor:pointer;"></span>
       <button class="nav-logout" onclick="showPage('logout')">Sign Out</button>
     </div>
     <button class="nav-cart" onclick="showPage('cart')"><i class="fa-solid fa-cart-shopping"></i> Cart <span class="cart-badge" id="cartBadge">0</span></button>
@@ -240,24 +240,61 @@
     </div>
     <div class="shop-grid" id="shopGrid"></div>
   </div>
-  <!-- PRODUCT DETAIL MODAL -->
-  <div class="pd-ov" id="pdOv" onclick="closePD(event)">
-    <div class="pd-modal">
-      <div class="pd-gal" style="position:relative;">
-        <button class="pd-close" onclick="closePD()">✕</button>
+</div>
+<!-- ════════════ PRODUCT DETAIL PAGE ════════════ -->
+<div class="page" id="page-product">
+  <div class="wrap" style="padding-top:40px; padding-bottom:80px;">
+    <button class="back-btn" onclick="showPage('shop')" style="margin-bottom:30px; background:none; border:none; color:var(--gold); cursor:pointer; font-size:12px; letter-spacing:2px; text-transform:uppercase; display:flex; align-items:center; gap:8px;"><i class="fa-solid fa-arrow-left"></i> Back to Shop</button>
+    
+    <div class="pd-full">
+      <div class="pd-gal">
         <div class="pd-main-wrap" id="pdMainWrap"></div>
         <div class="pd-thumbs" id="pdThumbs"></div>
       </div>
       <div class="pd-info">
-        <div class="pd-code" id="pdCode"></div>
-        <div class="pd-name" id="pdName"></div>
-        <div class="pd-sub" id="pdSub"></div>
-        <div class="pd-ml">473ml</div>
-        <div class="pd-hook" id="pdHook"></div>
-        <div class="pd-desc" id="pdDesc"></div>
-        <div class="pd-ft-title">Key Benefits</div>
-        <ul class="pd-feats" id="pdFeats"></ul>
-        <div class="pd-bot"><div class="pd-price" id="pdPrice"></div><button class="pd-add" id="pdAddBtn">Add to Cart</button></div>
+        <div class="pd-header-sec">
+          <div class="pd-code" id="pdCode"></div>
+          <h1 class="pd-name" id="pdName"></h1>
+          <div class="pd-sub" id="pdSub"></div>
+        </div>
+
+        <div class="pd-mid-grid">
+          <!-- LEFT PART: Price, Tags, ATC -->
+          <div class="pd-info-left">
+            <div class="pd-price-box">
+              <div class="pd-mrp-lbl">MRP</div>
+              <div class="pd-price" id="pdPrice"></div>
+            </div>
+
+            <div class="pd-tag-grid" id="pdTags"></div>
+            
+            <div class="pd-action">
+              <div class="pd-ml">Standard Bottle · 473ml</div>
+              <button class="pd-add" id="pdAddBtn">Add to Cart →</button>
+            </div>
+          </div>
+
+          <!-- RIGHT PART: Headline, Description, Advantage, Benefits, Steps -->
+          <div class="pd-info-right">
+            <h2 class="pd-hook" id="pdHook"></h2>
+            <div class="pd-desc" id="pdDesc"></div>
+            
+            <div class="pd-adv-box">
+              <div class="pab-h">THE ALPHA ADVANTAGE</div>
+              <div class="pab-c" id="pdAdv"></div>
+            </div>
+
+            <div class="pd-sec-wrap">
+              <div class="pd-sec-h">KEY BENEFITS</div>
+              <ul class="pd-feats" id="pdFeats"></ul>
+            </div>
+
+            <div class="pd-sec-wrap">
+              <div class="pd-sec-h" style="margin-bottom:20px;">HOW TO USE</div>
+              <div id="pdUsage"></div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>

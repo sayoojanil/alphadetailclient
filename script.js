@@ -110,7 +110,7 @@ function renderFeatured() {
   if (!el || PRODS.length === 0) return;
   const feat = PRODS.slice(0, 3);
   el.innerHTML = feat.map(p => `
-    <div class="hf-card reveal" onclick="showPage('shop');setTimeout(()=>openPD('${p.id}'),200)">
+    <div class="hf-card reveal" onclick="openPD('${p.id}')">
       <div class="hf-img">${makeImgHTML(p.id, p.name, 'width:100%;height:100%;object-fit:cover;transition:transform .6s;')}<div class="hf-ov"></div></div>
       <div class="hf-body"><div class="hf-code">${p.code}</div><div class="hf-name">${p.name}</div><div class="hf-price">₹${p.price.toLocaleString('en-IN')}</div></div>
     </div>`).join('');
@@ -136,7 +136,11 @@ function renderShop(list) {
       <div class="pc-img" onclick="openPD('${p.id}')" style="background:${p.grad};">
         ${makeImgHTML(p.id, p.name, 'width:100%;height:100%;object-fit:cover;transition:transform .6s,filter .4s;')}
         <div class="pc-ov"></div>
-        <div class="pc-badge">${p.badge || 'New'} · 473ml</div>
+        <div class="pc-badge ${p.inStock !== false ? 'badge-in-stock' : 'badge-out-stock'}">
+          <span class="badge-dot"></span>
+          ${p.inStock !== false ? 'In Stock' : 'Out of Stock'}
+          <span style="opacity:0.5; font-weight:normal; letter-spacing:0; margin-left:4px;">· 473ml</span>
+        </div>
         <button class="pc-qv" onclick="event.stopPropagation();openPD('${p.id}')">Quick View</button>
       </div>
       <div class="pc-body">
@@ -147,7 +151,7 @@ function renderShop(list) {
         <p class="pc-hook">"${p.hook || ''}"</p>
         <div class="pc-bot">
           <div><div class="pc-mrp">MRP</div><div class="pc-price">₹${p.price.toLocaleString('en-IN')}</div></div>
-          <button class="pc-atc" onclick="addToCart('${p.id}')">+ Add to Cart</button>
+          <button class="pc-atc" ${p.inStock === false ? 'disabled style="opacity:0.5;cursor:not-allowed;"' : ''} onclick="addToCart('${p.id}')">${p.inStock === false ? 'Sold Out' : '+ Add to Cart'}</button>
         </div>
         <div class="pc-tags">${(p.tags||[]).map((t,i)=>`<span class="tag${i<1?' tag-g':''}">${t}</span>`).join('')}</div>
       </div>
@@ -172,35 +176,63 @@ window.sortP = function(val) {
 window.openPD = function(id) {
   const p = PRODS.find(x => x.id === id);
   if (!p) return;
-  document.getElementById('pdCode').textContent = p.code || '';
+  document.getElementById('pdCode').textContent = p.code || 'Series AL-S1';
   document.getElementById('pdName').textContent = p.name;
   document.getElementById('pdSub').textContent = p.sub || '';
   document.getElementById('pdHook').textContent = p.hook ? '"' + p.hook + '"' : '';
   document.getElementById('pdDesc').innerHTML = p.desc || '';
+  document.getElementById('pdAdv').innerHTML = p.advantage || 'Performance details coming soon.';
   document.getElementById('pdPrice').textContent = '₹' + p.price.toLocaleString('en-IN');
-  document.getElementById('pdFeats').innerHTML = (p.feats||[]).map(f => `<li>${f}</li>`).join('');
+  
+  if (p.inStock === false) {
+    document.getElementById('pdPrice').innerHTML += '<span class="badge-out-stock" style="margin-left: 14px; font-size: 13px;"><span class="badge-dot"></span>Out of Stock</span>';
+  }
+
+  // Key Benefits (Features)
+  document.getElementById('pdFeats').innerHTML = (p.feats||[]).map(f => {
+    const html = f.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>');
+    return `<li><i class="fa-solid fa-minus" style="color:var(--gold); font-size:10px; margin-right:12px; opacity:0.5;"></i> ${html}</li>`;
+  }).join('');
+  
+  // Tags
+  document.getElementById('pdTags').innerHTML = (p.tags||[]).map(t => `<div class="pd-tag">${t}</div>`).join('');
   
   const mw = document.getElementById('pdMainWrap');
   mw.innerHTML = makeImgHTML(p.id, p.name);
   
-  document.getElementById('pdAddBtn').onclick = () => { addToCart(p.id); closePD(); };
-  document.getElementById('pdOv').classList.add('open');
-  document.body.style.overflow = 'hidden';
-};
-window.closePD = function(e) {
-  if (!e || e.target === document.getElementById('pdOv') || (e.currentTarget && e.currentTarget.classList.contains('pd-close'))) {
-    document.getElementById('pdOv').classList.remove('open');
-    document.body.style.overflow = '';
+  const addBtn = document.getElementById('pdAddBtn');
+  if (p.inStock === false) {
+    addBtn.textContent = 'Sold Out';
+    addBtn.style.opacity = '0.5';
+    addBtn.style.cursor = 'not-allowed';
+    addBtn.onclick = null;
+  } else {
+    addBtn.textContent = 'Add to Cart';
+    addBtn.style.opacity = '1';
+    addBtn.style.cursor = 'pointer';
+    addBtn.onclick = () => { addToCart(p.id); };
   }
+  
+  document.getElementById('pdUsage').innerHTML = (p.howToUse && p.howToUse.length > 0) ? 
+    `<div class="usage-steps">${p.howToUse.map((s, i) => `<div class="usage-step"><div class="us-num">STEP ${i+1}</div><div class="us-text">${s}</div></div>`).join('')}</div>` : 
+    '<p>Detailed instructions coming soon.</p>';
+
+  showPage('product');
 };
 
 // ══ CART ══
 window.addToCart = function(id) {
   const p = PRODS.find(x => x.id === id);
   if (!p) return;
+  if (p.inStock === false) {
+    return toast(p.name + ' is Out of Stock', { type: 'error', icon: 'fa-solid fa-circle-xmark' });
+  }
   const ex = cart.find(c => c.id === id);
-  if (ex) ex.qty++;
-  else cart.push({ id: p.id, name: p.name, sub: p.sub, price: p.price, img: p.id, qty: 1 });
+  if (ex) {
+    ex.qty++;
+  } else {
+    cart.push({ id: p.id, name: p.name, sub: p.sub, price: p.price, img: p.id, qty: 1 });
+  }
   updateBadge();
   toast(p.name + ' added to cart', { 
     type: 'success', icon: 'fa-solid fa-circle-check', 
@@ -218,6 +250,14 @@ window.addBundleToCart = function(type) {
     bundleItems = ['nano', 'fusion', 'gleam', 'hyper', 'cabin', 'surface', 'graphene'];
     cartBundleDiscount = 0.10;
     cartBundleLabel = 'Pro Kit Discount (10%)';
+  }
+  
+  const anyOutOfStock = bundleItems.some(id => {
+    const p = PRODS.find(x => x.id === id);
+    return !p || p.inStock === false;
+  });
+  if (anyOutOfStock) {
+    return toast('One or more items in this bundle are currently Out of Stock', { type: 'error' });
   }
   
   bundleItems.forEach(id => {
@@ -306,6 +346,10 @@ window.changeQty = (id, delta) => {
   if (item) {
     if (item.qty === 1 && delta === -1) {
       return removeFromCart(id);
+    }
+    const p = PRODS.find(x => x.id === id);
+    if (delta > 0 && p && p.inStock === false) {
+      return toast('Item is now out of stock', { type: 'error' });
     }
     item.qty = Math.max(1, item.qty + delta);
     updateBadge(); renderCart();
@@ -484,6 +528,12 @@ async function renderProfile() {
 // ══ CHECKOUT & RAZORPAY ══
 window.proceedCheckout = function() {
   if (cart.length === 0) return toast('Cart is empty!', { type: 'error', icon: 'fa-solid fa-cart-shopping' });
+  if (!currentUser) {
+    redirectAfterAuth = 'checkout';
+    showPage('login');
+    toast('Please sign in to checkout', { type: 'info', icon: 'fa-solid fa-user-lock' });
+    return;
+  }
   showPage('checkout');
 };
 

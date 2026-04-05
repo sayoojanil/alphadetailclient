@@ -2108,16 +2108,20 @@ header.scrolled {
     grid-template-columns: 1fr;
     gap: 50px;
   }
+  .pd-info-left {
+    position: relative;
+    top: 0;
+  }
+  .pd-gal {
+    position: relative;
+    top: 0;
+  }
 }
 
 @media (max-width: 900px) {
   .pd-full {
     grid-template-columns: 1fr;
     gap: 60px;
-  }
-  .pd-gal {
-    position: relative;
-    top: 0;
   }
 }
 
@@ -2178,10 +2182,6 @@ header.scrolled {
   .pd-full {
     grid-template-columns: 1fr;
     gap: 50px;
-  }
-  .pd-gal {
-    position: relative;
-    top: 0;
   }
   .pd-price-row {
     flex-direction: column;

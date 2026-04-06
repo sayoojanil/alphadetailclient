@@ -8,12 +8,14 @@
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<link rel="icon" type="image/png" href="C:\Users\ASUS\.gemini\antigravity\brain\6a56fd03-2cb0-41bb-92d9-7ed5823a9158\alphadetail_favicon_1775504520533.png">
+<link rel="apple-touch-icon" href="C:\Users\ASUS\.gemini\antigravity\brain\6a56fd03-2cb0-41bb-92d9-7ed5823a9158\alphadetail_favicon_1775504520533.png">
 </head>
 <body>
 <!-- ══ LOADER ══ -->
 <div id="loader">
   <div class="loader-glow"></div>
-  <div class="loader-brand"><img src="logo.png" alt="AlphaDetail" style="height: 60px; width: auto;"></div>
+  <div class="loader-brand"><img src="logo.png" alt="AlphaDetail" style="height: 90px; width: auto;"></div>
   <div class="loader-bar-wrap"><div class="loader-bar"></div></div>
 </div>
 <!-- ══ SONNER ══ -->
@@ -52,7 +54,7 @@
 <div class="page active" id="page-home">
   <!-- HERO -->
   <section class="hero-sec">
-    <div class="hero-bg-img"><img src="https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=1920&q=85" alt=""></div>
+    <div class="hero-bg-img"><img src="C:\Users\ASUS\.gemini\antigravity\brain\6a56fd03-2cb0-41bb-92d9-7ed5823a9158\alphadetail_hero_premium_1775503938161.png" alt="Premium Car Detailing"></div>
     <div class="hero-grid"></div><div class="hero-vign"></div><div class="hero-glow"></div>
     <div class="hero-content">
       <div class="hero-eye">DIY Car Care &nbsp;·&nbsp; Formulated to Finish &nbsp;·&nbsp; Kerala, India</div>
@@ -213,7 +215,15 @@
       </div>
       <div>
         <div class="ft-col-h">Quick Links</div>
-        <ul class="ft-links"><li><a onclick="showPage('home')">Home</a></li><li><a onclick="showPage('shop')">Shop</a></li><li><a onclick="showPage('cart')">Cart</a></li><li><a onclick="showPage('login')">Login</a></li><li><a onclick="showPage('register')">Register</a></li></ul>
+        <ul class="ft-links">
+          <li><a onclick="showPage('home')">Home</a></li>
+          <li><a onclick="showPage('shop')">Shop</a></li>
+          <li><a onclick="showPage('cart')">Cart</a></li>
+          <li id="ftLogin"><a onclick="showPage('login')">Login</a></li>
+          <li id="ftReg"><a onclick="showPage('register')">Register</a></li>
+          <li id="ftProfile" style="display:none;"><a onclick="showPage('profile')">My Profile</a></li>
+          <li id="ftLogout" style="display:none;"><a onclick="doLogout()">Sign Out</a></li>
+        </ul>
       </div>
     </div>
     <div class="ft-bottom"><div class="ft-copy">© 2024 AlphaDetail DIY Car Care Solutions LLP · All Rights Reserved</div></div>
@@ -338,14 +348,20 @@
 <div class="page" id="page-checkout">
   <div class="wrap" style="padding-top:48px;padding-bottom:80px;">
     <div class="s-eye">Almost There</div><h1 class="s-h2">CHECKOUT</h1>
-    <div class="order-success" id="orderSuccess">
-      <div class="osuc-icon"><i class="fa-solid fa-circle-check"></i></div>
-      <div class="osuc-title">ORDER PLACED!</div>
-      <div class="osuc-num">Order #<span id="orderNum"></span></div>
-      <p class="osuc-p">Thank you! Your AlphaDetail products are confirmed and will be dispatched shortly.</p>
-      <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+    <div class="order-success" id="orderSuccess" style="display:none;">
+      <div class="success-anim">
+        <div class="success-circle"><i class="fa-solid fa-check"></i></div>
+        <div class="success-glow"></div>
+      </div>
+      <div class="osuc-title reveal">ORDER PLACED!</div>
+      <div class="success-box reveal">
+        <div class="osuc-num">Order #<span id="orderNum"></span></div>
+      </div>
+      <p class="osuc-p reveal">Thank you! Your AlphaDetail products are confirmed and will be dispatched shortly.</p>
+      <div class="osuc-btns reveal">
         <button class="btn-g" onclick="showPage('home');clearCart()">Back to Home</button>
-        <button class="btn-o" onclick="showPage('shop');clearCart()">Continue Shopping</button>
+        <button class="btn-o" onclick="printOrder()"><i class="fa-solid fa-print"></i> Print Receipt</button>
+        <button class="btn-o" onclick="showPage('profile');clearCart()">Track Order</button>
       </div>
     </div>
     <div class="checkout-layout" id="chkContent">
@@ -367,16 +383,30 @@
           <div class="fg"><label class="fl">State</label><input class="fi" value="Kerala" readonly></div>
           <div class="hr"></div>
           <div class="chk-sec-h">Payment Method</div>
-          <div class="pay-opts">
-            <label class="pay-opt sel" id="pm-cod" onclick="selPM(this,'cod')"><input type="radio" name="pm" checked><span class="pay-lbl">Cash on Delivery</span><span class="pay-icon"><i class="fa-solid fa-money-bill-wave"></i></span></label>
-            <label class="pay-opt" id="pm-upi" onclick="selPM(this,'upi')"><input type="radio" name="pm"><span class="pay-lbl">UPI / PhonePe / GPay</span><span class="pay-icon"><i class="fa-solid fa-mobile-screen-button"></i></span></label>
-            <label class="pay-opt" id="pm-card" onclick="selPM(this,'card')"><input type="radio" name="pm"><span class="pay-lbl">Credit / Debit Card</span><span class="pay-icon"><i class="fa-solid fa-credit-card"></i></span></label>
+           <div class="pay-opts">
+              <!-- <label class="pay-opt" id="pm-cod" onclick="selPM(this,'cod')"><input type="radio" name="pm"><span class="pay-lbl">Cash on Delivery</span><span class="pay-icon"><i class="fa-solid fa-money-bill-wave"></i></span></label> -->
+            <label class="pay-opt sel" id="pm-upi" onclick="selPM(this,'upi')"><input type="radio" name="pm" checked><span class="pay-lbl">UPI / PhonePe / GPay</span><span class="pay-icon"><i class="fa-solid fa-mobile-screen-button"></i></span></label>
+            <!-- <label class="pay-opt" id="pm-card" onclick="selPM(this,'card')"><input type="radio" name="pm"><span class="pay-lbl">Credit / Debit Card</span><span class="pay-icon"><i class="fa-solid fa-credit-card"></i></span></label> -->
             <label class="pay-opt" id="pm-nb" onclick="selPM(this,'nb')"><input type="radio" name="pm"><span class="pay-lbl">Net Banking</span><span class="pay-icon"><i class="fa-solid fa-building-columns"></i></span></label>
           </div>
           <!-- <div id="upiF" style="display:none;margin-top:13px;"><div class="fg"><label class="fl">UPI ID</label><input class="fi" placeholder="name@upi"></div></div> -->
           <div id="cardF" style="display:none;margin-top:13px;">
             <div class="fg"><label class="fl">Card Number</label><input class="fi" placeholder="1234 5678 9012 3456"></div>
             <div class="fg2"><div class="fg"><label class="fl">Expiry</label><input class="fi" placeholder="MM / YY"></div><div class="fg"><label class="fl">CVV</label><input class="fi" placeholder="•••"></div></div>
+          </div>
+          <div class="chk-trust">
+            <div class="ct-label"><i class="fa-solid fa-shield-halved"></i> 100% SECURE CHECKOUT</div>
+            <div class="ct-logos">
+              <img src="https://razorpay.com/assets/razorpay-glyph.svg" alt="Razorpay" style="height:18px;">
+              <span style="font-size:10px; font-weight:700; letter-spacing:1px; color:var(--muted); margin-left:6px; margin-top:2px;">SECURED BY RAZORPAY</span>
+              <div class="ct-divider"></div>
+              <div class="ct-icons">
+                <i class="fa-brands fa-cc-visa"></i>
+                <i class="fa-brands fa-cc-mastercard"></i>
+                <i class="fa-brands fa-google-pay"></i>
+                <i class="fa-solid fa-bolt" title="UPI"></i>
+              </div>
+            </div>
           </div>
           <div class="fe" id="chkGlobalE" style="font-size:12px;margin-top:12px;"></div>
           <button class="place-btn" onclick="placeOrder()">Place Order →</button>
@@ -445,7 +475,11 @@
     <div class="profile-layout">
       <div class="prof-sidebar">
         <div class="prof-card">
-          <!-- <div class="prof-avatar"><i class="fa-solid fa-user"></i></div> -->
+          <div class="prof-avatar-wrap" onclick="document.getElementById('pAvatarInp').click()">
+            <img id="profAvatar" src="" alt="Avatar" class="prof-avatar-img">
+            <div class="pa-ov"><i class="fa-solid fa-camera"></i></div>
+          </div>
+          <input type="file" id="pAvatarInp" style="display:none;" accept="image/*" onchange="previewAvatar(this)">
           <div class="prof-name" id="profName">User Name</div>
           <div class="prof-email" id="profEmail">email@example.com</div>
           <div class="prof-email" id="profPhone">Phone</div>
@@ -459,6 +493,27 @@
         <button class="mob-item" style="border:none;background:var(--mid);margin-top:12px;padding-left:20px;" onclick="doLogout()">Sign Out ⬅</button>
       </div>
       <div class="prof-main">
+        <div class="chk-form" style="margin-top:0; padding:24px; background:var(--grey); border:1px solid var(--border); margin-bottom:40px;">
+          <div class="chk-sec-h" style="margin-top:0;">Personal Details</div>
+          <div class="fg2">
+            <div class="fg"><label class="fl">First Name *</label><input class="fi" id="pFirst" placeholder="First Name"><div class="fe" id="pFirstE">Required</div></div>
+            <div class="fg"><label class="fl">Last Name</label><input class="fi" id="pLast" placeholder="Last Name"></div>
+          </div>
+          <div class="fg"><label class="fl">Email Address *</label><input class="fi" id="pEmail" type="email" placeholder="Email" readonly style="background:var(--mid); cursor:not-allowed; opacity:0.8;"><div class="fe" id="pEmailE">Valid email required</div></div>
+          <div class="fg"><label class="fl">Phone Number *</label><input class="fi" id="pPhone" type="tel" placeholder="Phone"><div class="fe" id="pPhoneE">Required (10 digits)</div></div>
+          
+          <div class="hr" style="margin:20px 0;"></div>
+          <div class="chk-sec-h" style="margin-top:0;">Delivery Address</div>
+          
+          <div class="fg"><label class="fl">Address *</label><input class="fi" id="pAddr" placeholder="House No., Street Name, Area"><div class="fe" id="pAddrE">Address is required</div></div>
+          <div class="fg"><label class="fl">Area / Landmark</label><input class="fi" id="pAddr2" placeholder="Area or Landmark"></div>
+          <div class="fg2">
+            <div class="fg"><label class="fl">City *</label><input class="fi" id="pCity" placeholder="City"><div class="fe" id="pCityE">Required</div></div>
+            <div class="fg"><label class="fl">PIN Code *</label><input class="fi" id="pPin" placeholder="682xxx"><div class="fe" id="pPinE">Required (6 digits)</div></div>
+          </div>
+          <button class="place-btn" onclick="updateProfile()" id="profUpdateBtn" style="margin-top:20px;">Save Profile Changes</button>
+        </div>
+
         <div class="chk-sec-h" style="margin-top:0;">My Order History</div>
         <div id="profOrdersList" class="prof-orders-list">
           <div class="cart-empty" style="padding:40px 0;"><div class="ce-icon" style="font-size:30px;"><i class="fa-solid fa-box-open"></i></div><div class="ce-title" style="font-size:18px;">No orders yet</div><button class="btn-o" onclick="showPage('shop')">Start Shopping</button></div>

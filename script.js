@@ -2,7 +2,7 @@
 'use strict';
 
 // const API_BASE = 'http://localhost:5000/api';
-const API_BASE = 'https://alphadetailserver.onrender.com/api';
+const API_BASE = 'https://alphadetailserver.vercel.app/api';
 
 
 // ══ LOADER ══
@@ -459,6 +459,8 @@ function updateNavUser() {
   const ae = document.getElementById('navAuth'), ue = document.getElementById('navUser');
   const ml = document.getElementById('mobLogin'), mr = document.getElementById('mobReg');
   const mp = document.getElementById('mobProfile'), mo = document.getElementById('mobLogout');
+  // Footer IDs
+  const fl = document.getElementById('ftLogin'), fr = document.getElementById('ftReg'), fp = document.getElementById('ftProfile'), fo = document.getElementById('ftLogout');
 
   if (currentUser) {
     if (ae) ae.style.display = 'none'; 
@@ -467,6 +469,11 @@ function updateNavUser() {
     if (mr) mr.style.display = 'none';
     if (mp) mp.style.display = 'block';
     if (mo) mo.style.display = 'block';
+    // Footer
+    if (fl) fl.style.display = 'none';
+    if (fr) fr.style.display = 'none';
+    if (fp) fp.style.display = 'block';
+    if (fo) fo.style.display = 'block';
 
     document.getElementById('navUname').textContent = currentUser.firstName + (currentUser.lastName ? ' ' + currentUser.lastName : '');
     
@@ -485,6 +492,12 @@ function updateNavUser() {
     if (mr) mr.style.display = 'block';
     if (mp) mp.style.display = 'none';
     if (mo) mo.style.display = 'none';
+    // Footer
+    if (fl) fl.style.display = 'block';
+    if (fr) fr.style.display = 'block';
+    if (fp) fp.style.display = 'none';
+    if (fo) fo.style.display = 'none';
+
     const existingAdmin = document.querySelector('.nav-admin');
     if (existingAdmin) existingAdmin.remove();
   }
@@ -499,16 +512,52 @@ async function renderProfile() {
   const pJoined = document.getElementById('profJoined');
   if (pJoined) pJoined.textContent = new Date(currentUser.createdAt).toLocaleDateString(undefined, {year:'numeric', month:'long', day:'numeric'});
 
+  const ad = 'https://ui-avatars.com/api/?name=' + currentUser.firstName + '&background=d4af37&color=000&bold=true';
+  document.getElementById('profAvatar').src = currentUser.avatar || ad;
+
+  // Fill edit fields
+  if (document.getElementById('pFirst')) {
+    document.getElementById('pFirst').value = currentUser.firstName || '';
+    document.getElementById('pLast').value = currentUser.lastName || '';
+    document.getElementById('pEmail').value = currentUser.email || '';
+    document.getElementById('pPhone').value = currentUser.phone || '';
+    document.getElementById('pAddr').value = currentUser.address || '';
+    document.getElementById('pCity').value = currentUser.city || '';
+    document.getElementById('pPin').value = currentUser.pin || '';
+  }
+
   const list = document.getElementById('profOrdersList');
   const loaderHTML = '<div class="grid-loader"><div class="spinner"></div><div class="spinner-text">Syncing History</div></div>';
   if (list) list.innerHTML = loaderHTML;
 
-  const orders = await apiReq('/orders/my-orders');
-  document.getElementById('profOrderCount').textContent = orders.length;
-  if (orders.length === 0) {
-    list.innerHTML = `<div class="cart-empty" style="padding:40px 0;"><div class="ce-icon" style="font-size:30px;"><i class="fa-solid fa-box-open"></i></div><div class="ce-title" style="font-size:18px;">No orders yet</div><button class="btn-o" onclick="showPage('shop')">Start Shopping</button></div>`;
-  } else {
-    list.innerHTML = orders.map(o => `
+  try {
+    const orders = await apiReq('/orders/my-orders');
+    document.getElementById('profOrderCount').textContent = orders.length;
+
+    if (orders.length === 0) {
+      list.innerHTML = `<div class="cart-empty" style="padding:40px 0;"><div class="ce-icon" style="font-size:30px;"><i class="fa-solid fa-box-open"></i></div><div class="ce-title" style="font-size:18px;">No orders yet</div><button class="btn-o" onclick="showPage('shop')">Start Shopping</button></div>`;
+      return;
+    }
+
+    const groups = {
+      'upi': { name: 'UPI PAYMENTS', icon: 'fa-mobile-screen-button', list: [] },
+      'nb': { name: 'NET BANKING', icon: 'fa-building-columns', list: [] },
+      'card': { name: 'CARD PAYMENTS', icon: 'fa-credit-card', list: [] },
+      'cod': { name: 'CASH ON DELIVERY', icon: 'fa-money-bill-wave', list: [] },
+      'razorpay': { name: 'RAZORPAY ORDERS', icon: 'fa-credit-card', list: [] }
+    };
+
+    orders.forEach(o => {
+      const pm = o.paymentMethod || 'other';
+      if(groups[pm]) groups[pm].list.push(o);
+      else {
+        if(!groups['other']) groups['other'] = { name: 'OTHER PAYMENTS', icon: 'fa-box', list: [] };
+        groups['other'].list.push(o);
+      }
+    });
+
+    let html = '';
+    const renderOrder = (o) => `
       <div class="prof-order-item">
         <div class="poi-head">
           <div class="poi-num">Order #${o.orderNum}</div>
@@ -521,9 +570,123 @@ async function renderProfile() {
           <div class="poi-status" style="border-color:${o.status==='delivered'?'var(--green)':'var(--gold)'};color:${o.status==='delivered'?'var(--green)':'var(--gold)'}">${o.status.toUpperCase()}</div>
           <div class="poi-total">Total: ₹${o.total.toLocaleString('en-IN')}</div>
         </div>
-      </div>`).join('');
-  }
+      </div>`;
+
+    Object.keys(groups).forEach(key => {
+      const g = groups[key];
+      if (g.list.length > 0) {
+        html += `<div class="prof-sec-h"><i class="fa-solid ${g.icon}"></i> ${g.name} (${g.list.length})</div>`;
+        html += g.list.map(renderOrder).join('');
+      }
+    });
+
+    list.innerHTML = html;
+  } catch (e) {}
 }
+
+window.previewAvatar = async (inp) => {
+  if (inp.files && inp.files[0]) {
+    const file = inp.files[0];
+    // Immediate preview
+    const r = new FileReader();
+    r.onload = (e) => document.getElementById('profAvatar').src = e.target.result;
+    r.readAsDataURL(file);
+
+    // Immediate upload
+    const ov = document.querySelector('.pa-ov');
+    const avWrap = document.querySelector('.prof-avatar-wrap');
+    if(ov) { ov.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>'; ov.style.opacity = '1'; }
+    avWrap.style.pointerEvents = 'none';
+
+    try {
+      const fd = new FormData();
+      fd.append('avatar', file);
+      const data = await apiReq('/users/me', { method: 'POST', body: fd });
+      currentUser = { ...currentUser, ...data };
+      localStorage.setItem('alphaUser', JSON.stringify(currentUser));
+      updateNavUser();
+      toast('Profile picture uploaded!', { type: 'success' });
+    } catch (e) {
+      // Error handled by apiReq
+    } finally {
+      if(ov) { ov.innerHTML = '<i class="fa-solid fa-camera"></i>'; ov.style.opacity = ''; }
+      avWrap.style.pointerEvents = '';
+      inp.value = '';
+    }
+  }
+};
+
+window.updateProfile = async function() {
+  const btn = document.getElementById('profUpdateBtn');
+  const fields = ['pFirst', 'pPhone', 'pAddr', 'pCity', 'pPin'];
+  let valid = true;
+
+  // Reset errors
+  document.querySelectorAll('.prof-main .fe').forEach(e => e.classList.remove('show'));
+
+  // Basic validation
+  fields.forEach(f => {
+    const el = document.getElementById(f);
+    if (!el || !el.value.trim()) {
+      const errEl = document.getElementById(f + 'E');
+      if (errEl) errEl.classList.add('show');
+      valid = false;
+    }
+  });
+
+  const phone = document.getElementById('pPhone').value.trim().replace(/\D/g, '');
+  if (phone && !/^[6-9]\d{9}$/.test(phone)) {
+    const errEl = document.getElementById('pPhoneE');
+    if (errEl) {
+      errEl.textContent = "Invalid phone (10 digits starting with 6-9)";
+      errEl.classList.add('show');
+    }
+    valid = false;
+  }
+
+  const pin = document.getElementById('pPin').value.trim().replace(/\D/g, '');
+  if (pin && !/^\d{6}$/.test(pin)) {
+    const errEl = document.getElementById('pPinE');
+    if (errEl) {
+      errEl.textContent = "Invalid PIN Code (6 digits)";
+      errEl.classList.add('show');
+    }
+    valid = false;
+  }
+
+  if (!valid) return toast('Please fix the errors in your profile', { type: 'error' });
+
+  const ogText = btn.innerHTML;
+  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Updating...';
+  btn.disabled = true;
+
+  try {
+    const fd = new FormData();
+    fd.append('firstName', document.getElementById('pFirst').value.trim());
+    fd.append('lastName', document.getElementById('pLast').value.trim());
+    fd.append('phone', document.getElementById('pPhone').value.trim());
+    fd.append('address', document.getElementById('pAddr').value.trim());
+    fd.append('city', document.getElementById('pCity').value.trim());
+    fd.append('pin', document.getElementById('pPin').value.trim());
+    
+    const data = await apiReq('/users/me', {
+      method: 'POST',
+      body: fd
+      // apiReq will handle auth header and omit Content-Type for FormData
+    });
+    currentUser = { ...currentUser, ...data };
+    localStorage.setItem('alphaUser', JSON.stringify(currentUser));
+    updateNavUser();
+    renderProfile(); // Refresh UI with new avatar
+
+    toast('Profile updated successfully!', { type: 'success' });
+  } catch (err) {
+    // Error toasted by apiReq
+  } finally {
+    btn.innerHTML = ogText;
+    btn.disabled = false;
+  }
+};
 
 // ══ CHECKOUT & RAZORPAY ══
 window.proceedCheckout = function() {
@@ -555,13 +718,32 @@ function initCheckout() {
 
   document.getElementById('osTotal').textContent = '₹' + Math.round(total).toLocaleString('en-IN');
   document.getElementById('osItems').innerHTML = cart.map(c => `<div class="os-item"><div>${c.name} x ${c.qty}</div><div>₹${(c.price * c.qty).toLocaleString('en-IN')}</div></div>`).join('');
+
+  // Pre-fill from profile
+  if (currentUser) {
+    document.getElementById('cFirst').value = currentUser.firstName || '';
+    document.getElementById('cLast').value = currentUser.lastName || '';
+    const emailEl = document.getElementById('cEmail');
+    emailEl.value = currentUser.email || '';
+    emailEl.readOnly = true;
+    emailEl.style.background = 'var(--mid)';
+    emailEl.style.cursor = 'not-allowed';
+    emailEl.style.opacity = '0.8';
+
+    document.getElementById('cPhone').value = currentUser.phone || '';
+    document.getElementById('cAddr').value = currentUser.address || '';
+    document.getElementById('cCity').value = currentUser.city || '';
+    document.getElementById('cPin').value = currentUser.pin || '';
+  }
 }
 
 window.selPM = function(el, method) {
   document.querySelectorAll('.pay-opt').forEach(opt => opt.classList.remove('sel'));
   el.classList.add('sel');
-  document.getElementById('upiF').style.display = method === 'upi' ? 'block' : 'none';
-  document.getElementById('cardF').style.display = method === 'card' ? 'block' : 'none';
+  const upif = document.getElementById('upiF');
+  if (upif) upif.style.display = method === 'upi' ? 'block' : 'none';
+  const cardf = document.getElementById('cardF');
+  if (cardf) cardf.style.display = method === 'card' ? 'block' : 'none';
 };
 
 window.placeOrder = async function() {
@@ -571,6 +753,54 @@ window.placeOrder = async function() {
     toast('Please sign in to place your order', { type: 'info', icon: 'fa-solid fa-user-lock' });
     return;
   }
+
+  // Frontend Validation
+  const reqFields = ['cFirst', 'cEmail', 'cPhone', 'cAddr', 'cCity', 'cPin'];
+  let isValid = true;
+  
+  // Reset previous error states
+  document.querySelectorAll('#page-checkout .fe').forEach(e => e.classList.remove('show'));
+  document.querySelectorAll('#page-checkout .fi').forEach(e => e.classList.remove('error'));
+  
+  reqFields.forEach(f => {
+    const el = document.getElementById(f);
+    const errEl = document.getElementById(f + 'E');
+    if (!el.value.trim()) {
+      if(errEl) { errEl.textContent = "Required"; errEl.classList.add('show'); }
+      el.classList.add('error');
+      isValid = false;
+    }
+  });
+
+  const emailEl = document.getElementById('cEmail');
+  const email = emailEl.value.trim();
+  if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    const errEl = document.getElementById('cEmailE');
+    if(errEl) { errEl.textContent = "Valid email required"; errEl.classList.add('show'); }
+    emailEl.classList.add('error');
+    isValid = false;
+  }
+
+  const phoneEl = document.getElementById('cPhone');
+  const phone = phoneEl.value.trim().replace(/\D/g, '');
+  if (phone && !/^[6-9]\d{9}$/.test(phone)) {
+    const errEl = document.getElementById('cPhoneE');
+    if(errEl) { errEl.textContent = "10-digit number starting with 6-9"; errEl.classList.add('show'); }
+    phoneEl.classList.add('error');
+    isValid = false;
+  }
+
+  const pinEl = document.getElementById('cPin');
+  const pin = pinEl.value.trim().replace(/\D/g, '');
+  if (pin && !/^\d{6}$/.test(pin)) {
+    const errEl = document.getElementById('cPinE');
+    if(errEl) { errEl.textContent = "Valid 6-digit PIN required"; errEl.classList.add('show'); }
+    pinEl.classList.add('error');
+    isValid = false;
+  }
+
+  if (!isValid) return toast('Please check your delivery details', { type: 'error' });
+
   const sub = getSubtotal(), total = getFinalTotal();
   const addr = {
     first: document.getElementById('cFirst').value,
@@ -588,7 +818,7 @@ window.placeOrder = async function() {
     return saveOrder(null, null, 'cod', 'pending', addr);
   }
   
-  const finalMethod = (method === 'cod') ? 'cod' : 'razorpay';
+  const finalMethod = method; // Use original detected method (upi, nb, card)
 
   // Razorpay Order Creation
   try {
@@ -602,7 +832,7 @@ window.placeOrder = async function() {
     });
 
     const opt = {
-      key: rOrder.key_id, // Use the key provided by the server to ensure perfect sync
+      key: rOrder.key_id, 
       amount: rOrder.amount,
       currency: "INR",
       name: "AlphaDetail",
@@ -629,22 +859,551 @@ window.placeOrder = async function() {
   }
 };
 
+let lastOrder = null;
 async function saveOrder(rOrderId, rPayId, method, status, addr) {
   const orderNum = 'AD' + Date.now().toString().slice(-6);
+  const checkoutItems = [...cart];
+  const orderData = {
+    orderNum, 
+    items: checkoutItems, 
+    subtotal: getSubtotal(), 
+    total: getFinalTotal(),
+    shipping: getShipping(),
+    bundleDiscount: getBundleDiscount(),
+    bundleLabel: cartBundleLabel,
+    couponDiscount: getCouponDiscount(),
+    paymentMethod: method, 
+    paymentStatus: status, 
+    razorpayOrderId: rOrderId, 
+    razorpayPaymentId: rPayId,
+    address: addr,
+    createdAt: new Date().toISOString()
+  };
+
   await apiReq('/orders', {
     method: 'POST', headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      orderNum, items: cart, subtotal: getSubtotal(), total: getFinalTotal(),
-      paymentMethod: method, paymentStatus: status, razorpayOrderId: rOrderId, razorpayPaymentId: rPayId,
-      address: addr
-    })
+    body: JSON.stringify(orderData)
   });
+
+  lastOrder = orderData;
   cart = []; updateBadge();
   document.getElementById('chkContent').style.display = 'none';
   document.getElementById('orderSuccess').style.display = 'block';
   document.getElementById('orderNum').textContent = orderNum;
   toast('Order placed successfully!', { type: 'success', icon: 'fa-solid fa-circle-check' });
 }
+
+window.printOrder = function() {
+  if (!lastOrder) return toast('No order details found to print', { type: 'error' });
+  
+  const w = window.open('', '_blank');
+  const itemsHTML = lastOrder.items.map(i => `
+    <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #eee; padding:10px 0;">
+      <div style="display:flex; align-items:center; gap:15px;">
+        <div style="width:50px; height:50px; background:#f0f0f0;">${makeImgHTML(i.id, i.name, 'width:100%;height:100%;object-fit:cover;')}</div>
+        <div>
+          <div style="font-weight:bold; font-size:14px;">${i.name}</div>
+          <div style="font-size:12px; color:#666;">Quantity: ${i.qty}</div>
+        </div>
+      </div>
+      <div style="font-weight:bold;">₹${(i.price * i.qty).toLocaleString('en-IN')}</div>
+    </div>
+  `).join('');
+
+  const html = `
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>Invoice | AlphaDetail Car Care</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #e9eef3;
+      font-family: 'Inter', 'Segoe UI', 'Roboto', system-ui, -apple-system, 'BlinkMacSystemFont', sans-serif;
+      padding: 2rem 1rem;
+      color: #1a2c3e;
+    }
+
+    /* main invoice card */
+    .invoice-container {
+      max-width: 1100px;
+      margin: 0 auto;
+      background: #ffffff;
+      border-radius: 28px;
+      box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.12), 0 2px 6px rgba(0, 0, 0, 0.02);
+      overflow: hidden;
+      transition: all 0.2s ease;
+    }
+
+    /* inner content with generous padding */
+    .invoice-inner {
+      padding: 2rem 2.2rem 2.2rem 2.2rem;
+    }
+
+    /* header area: refined brand and invoice badge */
+    .header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: 1rem;
+      padding-bottom: 1.8rem;
+      margin-bottom: 2rem;
+      border-bottom: 2px solid #f0f2f5;
+    }
+
+    .brand-section {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .brand-name {
+      font-size: 2rem;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      background: linear-gradient(135deg, #1f2e3a 0%, #2c3e4e 100%);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      line-height: 1.2;
+    }
+
+    .brand-tagline {
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: #5d6f7f;
+      letter-spacing: 0.3px;
+    }
+
+    .invoice-meta {
+      text-align: right;
+      background: #f8fafc;
+      padding: 0.9rem 1.4rem;
+      border-radius: 24px;
+    }
+
+    .invoice-badge {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: #1f5e3a;
+      letter-spacing: 1px;
+      margin-bottom: 0.3rem;
+    }
+
+    .meta-detail {
+      font-size: 0.85rem;
+      color: #2c3e4e;
+      font-weight: 500;
+    }
+
+    /* 2 column grids */
+    .info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      margin-bottom: 2.2rem;
+    }
+
+    .info-card {
+      background: #fbfdff;
+      border-radius: 20px;
+      padding: 0.2rem 0;
+    }
+
+    .section-title {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      color: #4f7a5c;
+      margin-bottom: 1rem;
+      border-left: 3px solid #4f7a5c;
+      padding-left: 0.75rem;
+    }
+
+    .info-content {
+      font-size: 0.9rem;
+      line-height: 1.5;
+      color: #1e2f3c;
+    }
+
+    .info-content strong {
+      font-weight: 700;
+      color: #0f2c38;
+    }
+
+    .info-content p {
+      margin-top: 0.2rem;
+    }
+
+    /* items table - clean and professional */
+    .items-section {
+      margin: 2rem 0 1.8rem;
+    }
+
+    .items-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+    }
+
+    .items-table th {
+      text-align: left;
+      padding: 1rem 0.8rem;
+      background-color: #f4f7fb;
+      font-weight: 600;
+      color: #1f4d3a;
+      border-bottom: 1px solid #e2e8f0;
+      font-size: 0.8rem;
+      letter-spacing: 0.3px;
+    }
+
+    .items-table td {
+      padding: 1rem 0.8rem;
+      border-bottom: 1px solid #edf2f7;
+      vertical-align: top;
+      color: #2d3e50;
+    }
+
+    .items-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .product-name {
+      font-weight: 600;
+      color: #1e293b;
+    }
+
+    .product-sku {
+      font-size: 0.7rem;
+      color: #6c869a;
+      margin-top: 4px;
+    }
+
+    .text-right {
+      text-align: right;
+    }
+
+    /* totals panel - modern and airy */
+    .totals-panel {
+      margin-top: 1.5rem;
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .totals-card {
+      width: 320px;
+      background: #fefefe;
+      border-radius: 24px;
+      padding: 1.2rem 1.6rem;
+      border: 1px solid #eef2f8;
+      box-shadow: 0 6px 12px -8px rgba(0, 0, 0, 0.05);
+    }
+
+    .totals-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      margin-bottom: 0.7rem;
+      color: #2c4b3e;
+    }
+
+    .totals-row.discount-row {
+      color: #2b7a4b;
+      font-weight: 500;
+    }
+
+    .grand-total-row {
+      display: flex;
+      justify-content: space-between;
+      font-weight: 800;
+      font-size: 1.2rem;
+      margin-top: 0.9rem;
+      padding-top: 0.9rem;
+      border-top: 2px solid #e2edf2;
+      color: #1f3b2c;
+    }
+
+    .payment-status {
+      display: inline-block;
+      background: #eef6ef;
+      padding: 0.2rem 0.7rem;
+      border-radius: 50px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: #1e6f3f;
+    }
+
+    .payment-status.paid {
+      background: #e0f2e6;
+      color: #106a3b;
+    }
+
+    /* thank you footer */
+    .footer-thanks {
+      margin-top: 2.5rem;
+      text-align: center;
+      padding-top: 1.2rem;
+      border-top: 1px solid #eef2f8;
+      font-size: 0.75rem;
+      color: #6d8a9c;
+      letter-spacing: 0.2px;
+    }
+
+    /* print button & print styles */
+    .print-actions {
+      text-align: right;
+      margin-top: 1.2rem;
+      padding: 0 0 1rem 0;
+    }
+
+    .btn-print {
+      background: #2c3e4e;
+      border: none;
+      padding: 0.7rem 1.8rem;
+      border-radius: 40px;
+      font-weight: 600;
+      font-size: 0.8rem;
+      color: white;
+      cursor: pointer;
+      transition: 0.2s;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+      font-family: inherit;
+    }
+
+    .btn-print:hover {
+      background: #1f5e3a;
+      transform: translateY(-1px);
+    }
+
+    @media print {
+      body {
+        background: white;
+        padding: 0;
+        margin: 0;
+      }
+      .invoice-container {
+        box-shadow: none;
+        border-radius: 0;
+        margin: 0;
+        max-width: 100%;
+      }
+      .invoice-inner {
+        padding: 0.8in;
+      }
+      .print-actions {
+        display: none;
+      }
+      .btn-print {
+        display: none;
+      }
+      .totals-card {
+        box-shadow: none;
+        border: 1px solid #ddd;
+      }
+      .items-table th {
+        background: #f1f5f9;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      .payment-status {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+    }
+
+    /* responsive */
+    @media (max-width: 680px) {
+      .invoice-inner {
+        padding: 1.2rem;
+      }
+      .info-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+      .totals-panel {
+        justify-content: stretch;
+      }
+      .totals-card {
+        width: 100%;
+      }
+      .items-table th, .items-table td {
+        padding: 0.7rem 0.5rem;
+      }
+      .header-row {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .invoice-meta {
+        text-align: left;
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="invoice-container">
+  <div class="invoice-inner">
+    <!-- HEADER: refined brand + meta -->
+    <div class="header-row">
+      <div class="brand-section">
+        <div class="brand-name">ALPHADETAIL</div>
+        <div class="brand-tagline">Precision DIY Car Care · Kerala, India</div>
+      </div>
+      <div class="invoice-meta">
+        <div class="invoice-badge">TAX INVOICE</div>
+        <div class="meta-detail"><strong>Order #ORD-${lastOrder.orderNum || '100294'}</strong></div>
+        <div class="meta-detail">Issued: ${new Date(lastOrder.createdAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' })}</div>
+      </div>
+    </div>
+
+    <!-- CUSTOMER & SHIPPING (two column) -->
+    <div class="info-grid">
+      <div class="info-card">
+        <div class="section-title">BILL TO</div>
+        <div class="info-content">
+          <strong>${lastOrder.address.first} ${lastOrder.address.last || ''}</strong><br>
+          ${lastOrder.address.email}<br>
+          ${lastOrder.address.phone}<br>
+          ${lastOrder.address.addr ? lastOrder.address.addr : ''}<br>
+          ${lastOrder.address.city ? lastOrder.address.city + ', ' : ''} ${lastOrder.address.pin || ''}
+        </div>
+      </div>
+      <div class="info-card">
+        <div class="section-title">SHIP TO</div>
+        <div class="info-content">
+          ${lastOrder.address.first} ${lastOrder.address.last || ''}<br>
+          ${lastOrder.address.addr || '—'}<br>
+          ${lastOrder.address.city || ''} ${lastOrder.address.pin ? '- ' + lastOrder.address.pin : ''}<br>
+          Kerala, India
+        </div>
+      </div>
+    </div>
+
+    <!-- ORDER ITEMS (dynamic) -->
+    <div class="items-section">
+      <div class="section-title">ORDER SUMMARY</div>
+      <table class="items-table">
+        <thead>
+          <tr>
+            <th>Item</th>
+            <th class="text-right">Qty</th>
+            <th class="text-right">Unit Price</th>
+            <th class="text-right">Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${itemsHTML || `
+            <tr>
+              <td colspan="4" style="text-align:center; padding:2rem;">No items found</td>
+            </tr>
+          `}
+        </tbody>
+      </table>
+    </div>
+
+    <!-- TOTALS + PAYMENT INFO (grid layout refined) -->
+    <div class="info-grid" style="margin-bottom: 0.5rem;">
+      <div class="info-card">
+        <div class="section-title">PAYMENT DETAILS</div>
+        <div class="info-content">
+          <span style="font-weight:500;">Method:</span> ${(lastOrder.paymentMethod || 'card').toUpperCase()} 
+          <span style="display:inline-block; margin-left: 0.6rem;"></span><br>
+          <span style="font-weight:500;">Status:</span> 
+          <span class="payment-status ${lastOrder.paymentStatus === 'paid' ? 'paid' : ''}">${(lastOrder.paymentStatus || 'pending').toUpperCase()}</span>
+          <p style="margin-top: 10px; font-size:0.8rem; color:#4f6f8a;">
+            ${lastOrder.paymentStatus === 'paid' ? '✓ Payment received successfully' : 'Payment confirmation pending'}
+          </p>
+        </div>
+      </div>
+      <div class="totals-panel" style="justify-content: flex-end; margin:0;">
+        <div class="totals-card">
+          <div class="totals-row">
+            <span>Subtotal</span>
+            <span>₹${Math.round(lastOrder.subtotal || 0).toLocaleString('en-IN')}</span>
+          </div>
+          <div class="totals-row">
+            <span>Shipping (standard)</span>
+            <span>₹${Math.round(lastOrder.shipping || 0).toLocaleString('en-IN')}</span>
+          </div>
+          ${(lastOrder.bundleDiscount && lastOrder.bundleDiscount > 0) ? `
+          <div class="totals-row discount-row">
+            <span>${lastOrder.bundleLabel || 'Bundle saving'}</span>
+            <span>- ₹${Math.round(lastOrder.bundleDiscount).toLocaleString('en-IN')}</span>
+          </div>
+          ` : ''}
+          ${(lastOrder.couponDiscount && lastOrder.couponDiscount > 0) ? `
+          <div class="totals-row discount-row">
+            <span>Coupon discount</span>
+            <span>- ₹${Math.round(lastOrder.couponDiscount).toLocaleString('en-IN')}</span>
+          </div>
+          ` : ''}
+          <div class="grand-total-row">
+            <span>Grand Total</span>
+            <span>₹${Math.round(lastOrder.total || 0).toLocaleString('en-IN')}</span>
+          </div>
+          <div style="font-size:0.7rem; margin-top:0.7rem; text-align:center; color:#6c8d9e;">
+            Inclusive of all taxes
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Additional note: professional touch -->
+    <div style="background: #f9fbfd; border-radius: 20px; padding: 0.8rem 1rem; margin-top: 1rem;">
+      <div style="display: flex; gap: 1rem; flex-wrap: wrap; justify-content: space-between; align-items: center;">
+        <div style="font-size: 0.75rem; color: #4a6f88;">
+          <span style="font-weight:600;">📞 Support:</span> +91 484 296 5000 &nbsp;|&nbsp;
+          <span style="font-weight:600;">✉️ care@alphadetail.in</span>
+        </div>
+        <div style="font-size: 0.7rem; color: #7f9bb0;">
+          GSTIN: 32ABCDE1234F1Z5
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-thanks">
+      ⚡ Thank you for choosing AlphaDetail — drive with confidence, shine with pride.<br>
+      This is a digitally generated invoice and does not require a physical signature.
+    </div>
+  </div>
+
+  <div class="print-actions">
+    <button class="btn-print no-print" onclick="window.print();">🖨️ Print / Save as PDF</button>
+  </div>
+</div>
+
+<script>
+  // (optional) Auto adjust for missing bundleLabel / fallback values – but template is robust
+  window.onload = function() {
+    // ensure any missing label defaults if needed
+    if (typeof lastOrder !== 'undefined' && lastOrder && !lastOrder.bundleLabel && lastOrder.bundleDiscount > 0) {
+      // In case dynamic label missing, but we already have a fallback inside template
+      // This is just a graceful client side safe check (no action required)
+    }
+    // Any interactive polish: nothing heavy
+    console.log("Professional Invoice Ready");
+  };
+</script>
+</body>
+</html>
+  `;
+
+  w.document.open();
+  w.document.write(html);
+  w.document.close();
+};
 
 window.toast = function(msg, opt = {}) {
   const container = document.getElementById('sonner');

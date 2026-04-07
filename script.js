@@ -1,8 +1,8 @@
 (function(){
 'use strict';
 
-// const API_BASE = 'http://localhost:5000/api';
-const API_BASE = 'https://alphadetailserver.vercel.app/api';
+const API_BASE = 'http://localhost:5000/api';
+// const API_BASE = 'https://alphadetailserver.vercel.app/api';
 
 
 // ══ LOADER ══
@@ -38,10 +38,18 @@ async function apiReq(path, opt = {}) {
   try {
     const res = await fetch(API_BASE + path, opt);
     const data = await res.json();
-    if (!res.ok) throw new Error(data.error || 'Request failed');
+    if (!res.ok) {
+      const err = new Error(data.error || 'Request failed');
+      err.data = data;
+      throw err;
+    }
     return data;
   } catch (err) {
-    toast(err.message, { type: 'error' });
+    if (err.data && err.data.retryAfter) {
+      // Don't toast here, handle in caller for specific UI
+    } else {
+      toast(err.message || 'Network error', { type: 'error' });
+    }
     throw err;
   }
 }
@@ -402,17 +410,34 @@ window.doLogin = async function() {
     updateBadge();
     updateNavUser();
     toast('Welcome back, ' + data.firstName + '!', { type: 'success' });
+    if (btn) { btn.innerHTML = ogText; btn.disabled = false; }
     showPage(redirectAfterAuth || 'home');
   } catch (e) {
-    // Error is already toasted by apiReq
-    const errEl = document.getElementById('loginErr');
-    if (errEl) {
-      errEl.textContent = e.message;
-      errEl.classList.add('show');
-      setTimeout(() => errEl.classList.remove('show'), 5000);
+    if (e.data && e.data.retryAfter) {
+      let remaining = Math.ceil(e.data.retryAfter / 1000);
+      toast(e.data.error, { type: 'error' });
+      
+      const updateBtn = () => {
+        if (remaining <= 0) {
+          if (btn) { btn.innerHTML = ogText; btn.disabled = false; }
+          return;
+        }
+        const m = Math.floor(remaining / 60);
+        const s = remaining % 60;
+        if (btn) btn.innerHTML = `<i class="fa-solid fa-clock"></i> Try in ${m}m ${s}s`;
+        remaining--;
+        setTimeout(updateBtn, 1000);
+      };
+      updateBtn();
+    } else {
+      if (btn) { btn.innerHTML = ogText; btn.disabled = false; }
+      const errEl = document.getElementById('loginErr');
+      if (errEl) {
+        errEl.textContent = e.message;
+        errEl.classList.add('show');
+        setTimeout(() => errEl.classList.remove('show'), 5000);
+      }
     }
-  } finally {
-    if (btn) { btn.innerHTML = ogText; btn.disabled = false; }
   }
 };
 

@@ -2532,6 +2532,19 @@ header.scrolled {
   background: var(--gold2);
 }
 
+.chk-btn.wa-btn, .place-btn.wa-btn {
+  background: #25D366;
+  color: #fff;
+  border: none;
+}
+
+.chk-btn.wa-btn:hover, .place-btn.wa-btn:hover {
+  background: #128C7E;
+  box-shadow: 0 0 20px rgba(37, 211, 102, 0.3);
+}
+
+
+
 .cont-shop {
   display: block;
   text-align: center;
@@ -2626,6 +2639,11 @@ header.scrolled {
 
 .fe.show {
   display: block;
+}
+
+.fi.error {
+  border-color: var(--red) !important;
+  background-color: rgba(255, 77, 79, 0.05) !important;
 }
 
 .pay-opts {
@@ -3563,4 +3581,84 @@ header.scrolled {
 @keyframes glowExpand {
   0% { transform: translate(-50%, -50%) scale(1); opacity: 0.6; }
   100% { transform: translate(-50%, -50%) scale(2.5); opacity: 0; }
+}
+
+/* Order Progress Bar */
+.order-progress-wrap {
+  margin: 30px 0 25px;
+  padding: 0 10px;
+}
+.order-progress {
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  align-items: center;
+}
+.order-progress::before {
+  content: '';
+  position: absolute;
+  top: 8px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--mid);
+  z-index: 1;
+}
+.progress-track {
+  position: absolute;
+  top: 8px;
+  left: 0;
+  height: 2px;
+  background: var(--gold);
+  z-index: 2;
+  transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.p-step {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 80px;
+}
+.p-dot {
+  width: 18px;
+  height: 18px;
+  background: var(--grey);
+  border: 4px solid var(--mid);
+  border-radius: 50%;
+  margin-bottom: 8px;
+  transition: all 0.4s ease;
+}
+.p-step.active .p-dot {
+  background: var(--gold);
+  border-color: var(--black);
+  box-shadow: 0 0 12px rgba(212, 175, 55, 0.5);
+}
+.p-label {
+  font-size: 9px;
+  color: var(--muted);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  text-align: center;
+  white-space: nowrap;
+}
+.p-step.active .p-label {
+  color: var(--white);
+}
+
+/* Cancelled State */
+.order-progress.cancelled::before {
+  background: rgba(255, 77, 79, 0.2);
+}
+.order-progress.cancelled .progress-track {
+  background: var(--red);
+}
+.order-progress.cancelled .p-step.active .p-dot {
+  background: var(--red);
+  box-shadow: 0 0 12px rgba(255, 77, 79, 0.5);
+}
+.order-progress.cancelled .p-step.active .p-label {
+  color: var(--red);
 }

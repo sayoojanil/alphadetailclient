@@ -130,7 +130,7 @@
       <div class="reveal-l"><div class="s-eye">Save More</div><h2 class="s-h2">BUNDLE PACKAGES</h2><p class="s-desc">Everything you need, one order, best price — with automatic discount applied at cart.</p></div>
       <div class="bundle-grid">
         <!-- STARTER / BASIC -->
-        <div class="bcard reveal-l">
+        <div class="bcard reveal-l" onclick="addBundleToCart('starter')" style="cursor:pointer;">
           <div class="bcard-badge">Starter</div>
           <div class="bcard-name">Alpha Starter Kit</div>
           <p class="bcard-tagline">"Everything you need to get started. Nothing you don't."</p>
@@ -146,10 +146,10 @@
             <div class="bcard-price">₹3,628</div>
             <div class="bcard-save">You save ₹192 automatically</div>
           </div>
-          <button class="bcard-btn-o" onclick="addBundleToCart('starter')">Add Bundle to Cart</button>
+          <button class="bcard-btn-o">Add Bundle to Cart</button>
         </div>
         <!-- PRO -->
-        <div class="bcard bcard-feat reveal-r">
+        <div class="bcard bcard-feat reveal-r" onclick="addBundleToCart('pro')" style="cursor:pointer;">
           <div class="bcard-badge">Best Value <i class="fa-solid fa-star"></i></div>
           <div class="bcard-name">Alpha Pro Kit</div>
           <p class="bcard-tagline">"The complete AlphaDetail arsenal. Every surface. Inside and out."</p>
@@ -168,7 +168,7 @@
             <div class="bcard-price">₹7,400</div>
             <div class="bcard-save">You save ₹822 automatically</div>
           </div>
-          <button class="bcard-btn" onclick="addBundleToCart('pro')">Get Pro Kit →</button>
+          <button class="bcard-btn">Get Pro Kit →</button>
         </div>
       </div>
     </div>
@@ -337,8 +337,9 @@
           <span class="sum-disc-val" id="sumDisc">-₹0</span>
         </div>
         <div class="sum-total"><span class="sum-total-lbl">Total</span><span class="sum-total-val" id="sumTotal">₹0</span></div>
-            <div class="coupon-row"><input class="coup-inp" id="coupInp" placeholder="Coupon code"><button class="coup-btn" onclick="applyCoupon()">Apply</button></div>
-        <button class="chk-btn" onclick="proceedCheckout()">Proceed to Checkout →</button>
+            <!-- <div class="coupon-row"><input class="coup-inp" id="coupInp" placeholder="Coupon code"><button class="coup-btn" onclick="applyCoupon()">Apply</button></div> -->
+        <!-- <button class="chk-btn" onclick="proceedCheckout()">Proceed to Checkout →</button> -->
+        <button class="chk-btn wa-btn" onclick="orderViaWhatsApp()">Order through WhatsApp <i class="fa-brands fa-whatsapp"></i></button>
         <span class="cont-shop" onclick="showPage('shop')">← Continue Shopping</span>
       </div>
     </div>
@@ -361,7 +362,8 @@
       <p class="osuc-p reveal">Thank you! Your AlphaDetail products are confirmed and will be dispatched shortly.</p>
       <div class="osuc-btns reveal">
         <button class="btn-g" onclick="showPage('home');clearCart()">Back to Home</button>
-        <button class="btn-o" onclick="printOrder()"><i class="fa-solid fa-print"></i> Print Receipt</button>
+        <button class="btn-o" onclick="printOrder()"><i class="fa-solid fa-file-invoice"></i> Download / Print Invoice</button>
+        <button class="btn-o" id="waSuccessBtn" style="background:#25D366; color:white; border:none;"><i class="fa-brands fa-whatsapp"></i> WhatsApp Status</button>
         <button class="btn-o" onclick="showPage('profile');clearCart()">Track Order</button>
       </div>
     </div>
@@ -371,31 +373,50 @@
           <div class="chk-sec-h">Delivery Information</div>
           <div class="fg2">
             <div class="fg"><label class="fl">First Name *</label><input class="fi" id="cFirst" placeholder="John"><div class="fe" id="cFirstE">Required</div></div>
-            <div class="fg"><label class="fl">Last Name</label><input class="fi" id="cLast" placeholder="Doe"></div>
+            <div class="fg"><label class="fl">Last Name</label><input class="fi" id="cLast" placeholder="Doe"><div class="fe" id="cLastE">Required</div></div>
           </div>
-          <div class="fg"><label class="fl">Email Address *</label><input class="fi" id="cEmail" type="email" placeholder="you@example.com"><div class="fe" id="cEmailE">Valid email required</div></div>
-          <div class="fg"><label class="fl">Phone Number *</label><input class="fi" id="cPhone" type="tel" placeholder="+91 98765 43210"><div class="fe" id="cPhoneE">Required</div></div>
-          <div class="fg"><label class="fl">Address *</label><input class="fi" id="cAddr" placeholder="House No., Street Name"><div class="fe" id="cAddrE">Required</div></div>
-          <!-- <div class="fg"><label class="fl">Area / Landmark</label><input class="fi" id="cAddr2" placeholder="Area or Landmark"></div> -->
+          <div class="fg2">
+            <div class="fg"><label class="fl">Email *</label><input class="fi" id="cEmail" type="email" placeholder="you@example.com"><div class="fe" id="cEmailE">Valid email required</div></div>
+            <div class="fg">
+              <label class="fl">Phone *</label>
+              <div style="display:flex; gap:5px;">
+                <input class="fi" id="cPhoneCode" style="width:70px;" value="+91" placeholder="+91">
+                <input class="fi" id="cPhone" type="tel" placeholder="10 Digits" style="flex:1;" maxlength="10" oninput="this.value=this.value.replace(/\D/g,'')">
+              </div>
+              <div class="fe" id="cPhoneE">Required</div>
+            </div>
+          </div>
+          <div class="fg2">
+            <div class="fg"><label class="fl">Secondary Phone</label><input class="fi" id="cSecondaryPhone" type="tel" placeholder="Optional Number" maxlength="10" oninput="this.value=this.value.replace(/\D/g,'')"></div>
+            <div class="fg"><label class="fl">Country *</label><input class="fi" id="cCountry" value="India"><div class="fe" id="cCountryE">Required</div></div>
+          </div>
+
+          <div class="fg2">
+            <div class="fg"><label class="fl">Flat / House No. *</label><input class="fi" id="cHouse" placeholder="e.g. 4B, Emerald Court"><div class="fe" id="cHouseE">Required</div></div>
+            <div class="fg"><label class="fl">Area / Street *</label><input class="fi" id="cAddr" placeholder="e.g. MG Road, Panampilly Nagar"><div class="fe" id="cAddrE">Required</div></div>
+          </div>
+          <div class="fg"><label class="fl">Landmark</label><input class="fi" id="cLandmark" placeholder="e.g. Near HDFC Bank"></div>
+
           <div class="fg2">
             <div class="fg"><label class="fl">City *</label><input class="fi" id="cCity" placeholder="Kochi"><div class="fe" id="cCityE">Required</div></div>
-            <div class="fg"><label class="fl">PIN Code *</label><input class="fi" id="cPin" placeholder="682308"><div class="fe" id="cPinE">Required</div></div>
+            <div class="fg"><label class="fl">District *</label><input class="fi" id="cDistrict" placeholder="Ernakulam"><div class="fe" id="cDistrictE">Required</div></div>
+            <div class="fg"><label class="fl">PIN Code *</label><input class="fi" id="cPin" placeholder="682308" maxlength="6" oninput="this.value=this.value.replace(/\D/g,'')"><div class="fe" id="cPinE">Required</div></div>
           </div>
-          <div class="fg"><label class="fl">State</label><input class="fi" value="Kerala" readonly></div>
+          <div class="fg"><label class="fl">State *</label><input class="fi" id="cState" value="Kerala"><div class="fe" id="cStateE">Required</div></div>
           <div class="hr"></div>
-          <div class="chk-sec-h">Payment Method</div>
-           <div class="pay-opts">
+          <!-- <div class="chk-sec-h">Payment Method</div> -->
+           <!-- <div class="pay-opts"> -->
               <!-- <label class="pay-opt" id="pm-cod" onclick="selPM(this,'cod')"><input type="radio" name="pm"><span class="pay-lbl">Cash on Delivery</span><span class="pay-icon"><i class="fa-solid fa-money-bill-wave"></i></span></label> -->
-            <label class="pay-opt sel" id="pm-upi" onclick="selPM(this,'upi')"><input type="radio" name="pm" checked><span class="pay-lbl">UPI / PhonePe / GPay</span><span class="pay-icon"><i class="fa-solid fa-mobile-screen-button"></i></span></label>
+            <!-- <label class="pay-opt sel" id="pm-upi" onclick="selPM(this,'upi')"><input type="radio" name="pm" checked><span class="pay-lbl">UPI / PhonePe / GPay</span><span class="pay-icon"><i class="fa-solid fa-mobile-screen-button"></i></span></label> -->
             <!-- <label class="pay-opt" id="pm-card" onclick="selPM(this,'card')"><input type="radio" name="pm"><span class="pay-lbl">Credit / Debit Card</span><span class="pay-icon"><i class="fa-solid fa-credit-card"></i></span></label> -->
-            <label class="pay-opt" id="pm-nb" onclick="selPM(this,'nb')"><input type="radio" name="pm"><span class="pay-lbl">Net Banking</span><span class="pay-icon"><i class="fa-solid fa-building-columns"></i></span></label>
-          </div>
+            <!-- <label class="pay-opt" id="pm-nb" onclick="selPM(this,'nb')"><input type="radio" name="pm"><span class="pay-lbl">Net Banking</span><span class="pay-icon"><i class="fa-solid fa-building-columns"></i></span></label> -->
+          <!-- </div> -->
           <!-- <div id="upiF" style="display:none;margin-top:13px;"><div class="fg"><label class="fl">UPI ID</label><input class="fi" placeholder="name@upi"></div></div> -->
           <div id="cardF" style="display:none;margin-top:13px;">
             <div class="fg"><label class="fl">Card Number</label><input class="fi" placeholder="1234 5678 9012 3456"></div>
             <div class="fg2"><div class="fg"><label class="fl">Expiry</label><input class="fi" placeholder="MM / YY"></div><div class="fg"><label class="fl">CVV</label><input class="fi" placeholder="•••"></div></div>
           </div>
-          <div class="chk-trust">
+          <!-- <div class="chk-trust">
             <div class="ct-label"><i class="fa-solid fa-shield-halved"></i> 100% SECURE CHECKOUT</div>
             <div class="ct-logos">
               <img src="https://razorpay.com/assets/razorpay-glyph.svg" alt="Razorpay" style="height:18px;">
@@ -407,10 +428,12 @@
                 <i class="fa-brands fa-google-pay"></i>
                 <i class="fa-solid fa-bolt" title="UPI"></i>
               </div>
-            </div>
+            </div> -->
           </div>
           <div class="fe" id="chkGlobalE" style="font-size:12px;margin-top:12px;"></div>
-          <button class="place-btn" onclick="placeOrder()">Place Order →</button>
+          <!-- <button class="place-btn" onclick="placeOrder()">Place Order →</button> -->
+          <button class="place-btn wa-btn" onclick="orderViaWhatsApp()">Order through WhatsApp <i class="fa-brands fa-whatsapp"></i></button>
+
         </div>
       </div>
       <div class="order-sum">
@@ -458,7 +481,7 @@
         <div class="fg"><label class="fl">Last Name</label><input class="fi" id="rLast" placeholder="Doe"></div>
       </div>
       <div class="fg"><label class="fl">Email Address</label><input class="fi" type="email" id="rEmail" placeholder="you@example.com"><div class="fe" id="rEmailE">Valid email required</div></div>
-      <div class="fg"><label class="fl">Phone Number</label><input class="fi" type="tel" id="rPhone" placeholder="+91 98765 43210"></div>
+      <div class="fg"><label class="fl">Phone Number</label><input class="fi" type="tel" id="rPhone" placeholder="+91 98765 43210" maxlength="10" oninput="this.value=this.value.replace(/\D/g,'')"><div class="fe" id="rPhoneE">Required (10 digits)</div></div>
       <div class="fg"><label class="fl">Password</label><input class="fi" type="password" id="rPass" placeholder="Min 6 characters"><div class="fe" id="rPassE">Min 6 characters</div></div>
       <div class="fg"><label class="fl">Confirm Password</label><input class="fi" type="password" id="rConf" placeholder="Repeat password"><div class="fe" id="rConfE">Passwords do not match</div></div>
       <div class="fcheck"><input type="checkbox" id="rTerms"><label for="rTerms">I agree to the Terms &amp; Privacy Policy</label></div>
@@ -498,19 +521,39 @@
           <div class="chk-sec-h" style="margin-top:0;">Personal Details</div>
           <div class="fg2">
             <div class="fg"><label class="fl">First Name *</label><input class="fi" id="pFirst" placeholder="First Name"><div class="fe" id="pFirstE">Required</div></div>
-            <div class="fg"><label class="fl">Last Name</label><input class="fi" id="pLast" placeholder="Last Name"></div>
+            <div class="fg"><label class="fl">Last Name</label><input class="fi" id="pLast" placeholder="Last Name"><div class="fe" id="pLastE">Required</div></div>
           </div>
           <div class="fg"><label class="fl">Email Address *</label><input class="fi" id="pEmail" type="email" placeholder="Email" readonly style="background:var(--mid); cursor:not-allowed; opacity:0.8;"><div class="fe" id="pEmailE">Valid email required</div></div>
-          <div class="fg"><label class="fl">Phone Number *</label><input class="fi" id="pPhone" type="tel" placeholder="Phone"><div class="fe" id="pPhoneE">Required (10 digits)</div></div>
+          <div class="fg2">
+            <div class="fg">
+              <label class="fl">Phone *</label>
+              <div style="display:flex; gap:5px;">
+                <input class="fi" id="pPhoneCode" style="width:70px;" value="+91" placeholder="+91">
+                <input class="fi" id="pPhone" type="tel" placeholder="Phone" style="flex:1;" maxlength="10" oninput="this.value=this.value.replace(/\D/g,'')">
+              </div>
+              <div class="fe" id="pPhoneE">Required (10 digits)</div>
+            </div>
+            <div class="fg"><label class="fl">Secondary Phone</label><input class="fi" id="pSecondaryPhone" type="tel" placeholder="Optional" maxlength="10" oninput="this.value=this.value.replace(/\D/g,'')"></div>
+          </div>
+          <div class="fg2">
+            <div class="fg"><label class="fl">Country *</label><input class="fi" id="pCountry" value="India"><div class="fe" id="pCountryE">Required</div></div>
+            <div class="fg"><label class="fl">State *</label><input class="fi" id="pState" value="Kerala"><div class="fe" id="pStateE">Required</div></div>
+          </div>
+
           
           <div class="hr" style="margin:20px 0;"></div>
           <div class="chk-sec-h" style="margin-top:0;">Delivery Address</div>
           
-          <div class="fg"><label class="fl">Address *</label><input class="fi" id="pAddr" placeholder="House No., Street Name, Area"><div class="fe" id="pAddrE">Address is required</div></div>
-          <!-- <div class="fg"><label class="fl">Area / Landmark</label><input class="fi" id="pAddr2" placeholder="Area or Landmark"></div> -->
+          <div class="fg2">
+            <div class="fg"><label class="fl">Flat / House No. *</label><input class="fi" id="pHouse" placeholder="Flat No."><div class="fe" id="pHouseE">Required</div></div>
+            <div class="fg"><label class="fl">Area / Street *</label><input class="fi" id="pAddr" placeholder="Street Address"><div class="fe" id="pAddrE">Required</div></div>
+          </div>
+          <div class="fg"><label class="fl">Landmark</label><input class="fi" id="pLandmark" placeholder="Near ..."></div>
+
           <div class="fg2">
             <div class="fg"><label class="fl">City *</label><input class="fi" id="pCity" placeholder="City"><div class="fe" id="pCityE">Required</div></div>
-            <div class="fg"><label class="fl">PIN Code *</label><input class="fi" id="pPin" placeholder="682xxx"><div class="fe" id="pPinE">Required (6 digits)</div></div>
+            <div class="fg"><label class="fl">District *</label><input class="fi" id="pDistrict" placeholder="District"><div class="fe" id="pDistrictE">Required</div></div>
+            <div class="fg"><label class="fl">PIN Code *</label><input class="fi" id="pPin" placeholder="682xxx" maxlength="6" oninput="this.value=this.value.replace(/\D/g,'')"><div class="fe" id="pPinE">Required (6 digits)</div></div>
           </div>
           <button class="place-btn" onclick="updateProfile()" id="profUpdateBtn" style="margin-top:20px;">Save Profile Changes</button>
         </div>

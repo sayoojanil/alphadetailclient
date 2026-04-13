@@ -117,19 +117,33 @@
   }
 
   // ══ PAGE ROUTING ══
-  window.showPage = function (id) {
+  window.showPage = function (id, pushHash = true) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     const pg = document.getElementById('page-' + id);
-    if (pg) { pg.classList.add('active'); window.scrollTo(0, 0); }
+    if (!pg) return;
+    
+    pg.classList.add('active'); 
+    window.scrollTo(0, 0);
+    
+    if (pushHash) {
+      window.location.hash = id;
+    }
+
     document.querySelectorAll('.nav-item[data-pg]').forEach(n => n.classList.remove('act'));
     const an = document.querySelector(`.nav-item[data-pg="${id}"]`);
     if (an) an.classList.add('act');
+    
     if (id === 'shop') renderShop(filteredProds);
     if (id === 'cart') renderCart();
     if (id === 'checkout') initCheckout();
     if (id === 'home') renderFeatured();
     if (id === 'profile') renderProfile();
   };
+
+  window.addEventListener('hashchange', () => {
+    const h = window.location.hash.substring(1);
+    if (h) showPage(h, false);
+  });
 
   window.toggleMob = () => {
     const isOpen = document.getElementById('mobMenu').classList.toggle('open');
@@ -1201,7 +1215,6 @@
 
     const orderNum = 'AD' + Date.now().toString().slice(-6);
     const waLink = `https://wa.me/${BUSINESS_PHONE}?text=${encodeURIComponent(`🛒 *ORDER #${orderNum}*\n\n` + summaryText)}`;
-    window.open(waLink, '_blank');
 
     // Create address object for database
     const addrObj = {
@@ -1221,12 +1234,13 @@
       state: state
     };
 
-
-
-
-    // Save order, clear cart, and show success page
-    showPage('checkout');
-    saveOrder(orderNum, null, null, 'whatsapp', 'pending', addrObj);
+    // Save order, then open WhatsApp with delay
+    saveOrder(orderNum, null, null, 'whatsapp', 'pending', addrObj).then(() => {
+      toast('Redirecting to WhatsApp...', { type: 'info', duration: 2000 });
+      setTimeout(() => {
+        window.open(waLink, '_blank');
+      }, 2000);
+    });
   };
 
 
@@ -1263,8 +1277,10 @@
 
       lastOrder = orderData;
       cart = []; updateBadge();
-      document.getElementById('chkContent').style.display = 'none';
-      document.getElementById('orderSuccess').style.display = 'block';
+      const main = document.getElementById('checkoutMain');
+      if (main) main.style.display = 'none';
+      const succ = document.getElementById('orderSuccess');
+      if (succ) succ.style.display = 'block';
       window.scrollTo(0, 0);
     } catch (err) {
       toast('Failed to save order. But payment was successful. Please contact support with ID: ' + rPayId, { type: 'error' });
@@ -1832,7 +1848,11 @@
 
   document.addEventListener('DOMContentLoaded', () => {
     const u = localStorage.getItem('alphaUser');
-    if (u) { currentUser = JSON.parse(u); updateNavUser(); }
+    if (u) { 
+      currentUser = JSON.parse(u); 
+      updateNavUser(); 
+      fetchMe(); // Refresh data from server
+    }
     updateBadge();
     fetchProducts();
     observeReveal();
@@ -1845,6 +1865,24 @@
         document.getElementById('orderNum').textContent = lastOrder.orderNum;
       }
     }
+    // Handle hash routing on load
+    const h = window.location.hash.substring(1);
+    if (h) setTimeout(() => showPage(h, false), 100);
   });
+
+  async function fetchMe() {
+    try {
+      const data = await apiReq('/users/me');
+      currentUser = { ...currentUser, ...data };
+      localStorage.setItem('alphaUser', JSON.stringify(currentUser));
+      updateNavUser();
+      // If we are currently on the profile page, refresh it
+      if (document.getElementById('page-profile').classList.contains('active')) {
+        renderProfile();
+      }
+    } catch (e) {
+      console.error('Failed to sync user profile');
+    }
+  }
 
 })();

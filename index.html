@@ -231,6 +231,7 @@
 </div>
 <!-- ════════════ SHOP PAGE ════════════ -->
 <div class="page" id="page-shop">
+  <div class="wrap" style="padding-top:20px;"><button class="back-btn" onclick="showPage('home')" style="background:none; border:none; color:var(--gold); cursor:pointer; font-size:11px; letter-spacing:2px; text-transform:uppercase; display:flex; align-items:center; gap:8px;"><i class="fa-solid fa-arrow-left"></i> Back to Home</button></div>
   <div class="shop-hero">
     <div class="wrap"><div class="s-eye">Series AL-S1</div><h1 class="s-h2">ALL PRODUCTS</h1><p class="s-desc">7 imported formulas. Each 473ml. Each built for one job.</p></div>
   </div>
@@ -313,7 +314,8 @@
 </div>
 <!-- ════════════ CART PAGE ════════════ -->
 <div class="page" id="page-cart">
-  <div class="wrap" style="padding-top:48px;padding-bottom:80px;">
+  <div class="wrap" style="padding-top:40px;padding-bottom:80px;">
+    <button class="back-btn" onclick="showPage('shop')" style="margin-bottom:20px; background:none; border:none; color:var(--gold); cursor:pointer; font-size:11px; letter-spacing:2px; text-transform:uppercase; display:flex; align-items:center; gap:8px;"><i class="fa-solid fa-arrow-left"></i> Back to Shop</button>
     <div class="s-eye">Your Selection</div><h1 class="s-h2">SHOPPING CART</h1>
     <div class="cart-layout">
       <div>
@@ -348,26 +350,11 @@
 </div>
 <!-- ════════════ CHECKOUT PAGE ════════════ -->
 <div class="page" id="page-checkout">
-  <div class="wrap" style="padding-top:48px;padding-bottom:80px;">
-    <div class="s-eye">Almost There</div><h1 class="s-h2">CHECKOUT</h1>
-    <div class="order-success" id="orderSuccess" style="display:none;">
-      <div class="success-anim">
-        <div class="success-circle"><i class="fa-solid fa-check"></i></div>
-        <div class="success-glow"></div>
-      </div>
-      <div class="osuc-title reveal">ORDER PLACED!</div>
-      <div class="success-box reveal">
-        <div class="osuc-num">Order #<span id="orderNum"></span></div>
-      </div>
-      <p class="osuc-p reveal">Thank you! Your AlphaDetail products are confirmed and will be dispatched shortly.</p>
-      <div class="osuc-btns reveal">
-        <button class="btn-g" onclick="showPage('home');clearCart()">Back to Home</button>
-        <button class="btn-o" onclick="printOrder()"><i class="fa-solid fa-file-invoice"></i> Download / Print Invoice</button>
-        <button class="btn-o" id="waSuccessBtn" style="background:#25D366; color:white; border:none;"><i class="fa-brands fa-whatsapp"></i> WhatsApp Status</button>
-        <button class="btn-o" onclick="showPage('profile');clearCart()">Track Order</button>
-      </div>
-    </div>
-    <div class="checkout-layout" id="chkContent">
+  <div class="wrap" style="padding-top:40px;padding-bottom:80px;">
+    <button class="back-btn" onclick="showPage('cart')" style="margin-bottom:20px; background:none; border:none; color:var(--gold); cursor:pointer; font-size:11px; letter-spacing:2px; text-transform:uppercase; display:flex; align-items:center; gap:8px;"><i class="fa-solid fa-arrow-left"></i> Back to Cart</button>
+    <div id="checkoutMain">
+      <div class="s-eye">Almost There</div><h1 class="s-h2">CHECKOUT</h1>
+      <div class="checkout-layout" id="chkContent">
       <div>
         <div class="chk-form">
           <div class="chk-sec-h">Delivery Information</div>
@@ -446,6 +433,25 @@
           <div class="sum-total"><span class="sum-total-lbl">Total</span><span class="sum-total-val" id="osTotal">₹0</span></div>
         </div>
       </div>
+    </div><!-- end checkoutMain -->
+    <div class="order-success" id="orderSuccess" style="display:none; text-align:center; padding-top: 50px;">
+      <div class="success-anim" style="margin: 0 auto 30px;">
+        <div class="success-circle" style="width: 100px; height: 100px; background: rgba(212,175,55,0.1); border: 2px solid var(--gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 40px; color: var(--gold); margin: 0 auto; position: relative; z-index: 5;">
+          <i class="fa-solid fa-check"></i>
+        </div>
+        <div class="success-glow" style="position: absolute; top: 50%; left: 50%; width: 140px; height: 140px; background: var(--gold); filter: blur(40px); opacity: 0.15; transform: translate(-50%, -50%); border-radius: 50%; z-index: 1;"></div>
+      </div>
+      <div class="osuc-title reveal" style="font-family:'Bebas Neue', sans-serif; font-size: 48px; letter-spacing: 2px; color: #fff; margin-bottom: 20px;">ORDER PLACED!</div>
+      <div class="success-box reveal" style="padding: 15px 30px; background: #0a0a0a; border: 1px solid var(--border); display: inline-block; margin-bottom: 30px;">
+        <div class="osuc-num" style="font-size: 16px; letter-spacing: 3px; color: var(--gold);">Order #<span id="orderNum"></span></div>
+      </div>
+      <p class="osuc-p reveal" style="font-size: 16px; color: var(--muted); max-width: 500px; margin: 0 auto 40px; line-height: 1.6;">Thank you! Your AlphaDetail products are confirmed and will be dispatched shortly.</p>
+      <div class="osuc-btns reveal" style="display:flex; justify-content:center; gap:15px; flex-wrap:wrap;">
+        <button class="btn-g" style="padding: 14px 28px; background: var(--gold); color: #000; border: none; font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; cursor: pointer;" onclick="showPage('home');clearCart()">Back to Home</button>
+        <button class="btn-o" style="padding: 14px 28px; background: none; border: 1px solid #333; color: #fff; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; cursor: pointer;" onclick="printOrder()"><i class="fa-solid fa-file-invoice" style="margin-right: 8px;"></i> Download Invoice</button>
+        <button class="btn-o" id="waSuccessBtn" style="padding: 14px 28px; background: #25D366; color: #fff; border: none; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; display: flex; align-items: center; gap: 8px;"><i class="fa-brands fa-whatsapp"></i> WhatsApp Status</button>
+        <button class="btn-o" style="padding: 14px 28px; background: none; border: 1px solid #333; color: #fff; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; cursor: pointer;" onclick="showPage('profile');clearCart()">Track Order</button>
+      </div>
     </div>
   </div>
   <footer class="site-footer"><div class="ft-bottom" style="padding-top:20px;border-top:1px solid var(--border);"><div class="ft-copy">© 2024 AlphaDetail DIY Car Care Solutions LLP</div></div></footer>
@@ -453,6 +459,7 @@
 <!-- ════════════ LOGIN PAGE ════════════ -->
 <div class="page" id="page-login">
   <div class="auth-pg">
+    <button class="back-btn" onclick="showPage('home')" style="position:absolute; top:30px; left:30px; z-index:10; background:none; border:none; color:var(--gold); cursor:pointer; font-size:11px; letter-spacing:2px; text-transform:uppercase; display:flex; align-items:center; gap:8px;"><i class="fa-solid fa-arrow-left"></i> Back</button>
     <div class="auth-bg-img"></div><div class="auth-glow"></div>
     <div class="auth-box">
       <div class="auth-brand">AlphaDetail</div>
@@ -471,6 +478,7 @@
 <!-- ════════════ REGISTER PAGE ════════════ -->
 <div class="page" id="page-register">
   <div class="auth-pg">
+    <button class="back-btn" onclick="showPage('home')" style="position:absolute; top:30px; left:30px; z-index:10; background:none; border:none; color:var(--gold); cursor:pointer; font-size:11px; letter-spacing:2px; text-transform:uppercase; display:flex; align-items:center; gap:8px;"><i class="fa-solid fa-arrow-left"></i> Back</button>
     <div class="auth-bg-img"></div><div class="auth-glow"></div>
     <div class="auth-box">
       <div class="auth-brand">AlphaDetail</div>
@@ -494,7 +502,8 @@
 </div>
 <!-- ════════════ PROFILE PAGE ════════════ -->
 <div class="page" id="page-profile">
-  <div class="wrap" style="padding-top:48px;padding-bottom:80px;">
+  <div class="wrap" style="padding-top:40px;padding-bottom:80px;">
+    <button class="back-btn" onclick="showPage('home')" style="margin-bottom:20px; background:none; border:none; color:var(--gold); cursor:pointer; font-size:11px; letter-spacing:2px; text-transform:uppercase; display:flex; align-items:center; gap:8px;"><i class="fa-solid fa-arrow-left"></i> Back to Home</button>
     <div class="s-eye">Member Area</div><h1 class="s-h2">MY PROFILE</h1>
     <div class="profile-layout">
       <div class="prof-sidebar">

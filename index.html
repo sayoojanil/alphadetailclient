@@ -8,8 +8,10 @@
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-<link rel="icon" type="image/png" href="C:\Users\ASUS\.gemini\antigravity\brain\6a56fd03-2cb0-41bb-92d9-7ed5823a9158\alphadetail_favicon_1775504520533.png">
-<link rel="apple-touch-icon" href="C:\Users\ASUS\.gemini\antigravity\brain\6a56fd03-2cb0-41bb-92d9-7ed5823a9158\alphadetail_favicon_1775504520533.png">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+<link rel="manifest" href="site.webmanifest">
 </head>
 <body>
 <!-- ══ LOADER ══ -->
@@ -200,34 +202,7 @@
       </div>
     </div>
   </section>
-  <!-- FOOTER -->
-  <footer class="site-footer">
-    <div class="ft-grid">
-      <div>
-        <div class="ft-brand">AlphaDetail</div>
-        <p class="ft-about">DIY Car Care Solutions LLP. Professional-grade imported formulas built for Indian conditions. Based in Kochi, Kerala.</p>
-        <div class="ft-contact"><div>📧 alphadetailf2f@gmail.com</div><div>🌐 alphadetailf2f.com</div><div>📍 Puthencruze, Kochi, Kerala</div></div>
-        <div class="ft-socials"><div class="ft-soc">f</div><div class="ft-soc">ig</div><div class="ft-soc">yt</div><div class="ft-soc">wa</div></div>
-      </div>
-      <div>
-        <div class="ft-col-h">Products</div>
-        <ul class="ft-links"><li><a onclick="showPage('shop')">Nano Foam</a></li><li><a onclick="showPage('shop')">Fusion Wash</a></li><li><a onclick="showPage('shop')">Gleam-X</a></li><li><a onclick="showPage('shop')">Hyper DRESS</a></li><li><a onclick="showPage('shop')">Cabin Glow</a></li><li><a onclick="showPage('shop')">Surface Revive</a></li><li><a onclick="showPage('shop')">Graphene Tyre Coat</a></li></ul>
-      </div>
-      <div>
-        <div class="ft-col-h">Quick Links</div>
-        <ul class="ft-links">
-          <li><a onclick="showPage('home')">Home</a></li>
-          <li><a onclick="showPage('shop')">Shop</a></li>
-          <li><a onclick="showPage('cart')">Cart</a></li>
-          <li id="ftLogin"><a onclick="showPage('login')">Login</a></li>
-          <li id="ftReg"><a onclick="showPage('register')">Register</a></li>
-          <li id="ftProfile" style="display:none;"><a onclick="showPage('profile')">My Profile</a></li>
-          <li id="ftLogout" style="display:none;"><a onclick="doLogout()">Sign Out</a></li>
-        </ul>
-      </div>
-    </div>
-    <div class="ft-bottom"><div class="ft-copy">© 2024 AlphaDetail DIY Car Care Solutions LLP · All Rights Reserved</div></div>
-  </footer>
+
 </div>
 <!-- ════════════ SHOP PAGE ════════════ -->
 <div class="page" id="page-shop">
@@ -310,7 +285,7 @@
       </div>
     </div>
   </div>
-  <footer class="site-footer"><div class="ft-bottom" style="padding-top:20px;border-top:1px solid var(--border);"><div class="ft-copy">© 2024 AlphaDetail DIY Car Care Solutions LLP</div></div></footer>
+
 </div>
 <!-- ════════════ CART PAGE ════════════ -->
 <div class="page" id="page-cart">
@@ -346,7 +321,7 @@
       </div>
     </div>
   </div>
-  <footer class="site-footer"><div class="ft-bottom" style="padding-top:20px;border-top:1px solid var(--border);"><div class="ft-copy">© 2024 AlphaDetail DIY Car Care Solutions LLP</div></div></footer>
+
 </div>
 <!-- ════════════ CHECKOUT PAGE ════════════ -->
 <div class="page" id="page-checkout">
@@ -454,7 +429,7 @@
       </div>
     </div>
   </div>
-  <footer class="site-footer"><div class="ft-bottom" style="padding-top:20px;border-top:1px solid var(--border);"><div class="ft-copy">© 2024 AlphaDetail DIY Car Care Solutions LLP</div></div></footer>
+
 </div>
 <!-- ════════════ LOGIN PAGE ════════════ -->
 <div class="page" id="page-login">
@@ -492,7 +467,7 @@
       <div class="fg"><label class="fl">Phone Number</label><input class="fi" type="tel" id="rPhone" placeholder="+91 98765 43210" maxlength="10" oninput="this.value=this.value.replace(/\D/g,'')"><div class="fe" id="rPhoneE">Required (10 digits)</div></div>
       <div class="fg"><label class="fl">Password</label><input class="fi" type="password" id="rPass" placeholder="Min 6 characters"><div class="fe" id="rPassE">Min 6 characters</div></div>
       <div class="fg"><label class="fl">Confirm Password</label><input class="fi" type="password" id="rConf" placeholder="Repeat password"><div class="fe" id="rConfE">Passwords do not match</div></div>
-      <div class="fcheck"><input type="checkbox" id="rTerms"><label for="rTerms">I agree to the Terms &amp; Privacy Policy</label></div>
+      <div class="fcheck"><input type="checkbox" id="rTerms"><label for="">I agree to the <a onclick="showPage('privacy')" style="color:var(--gold); text-decoration:underline; cursor:pointer;">Privacy & policy</a></label></div>
       <div class="fe" id="rTermsE" style="margin-top:-8px;margin-bottom:12px;">Please accept the terms</div>
       <button class="auth-sub-btn" id="regBtn" onclick="doRegister()">Create Account →</button>
       <div class="auth-div"><span>or</span></div>
@@ -574,7 +549,7 @@
       </div>
     </div>
   </div>
-  <footer class="site-footer"><div class="ft-bottom" style="padding-top:20px;border-top:1px solid var(--border);"><div class="ft-copy">© 2024 AlphaDetail DIY Car Care Solutions LLP</div></div></footer>
+
 </div>
 <!-- ════════════ LOGOUT PAGE ════════════ -->
 <div class="page" id="page-logout">
@@ -591,6 +566,163 @@
     </div>
   </div>
 </div>
+
+<!-- ════════════ TERMS AND SERVICE PAGE ════════════ -->
+<div class="page" id="page-terms">
+  <div class="wrap" style="padding-top:80px; padding-bottom:120px;">
+    <button class="back-btn" onclick="showPage('home')" style="margin-bottom:40px; background:none; border:none; color:var(--gold); cursor:pointer; font-size:12px; letter-spacing:2px; text-transform:uppercase; display:flex; align-items:center; gap:8px;"><i class="fa-solid fa-arrow-left"></i> Back to Home</button>
+    
+    <div class="s-eye">Legal & Policies</div>
+    <h1 class="s-h2">TERMS & SERVICE</h1>
+    <p class="s-desc" style="margin-bottom:60px;">Last updated: April 2024</p>
+
+    <div style="max-width:800px; color:#ccc; line-height:1.8; font-size:15px;">
+      <section style="margin-bottom:40px;">
+        <h3 style="color:var(--white); font-family:'Bebas Neue', sans-serif; font-size:24px; letter-spacing:1px; margin-bottom:15px;">1. ACCEPTANCE OF TERMS</h3>
+        <p>By accessing or using AlphaDetail DIY Car Care Solutions website, you agree to be bound by these Terms and Service. If you do not agree with any part of these terms, you must not use our services or purchase our products.</p>
+      </section>
+
+      <section style="margin-bottom:40px;">
+        <h3 style="color:var(--white); font-family:'Bebas Neue', sans-serif; font-size:24px; letter-spacing:1px; margin-bottom:15px;">2. PRODUCT USAGE & SAFETY</h3>
+        <p>Our products are professional-grade imported formulas. Users must follow all safety instructions provided on the packaging and our website. AlphaDetail is not liable for damages caused by misuse, improper application, or failure to follow dilution ratios (where applicable).</p>
+      </section>
+
+      <section style="margin-bottom:40px;">
+        <h3 style="color:var(--white); font-family:'Bebas Neue', sans-serif; font-size:24px; letter-spacing:1px; margin-bottom:15px;">3. PRICING & PAYMENTS</h3>
+        <p>All prices are in Indian Rupees (INR) and include applicable taxes unless stated otherwise. We reserve the right to change prices without prior notice. Payments are processed securely through our partners. Orders through WhatsApp are subject to confirmation of availability.</p>
+      </section>
+
+      <section style="margin-bottom:40px;">
+        <h3 style="color:var(--white); font-family:'Bebas Neue', sans-serif; font-size:24px; letter-spacing:1px; margin-bottom:15px;">4. SHIPPING & DELIVERY</h3>
+        <p>We aim to dispatch products within 24-48 hours. Delivery times vary based on location (standard 3-7 business days). Shipping charges are calculated at checkout. Free shipping may apply to specific kits as mentioned in our shop.</p>
+      </section>
+
+      <section style="margin-bottom:40px;">
+        <h3 style="color:var(--white); font-family:'Bebas Neue', sans-serif; font-size:24px; letter-spacing:1px; margin-bottom:15px;">5. RETURNS & REFUNDS</h3>
+        <p>Due to the nature of chemical car care products, we only accept returns if the product is damaged during transit or if the wrong item was delivered. Please contact us via email with photos of the damage within 24 hours of delivery.</p>
+      </section>
+
+      <div style="padding:30px; background:var(--mid); border-left:3px solid var(--gold); font-style:italic;">
+        Need clarification? Reach out to us at <strong>alphadetailf2f@gmail.com</strong>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════ PRIVACY & REFUND POLICY PAGE ════════════ -->
+<div class="page" id="page-privacy">
+  <div class="wrap" style="padding-top:80px; padding-bottom:120px;">
+    <button class="back-btn" onclick="showPage('home')" style="margin-bottom:40px; background:none; border:none; color:var(--gold); cursor:pointer; font-size:12px; letter-spacing:2px; text-transform:uppercase; display:flex; align-items:center; gap:8px;"><i class="fa-solid fa-arrow-left"></i> Back to Home</button>
+    
+    <div class="s-eye">Support & Legal</div>
+    <h1 class="s-h2">PRIVACY & REFUND POLICY</h1>
+    <p class="s-desc" style="margin-bottom:40px;">Effective Date: April 16, 2024</p>
+
+    <div style="max-width:850px; color:#ccc; line-height:1.8; font-size:14px;">
+      
+      <!-- REFUND & RETURN SECTION -->
+      <div style="background:rgba(212,175,55,0.03); border:1px solid rgba(212,175,55,0.1); padding:40px; border-radius:8px; margin-bottom:60px;">
+        <h2 style="color:var(--gold); font-family:'Bebas Neue', sans-serif; font-size:28px; letter-spacing:2px; margin-bottom:20px;">REFUND & RETURN POLICY</h2>
+        <p>At Alpha Detail, customer satisfaction is our priority. We take pride in delivering premium-quality car detailing products. If you are not fully satisfied with your purchase, please review our refund and return policy below.</p>
+
+        <h3 style="color:#fff; margin-top:30px; margin-bottom:15px; font-size:16px;"><i class="fa-solid fa-cart-shopping" style="color:var(--gold); margin-right:10px;"></i> Returns Eligibility</h3>
+        <p>We accept returns only under the following conditions:</p>
+        <ul style="margin-left:20px; margin-bottom:20px; list-style-type:square;">
+          <li>The product was damaged during transit</li>
+          <li>The product received is incorrect or incomplete</li>
+          <li>The product has a manufacturing defect</li>
+        </ul>
+
+        <p><strong>To be eligible for a return:</strong></p>
+        <ul style="margin-left:20px; margin-bottom:20px;">
+          <li>The request must be raised within <strong>48 hours</strong> of delivery</li>
+          <li>The product must be unused, unopened, and in original packaging</li>
+          <li>Original invoice or proof of purchase is required</li>
+        </ul>
+
+        <h3 style="color:#fff; margin-top:30px; margin-bottom:15px; font-size:16px;"><i class="fa-solid fa-rotate" style="color:var(--gold); margin-right:10px;"></i> Return Process</h3>
+        <p>To initiate a return, please contact us at:</p>
+        <p style="margin-bottom:10px;">📧 <strong>alphadetailf2f@gmail.com</strong></p>
+        <p>Please include: Order ID, Product images/video, and a description of the issue. Once approved, our team will guide you through the process.</p>
+
+        <h3 style="color:#fff; margin-top:30px; margin-bottom:15px; font-size:16px;">Refund Policy</h3>
+        <ul style="margin-left:20px; margin-bottom:20px;">
+          <li>Approved refunds processed after inspection of returned product</li>
+          <li>Refunds issued to the <strong>original payment method</strong></li>
+          <li>Processing time: 5–7 business days after approval</li>
+          <li>Shipping charges are non-refundable</li>
+        </ul>
+
+        <h3 style="color:#fff; margin-top:30px; margin-bottom:15px; font-size:16px;">Replacement Policy</h3>
+        <p>In eligible cases, customers may opt for a replacement of the same product or store credit (at Alpha Detail’s discretion), subject to stock availability.</p>
+      </div>
+
+      <!-- DISCLAIMER SECTION -->
+      <section style="margin-bottom:40px; padding:0 20px;">
+        <h3 style="color:var(--white); font-family:'Bebas Neue', sans-serif; font-size:22px; letter-spacing:1px; margin-bottom:15px;">PRODUCT USAGE DISCLAIMER</h3>
+        <p>Alpha Detail products are professional-grade formulations. Results may vary depending on surface condition, application method, and environmental factors. Please follow usage instructions carefully. Alpha Detail is not responsible for damages caused by misuse, improper dilution, or application errors.</p>
+      </section>
+
+      <!-- SHIPPING DAMAGE SECTION -->
+      <section style="margin-bottom:40px; padding:0 20px;">
+        <h3 style="color:var(--white); font-family:'Bebas Neue', sans-serif; font-size:22px; letter-spacing:1px; margin-bottom:15px;">SHIPPING DAMAGE CLAIMS</h3>
+        <p>If your product arrives damaged: Do not accept delivery if possible, record an unboxing video, and contact us within 48 hours. Claims without proper evidence may not be approved.</p>
+      </section>
+
+    </div>
+  </div>
+</div>
+
+<!-- ════════════ GLOBAL FOOTER ════════════ -->
+<footer class="site-footer">
+  <div class="ft-grid wrap">
+    <div>
+      <div class="ft-brand">AlphaDetail</div>
+      <p class="ft-about">Professional-grade imported formulas built for Indian conditions. Specially engineered for 38°C summers, monsoon roads, and high humidity.</p>
+      <div class="ft-contact">
+        <div><i class="fa-solid fa-envelope" style="width:20px; color:var(--gold);"></i> alphadetailf2f@gmail.com</div>
+        <div><i class="fa-solid fa-earth-americas" style="width:20px; color:var(--gold);"></i> alphadetailf2f.com</div>
+        <div><i class="fa-solid fa-location-dot" style="width:20px; color:var(--gold);"></i> Puthencruze, Kochi, Kerala</div>
+      </div>
+      <div class="ft-socials">
+        <div class="ft-soc"><i class="fa-brands fa-facebook-f"></i></div>
+        <div class="ft-soc"><i class="fa-brands fa-instagram"></i></div>
+        <div class="ft-soc"><i class="fa-brands fa-youtube"></i></div>
+        <div class="ft-soc"><i class="fa-brands fa-whatsapp"></i></div>
+      </div>
+    </div>
+    <div>
+      <div class="ft-col-h">Products</div>
+      <ul class="ft-links">
+        <li><a onclick="showPage('shop')">Nano Foam</a></li>
+        <li><a onclick="showPage('shop')">Fusion Wash</a></li>
+        <li><a onclick="showPage('shop')">Gleam-X</a></li>
+        <li><a onclick="showPage('shop')">Hyper DRESS</a></li>
+        <li><a onclick="showPage('shop')">Cabin Glow</a></li>
+        <li><a onclick="showPage('shop')">Surface Revive</a></li>
+        <li><a onclick="showPage('shop')">Graphene Tyre Coat</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="ft-col-h">Quick Links</div>
+      <ul class="ft-links">
+        <li><a onclick="showPage('home')">Home</a></li>
+        <li><a onclick="showPage('shop')">Shop</a></li>
+        <li><a onclick="showPage('cart')">Cart</a></li>
+        <li id="ftLogin"><a onclick="showPage('login')">Login</a></li>
+        <li id="ftReg"><a onclick="showPage('register')">Register</a></li>
+        <li id="ftProfile" style="display:none;"><a onclick="showPage('profile')">My Profile</a></li>
+        <li id="ftLogout" style="display:none;"><a onclick="doLogout()">Sign Out</a></li>
+        <!-- <li><a onclick="showPage('terms')" style="opacity:0.6; font-size:11px;">Terms of Service</a></li> -->
+        <li><a onclick="showPage('privacy')" >Privacy & Policy</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="ft-bottom wrap">
+    <div class="ft-copy">© 2024 AlphaDetail DIY Car Care Solutions LLP · All Rights Reserved</div>
+    <div style="font-size:10px; color:#444; letter-spacing:1px; text-transform:uppercase;">Formulated to Finish</div>
+  </div>
+</footer>
 <!-- ══ HIDDEN PRODUCT IMAGES ══ -->
 <div style="display:none;">
   <img id="uploaded_img_cabin"    src="" alt="Cabin Glow">

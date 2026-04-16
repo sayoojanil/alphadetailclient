@@ -1,8 +1,8 @@
 (function () {
   'use strict';
 
-  // const API_BASE = 'http://localhost:5000/api';
-  const API_BASE = 'https://alphadetailserver.vercel.app/api';
+  const API_BASE = 'http://localhost:5000/api';
+  // const API_BASE = 'https://alphadetailserver.vercel.app/api';
 
 
   // ══ LOADER HELPERS ══
@@ -355,11 +355,27 @@
     if (PRODS.length === 0) return false;
     return PRODS.every(p => cart.some(c => c.id === p.id));
   }
+  const STARTER_IDS = ['nano', 'gleam', 'cabin', 'surface'];
+  function isStarterKitCart() {
+    return STARTER_IDS.every(id => cart.some(c => c.id === id)) && !isProKitCart();
+  }
   function getShipping() {
     if (isProKitCart()) return 0;
     const qty = cart.reduce((s, c) => s + c.qty, 0);
     return qty * 40;
   }
+  
+  window.removeProKit = function() {
+    const proIds = PRODS.map(p => p.id);
+    cart = cart.filter(c => !proIds.includes(c.id));
+    updateBadge(); renderCart();
+    toast('Alpha Pro Kit removed', { type: 'info' });
+  };
+  window.removeStarterKit = function() {
+    cart = cart.filter(c => !STARTER_IDS.includes(c.id));
+    updateBadge(); renderCart();
+    toast('Alpha Starter Kit removed', { type: 'info' });
+  };
   function getFinalTotal() {
     const sub = getSubtotal();
     const disc = getCouponDiscount() + getBundleDiscount();
@@ -375,14 +391,63 @@
       list.innerHTML = ''; empty.style.display = 'block';
     } else {
       empty.style.display = 'none';
-      list.innerHTML = cart.map(c => `
-      <div class="cart-row">
-        <div class="ci-prod"><div class="ci-img-ph">${makeImgHTML(c.id, '')}</div><div><div class="ci-name">${c.name}</div><div class="ci-sub">${c.sub}</div></div></div>
-        <div class="ci-pval">₹${c.price.toLocaleString('en-IN')}</div>
-        <div><div class="qty-ctrl"><button class="qty-b" onclick="changeQty('${c.id}',-1)">−</button><input class="qty-n" value="${c.qty}" readonly><button class="qty-b" onclick="changeQty('${c.id}',1)">+</button></div></div>
-        <div class="ci-tval">₹${(c.price * c.qty).toLocaleString('en-IN')}</div>
-        <div class="ci-remove"><button class="rm-btn" onclick="removeFromCart('${c.id}')"><i class="fa-solid fa-trash-can"></i></button></div>
-      </div>`).join('');
+      const isPro = isProKitCart();
+      const isStart = isStarterKitCart();
+      
+      let cartHtml = '';
+      if (isPro) {
+        cartHtml += `
+        <div class="cart-bundle-active">
+          <div class="cba-info">
+            <span class="cba-icon"><i class="fa-solid fa-box-open"></i></span>
+            <div>
+              <div class="cba-title">Alpha Pro Kit Bundle Active</div>
+              <div class="cba-text">Individual kit items are locked. Remove the full kit to modify.</div>
+            </div>
+          </div>
+          <button class="cba-remove-btn" onclick="removeProKit()">Remove Full Kit <i class="fa-solid fa-trash-can"></i></button>
+        </div>`;
+      } else if (isStart) {
+        cartHtml += `
+        <div class="cart-bundle-active" style="border-bottom-color:var(--white);">
+          <div class="cba-info">
+            <span class="cba-icon" style="color:var(--white); border-color:rgba(255,255,255,0.2);"><i class="fa-solid fa-kit-medical"></i></span>
+            <div>
+              <div class="cba-title" style="color:var(--white);">Alpha Starter Kit Active</div>
+              <div class="cba-text">Bundle protection enabled for starter items.</div>
+            </div>
+          </div>
+          <button class="cba-remove-btn" onclick="removeStarterKit()">Remove Starter Kit <i class="fa-solid fa-trash-can"></i></button>
+        </div>`;
+      }
+
+      cartHtml += cart.map(c => {
+        const isInPro = isPro && PRODS.some(p => p.id === c.id);
+        const isInStart = isStart && STARTER_IDS.includes(c.id);
+        const locked = isInPro || isInStart;
+
+        return `
+        <div class="cart-row ${locked ? 'cart-row-locked' : ''}">
+          <div class="ci-prod"><div class="ci-img-ph">${makeImgHTML(c.id, '')}</div><div><div class="ci-name">${c.name}</div><div class="ci-sub">${c.sub}</div></div></div>
+          <div class="ci-pval">₹${c.price.toLocaleString('en-IN')}</div>
+          <div>
+            <div class="qty-ctrl ${locked ? 'locked' : ''}">
+              <button class="qty-b" onclick="changeQty('${c.id}',-1)" ${locked ? 'disabled' : ''}>−</button>
+              <input class="qty-n" value="${c.qty}" readonly>
+              <button class="qty-b" onclick="changeQty('${c.id}',1)" ${locked ? 'disabled' : ''}>+</button>
+            </div>
+          </div>
+          <div class="ci-tval">₹${(c.price * c.qty).toLocaleString('en-IN')}</div>
+          <div class="ci-remove">
+            ${locked ? 
+              `<span class="item-locked" title="Bundle Item Locked"><i class="fa-solid fa-lock"></i></span>` : 
+              `<button class="rm-btn" onclick="removeFromCart('${c.id}')"><i class="fa-solid fa-trash-can"></i></button>`
+            }
+          </div>
+        </div>`;
+      }).join('');
+      
+      list.innerHTML = cartHtml;
     }
     const sub = getSubtotal(), total = getFinalTotal(), ship = getShipping();
     const bd = getBundleDiscount(), cd = getCouponDiscount();

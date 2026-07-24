@@ -163,9 +163,24 @@
     const feat = PRODS.slice(0, 3);
     el.innerHTML = feat.map(p => `
     <div class="hf-card reveal" onclick="openPD('${p.id}')">
-      <div class="hf-img">${makeImgHTML(p.id, p.name, 'width:100%;height:100%;object-fit:cover;transition:transform .6s;')}<div class="hf-ov"></div></div>
-      <div class="hf-body"><div class="hf-code">${p.code}</div><div class="hf-name">${p.name}</div><div class="hf-price">₹${p.price.toLocaleString('en-IN')}</div></div>
-    </div>`).join('');
+      <div class="hf-img">${makeImgHTML(
+    p.id,
+    p.name,
+    'width:100%;height:100%;object-fit:cover;object-position:center;transition:transform .6s;'
+)}<div class="hf-ov"></div></div>
+<div class="hf-body">
+  <div class="hf-code">${p.code}</div>
+
+  <div class="hf-name">${p.name}</div>
+
+  <div class="hf-desc">
+    ${p.desc || p.sub || 'Premium detailing product'}
+  </div>
+
+  <div class="hf-price">
+    ₹${p.price.toLocaleString('en-IN')}
+  </div>
+</div>    </div>`).join('');
     observeReveal();
   }
 

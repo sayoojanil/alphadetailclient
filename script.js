@@ -174,7 +174,7 @@
   <div class="hf-name">${p.name}</div>
 
   <div class="hf-desc">
-    ${p.desc || p.sub || 'Premium detailing product'}
+    ${p.sub}
   </div>
 
   <div class="hf-price">

@@ -163,24 +163,9 @@
     const feat = PRODS.slice(0, 3);
     el.innerHTML = feat.map(p => `
     <div class="hf-card reveal" onclick="openPD('${p.id}')">
-      <div class="hf-img">${makeImgHTML(
-    p.id,
-    p.name,
-    'width:100%;height:100%;object-fit:cover;object-position:center;transition:transform .6s;'
-)}<div class="hf-ov"></div></div>
-<div class="hf-body">
-  <div class="hf-code">${p.code}</div>
-
-  <div class="hf-name">${p.name}</div>
-
-  <div class="hf-desc">
-    ${p.sub}
-  </div>
-
-  <div class="hf-price">
-    ₹${p.price.toLocaleString('en-IN')}
-  </div>
-</div>    </div>`).join('');
+      <div class="hf-img">${makeImgHTML(p.id, p.name, 'width:100%;height:100%;object-fit:cover;transition:transform .6s;')}<div class="hf-ov"></div></div>
+      <div class="hf-body"><div class="hf-code">${p.code}</div><div class="hf-name">${p.name}</div><div class="pc-sub">${p.sub}</div><div class="hf-price">₹${p.price.toLocaleString('en-IN')}</div></div>
+    </div>`).join('');
     observeReveal();
   }
 
@@ -218,10 +203,11 @@
         <p class="pc-hook">"${p.hook || ''}"</p>
         <div class="pc-bot">
           <div><div class="pc-mrp">MRP</div><div class="pc-price">₹${(p.price || 0).toLocaleString('en-IN')}</div></div>
-          <button class="pc-atc" ${p.inStock === false ? 'disabled style="opacity:0.5;cursor:not-allowed;"' : ''} onclick="addToCart('${p.id}')">${p.inStock === false ? 'Sold Out' : '+ Add to Cart'}</button>
         </div>
         <div class="pc-tags">${(p.tags || []).map((t, i) => `<span class="tag${i < 1 ? ' tag-g' : ''}">${t}</span>`).join('')}</div>
+          <button class="pc-atc" ${p.inStock === false ? 'disabled style="opacity:0.5;cursor:not-allowed;"' : ''} onclick="addToCart('${p.id}')">${p.inStock === false ? 'Sold Out' : '+ Add to Cart'}</button>
       </div>
+      
     </div>`).join('');
 
     // Re-observe for reveal animations

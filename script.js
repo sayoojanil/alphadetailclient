@@ -1,8 +1,8 @@
 (function () {
   'use strict';
 
-  // const API_BASE = 'http://localhost:5000/api';
-  const API_BASE = 'https://alphadetailserver.vercel.app/api';
+  const API_BASE = 'http://localhost:5000/api';
+  // const API_BASE = 'https://alphadetailserver.vercel.app/api';
 
 
   // ══ LOADER HELPERS ══
@@ -119,8 +119,14 @@
   // ══ PAGE ROUTING ══
   window.showPage = function (id, pushHash = true) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    const pg = document.getElementById('page-' + id);
-    if (!pg) return;
+   const pg =
+    document.getElementById("page-" + id) ||
+    document.getElementById(id);
+
+if (!pg) {
+    console.error("Page not found:", id);
+    return;
+}
     
     pg.classList.add('active'); 
     window.scrollTo(0, 0);
@@ -138,6 +144,11 @@
     if (id === 'checkout') initCheckout();
     if (id === 'home') renderFeatured();
     if (id === 'profile') renderProfile();
+
+    setTimeout(() => {
+      pg.querySelectorAll('.reveal, .reveal-l, .reveal-r').forEach(el => el.classList.add('visible'));
+      observeReveal();
+    }, 50);
   };
 
   window.addEventListener('hashchange', () => {
@@ -294,6 +305,17 @@
       type: 'success', icon: 'fa-solid fa-circle-check',
       action: { label: 'View Cart →', onClick: "showPage('cart')" }
     });
+  };
+
+  window.clearCart = function () {
+    cart = [];
+    localStorage.removeItem('alphaCart');
+    cartBundleDiscount = 0;
+    cartBundleLabel = '';
+    couponDiscountRate = 0;
+    updateBadge();
+    const cba = document.getElementById('cartBundleActive');
+    if (cba) cba.remove();
   };
 
   window.addBundleToCart = function (type) {
@@ -951,6 +973,11 @@
   };
 
   function initCheckout() {
+    const main = document.getElementById('checkoutMain');
+    if (main) main.style.display = 'block';
+    const succ = document.getElementById('page-orderSuccess');
+    if (succ) succ.classList.remove('active');
+
     const sub = getSubtotal(), total = getFinalTotal(), ship = getShipping();
     const disc = getCouponDiscount() + getBundleDiscount();
 
@@ -1345,26 +1372,54 @@
       cart = []; updateBadge();
       const main = document.getElementById('checkoutMain');
       if (main) main.style.display = 'none';
-      const succ = document.getElementById('orderSuccess');
-      if (succ) succ.style.display = 'block';
-      window.scrollTo(0, 0);
+      // Remove active from all pages first, then activate success page
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      const succ = document.getElementById('page-orderSuccess');
+      if (succ) {
+        succ.classList.add('active');
+        window.scrollTo(0, 0);
+
+        // Populate order number
+        document.getElementById('orderNum').textContent = orderNum;
+
+        // Render order summary details
+        const detailsDiv = document.getElementById('orderDetails');
+        if (detailsDiv && lastOrder) {
+          const itemsHtml = lastOrder.items.map(i =>
+            `<div style="margin-bottom:6px;">${i.name} &times; ${i.qty} &mdash; &#8377;${(i.price * i.qty).toLocaleString('en-IN')}</div>`
+          ).join('');
+          const subtotal = lastOrder.subtotal || 0;
+          const shipping = lastOrder.shipping || 0;
+          const discount = (lastOrder.couponDiscount || 0) + (lastOrder.bundleDiscount || 0);
+          const total = lastOrder.total || 0;
+          detailsDiv.innerHTML = `
+            <div style="font-weight:600;margin-bottom:8px;">Items:</div>
+            ${itemsHtml}
+            <div style="margin-top:8px;">Subtotal: &#8377;${subtotal.toLocaleString('en-IN')}</div>
+            <div>Shipping: ${shipping === 0 ? 'FREE' : `&#8377;${shipping.toLocaleString('en-IN')}`}</div>
+            ${discount > 0 ? `<div>Discount: -&#8377;${discount.toLocaleString('en-IN')}</div>` : ''}
+            <div style="font-weight:600;margin-top:6px;">Total: &#8377;${total.toLocaleString('en-IN')}</div>`;
+        }
+
+        // Set WhatsApp status button
+        const waBtn = document.getElementById('waSuccessBtn');
+        if (waBtn) {
+          const waText = encodeURIComponent(`Hi Alpha Detail, I've placed an order (ID: ${orderNum}). Could you please confirm the shipping status?`);
+          waBtn.onclick = () => window.open(`https://wa.me/${BUSINESS_PHONE}?text=${waText}`, '_blank');
+        }
+
+        toast('Order placed successfully!', { type: 'success', icon: 'fa-solid fa-circle-check' });
+        sessionStorage.setItem('alphaLastOrder', JSON.stringify(lastOrder));
+        
+        setTimeout(() => {
+          succ.querySelectorAll('.reveal, .reveal-l, .reveal-r').forEach(el => el.classList.add('visible'));
+        }, 50);
+      }
     } catch (err) {
       toast('Failed to save order. But payment was successful. Please contact support with ID: ' + rPayId, { type: 'error' });
     } finally {
       toggleLoader(false);
     }
-    document.getElementById('orderNum').textContent = orderNum;
-
-    // Set WhatsApp status button
-    const waBtn = document.getElementById('waSuccessBtn');
-    if (waBtn) {
-      const waText = encodeURIComponent(`Hi Alpha Detail, I've placed an order (ID: ${orderNum}). Could you please confirm the shipping status?`);
-      waBtn.onclick = () => window.open(`https://wa.me/${BUSINESS_PHONE}?text=${waText}`, '_blank');
-    }
-
-    toast('Order placed successfully!', { type: 'success', icon: 'fa-solid fa-circle-check' });
-    // Persist for page refresh
-    sessionStorage.setItem('alphaLastOrder', JSON.stringify(lastOrder));
   }
 
   window.printOrder = function () {
@@ -1848,13 +1903,13 @@
     </div>
 
     <div class="footer-thanks">
-      ⚡ Thank you for choosing AlphaDetail — drive with confidence, shine with pride.<br>
+       Thank you for choosing AlphaDetail, drive with confidence, shine with pride.<br>
       This is a digitally generated invoice and does not require a physical signature.
     </div>
   </div>
 
   <div class="print-actions">
-    <button class="btn-print no-print" onclick="window.print();">🖨️ Print / Save as PDF</button>
+    <button class="btn-print no-print" onclick="window.print();"> Print / Save as PDF</button>
   </div>
 </div>
 
@@ -1927,8 +1982,10 @@
     const savedOrder = sessionStorage.getItem('alphaLastOrder');
     if (savedOrder) {
       lastOrder = JSON.parse(savedOrder);
-      if (document.getElementById('orderSuccess').style.display === 'block') {
+      const succEl = document.getElementById('page-orderSuccess');
+      if (succEl && succEl.classList.contains('active')) {
         document.getElementById('orderNum').textContent = lastOrder.orderNum;
+        succEl.querySelectorAll('.reveal, .reveal-l, .reveal-r').forEach(el => el.classList.add('visible'));
       }
     }
     // Handle hash routing on load

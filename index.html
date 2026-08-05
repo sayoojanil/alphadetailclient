@@ -465,8 +465,8 @@
           </div>
           <div class="sum-total"><span class="sum-total-lbl">Total</span><span class="sum-total-val"
               id="sumTotal">₹0</span></div>
-          <!-- <div class="coupon-row"><input class="coup-inp" id="coupInp" placeholder="Coupon code"><button class="coup-btn" onclick="applyCoupon()">Apply</button></div> -->
-          <!-- <button class="chk-btn" onclick="proceedCheckout()">Proceed to Checkout →</button> -->
+          <div class="coupon-row"><input class="coup-inp" id="coupInp" placeholder="Coupon code"><button class="coup-btn" onclick="applyCoupon()">Apply</button></div>
+          <button class="chk-btn" onclick="proceedCheckout()">Proceed to Checkout →</button>
           <button class="chk-btn wa-btn" onclick="orderViaWhatsApp()">Order through WhatsApp <i
               class="fa-brands fa-whatsapp"></i></button>
           <span class="cont-shop" onclick="showPage('shop')">← Continue Shopping</span>
@@ -550,14 +550,14 @@
                 <div class="fe" id="cStateE">Required</div>
               </div>
               <div class="hr"></div>
-              <!-- <div class="chk-sec-h">Payment Method</div> -->
-              <!-- <div class="pay-opts"> -->
-              <!-- <label class="pay-opt" id="pm-cod" onclick="selPM(this,'cod')"><input type="radio" name="pm"><span class="pay-lbl">Cash on Delivery</span><span class="pay-icon"><i class="fa-solid fa-money-bill-wave"></i></span></label> -->
-              <!-- <label class="pay-opt sel" id="pm-upi" onclick="selPM(this,'upi')"><input type="radio" name="pm" checked><span class="pay-lbl">UPI / PhonePe / GPay</span><span class="pay-icon"><i class="fa-solid fa-mobile-screen-button"></i></span></label> -->
-              <!-- <label class="pay-opt" id="pm-card" onclick="selPM(this,'card')"><input type="radio" name="pm"><span class="pay-lbl">Credit / Debit Card</span><span class="pay-icon"><i class="fa-solid fa-credit-card"></i></span></label> -->
-              <!-- <label class="pay-opt" id="pm-nb" onclick="selPM(this,'nb')"><input type="radio" name="pm"><span class="pay-lbl">Net Banking</span><span class="pay-icon"><i class="fa-solid fa-building-columns"></i></span></label> -->
-              <!-- </div> -->
-              <!-- <div id="upiF" style="display:none;margin-top:13px;"><div class="fg"><label class="fl">UPI ID</label><input class="fi" placeholder="name@upi"></div></div> -->
+              <div class="chk-sec-h">Payment Method</div>
+              <div class="pay-opts">
+              <label class="pay-opt" id="pm-cod" onclick="selPM(this,'cod')"><input type="radio" name="pm"><span class="pay-lbl">Cash on Delivery</span><span class="pay-icon"><i class="fa-solid fa-money-bill-wave"></i></span></label>
+              <label class="pay-opt sel" id="pm-upi" onclick="selPM(this,'upi')"><input type="radio" name="pm" checked><span class="pay-lbl">UPI / PhonePe / GPay</span><span class="pay-icon"><i class="fa-solid fa-mobile-screen-button"></i></span></label>
+              <label class="pay-opt" id="pm-card" onclick="selPM(this,'card')"><input type="radio" name="pm"><span class="pay-lbl">Credit / Debit Card</span><span class="pay-icon"><i class="fa-solid fa-credit-card"></i></span></label>
+              <label class="pay-opt" id="pm-nb" onclick="selPM(this,'nb')"><input type="radio" name="pm"><span class="pay-lbl">Net Banking</span><span class="pay-icon"><i class="fa-solid fa-building-columns"></i></span></label>
+              </div>
+              <div id="upiF" style="display:none;margin-top:13px;"><div class="fg"><label class="fl">UPI ID</label><input class="fi" placeholder="name@upi"></div></div>
               <div id="cardF" style="display:none;margin-top:13px;">
                 <div class="fg"><label class="fl">Card Number</label><input class="fi"
                     placeholder="1234 5678 9012 3456"></div>
@@ -566,7 +566,7 @@
                   <div class="fg"><label class="fl">CVV</label><input class="fi" placeholder="•••"></div>
                 </div>
               </div>
-              <!-- <div class="chk-trust">
+              <div class="chk-trust">
             <div class="ct-label"><i class="fa-solid fa-shield-halved"></i> 100% SECURE CHECKOUT</div>
             <div class="ct-logos">
               <img src="https://razorpay.com/assets/razorpay-glyph.svg" alt="Razorpay" style="height:18px;">
@@ -578,10 +578,10 @@
                 <i class="fa-brands fa-google-pay"></i>
                 <i class="fa-solid fa-bolt" title="UPI"></i>
               </div>
-            </div> -->
+            </div>
             </div>
             <div class="fe" id="chkGlobalE" style="font-size:12px;margin-top:12px;"></div>
-            <!-- <button class="place-btn" onclick="placeOrder()">Place Order →</button> -->
+            <button class="place-btn" onclick="placeOrder()">Place Order →</button>
             <button class="place-btn wa-btn" onclick="orderViaWhatsApp()">Order through WhatsApp <i
                 class="fa-brands fa-whatsapp"></i></button>
 
@@ -600,45 +600,49 @@
           </div>
         </div>
       </div><!-- end checkoutMain -->
-      <div class="order-success" id="orderSuccess" style="display:none; text-align:center; padding-top: 50px;">
-        <div class="success-anim" style="margin: 0 auto 30px;">
-          <div class="success-circle"
-            style="width: 100px; height: 100px; background: rgba(212,175,55,0.1); border: 2px solid var(--gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 40px; color: var(--gold); margin: 0 auto; position: relative; z-index: 5;">
-            <i class="fa-solid fa-check"></i>
-          </div>
-          <div class="success-glow"
-            style="position: absolute; top: 50%; left: 50%; width: 140px; height: 140px; background: var(--gold); filter: blur(40px); opacity: 0.15; transform: translate(-50%, -50%); border-radius: 50%; z-index: 1;">
-          </div>
-        </div>
-        <div class="osuc-title reveal"
-          style="font-family:'Bebas Neue', sans-serif; font-size: 48px; letter-spacing: 2px; color: #fff; margin-bottom: 20px;">
-          ORDER PLACED!</div>
-        <div class="success-box reveal"
-          style="padding: 15px 30px; background: #0a0a0a; border: 1px solid var(--border); display: inline-block; margin-bottom: 30px;">
-          <div class="osuc-num" style="font-size: 16px; letter-spacing: 3px; color: var(--gold);">Order #<span
-              id="orderNum"></span></div>
-        </div>
-        <p class="osuc-p reveal"
-          style="font-size: 16px; color: var(--muted); max-width: 500px; margin: 0 auto 40px; line-height: 1.6;">Thank
-          you! Your AlphaDetail products are confirmed and will be dispatched shortly.</p>
-        <div class="osuc-btns reveal" style="display:flex; justify-content:center; gap:15px; flex-wrap:wrap;">
-          <button class="btn-g"
-            style="padding: 14px 28px; background: var(--gold); color: #000; border: none; font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; cursor: pointer;"
-            onclick="showPage('home');clearCart()">Back to Home</button>
-          <button class="btn-o"
-            style="padding: 14px 28px; background: none; border: 1px solid #333; color: #fff; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; cursor: pointer;"
-            onclick="printOrder()"><i class="fa-solid fa-file-invoice" style="margin-right: 8px;"></i> Download
-            Invoice</button>
-          <button class="btn-o" id="waSuccessBtn"
-            style="padding: 14px 28px; background: #25D366; color: #fff; border: none; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; display: flex; align-items: center; gap: 8px;"><i
-              class="fa-brands fa-whatsapp"></i> WhatsApp Status</button>
-          <button class="btn-o"
-            style="padding: 14px 28px; background: none; border: 1px solid #333; color: #fff; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; cursor: pointer;"
-            onclick="showPage('profile');clearCart()">Track Order</button>
-        </div>
-      </div>
     </div>
 
+  </div>
+  </div>
+  <!-- ════════════ ORDER SUCCESS PAGE ════════════ -->
+  <div class="page" id="page-orderSuccess" style="text-align:center; padding: 80px 20px 60px;">
+    <div class="success-anim" style="margin: 0 auto 30px; position:relative;">
+      <div class="success-circle"
+        style="width: 100px; height: 100px; background: rgba(212,175,55,0.1); border: 2px solid var(--gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 40px; color: var(--gold); margin: 0 auto; position: relative; z-index: 5;">
+        <i class="fa-solid fa-check"></i>
+      </div>
+      <div class="success-glow"
+        style="position: absolute; top: 50%; left: 50%; width: 140px; height: 140px; background: var(--gold); filter: blur(40px); opacity: 0.15; transform: translate(-50%, -50%); border-radius: 50%; z-index: 1;">
+      </div>
+    </div>
+    <div class="osuc-title reveal"
+      style="font-family:'Bebas Neue', sans-serif; font-size: 48px; letter-spacing: 2px; color: #fff; margin-bottom: 20px;">
+      ORDER PLACED!</div>
+    <div class="success-box reveal"
+      style="padding: 15px 30px; background: #0a0a0a; border: 1px solid var(--border); display: inline-block; margin-bottom: 30px;">
+      <div class="osuc-num" style="font-size: 16px; letter-spacing: 3px; color: var(--gold);">Order #<span
+          id="orderNum"></span></div>
+    </div>
+    <p class="osuc-p reveal"
+      style="font-size: 16px; color: var(--muted); max-width: 500px; margin: 0 auto 20px; line-height: 1.6;">Thank
+      you! Your AlphaDetail products are confirmed and will be dispatched shortly.</p>
+    <div id="orderDetails" class="reveal"
+      style="max-width:500px; margin: 0 auto 30px; text-align:left; background:#111; border:1px solid var(--border); padding:20px; border-radius:4px;"></div>
+    <div class="osuc-btns reveal" style="display:flex; justify-content:center; gap:15px; flex-wrap:wrap;">
+      <button class="btn-g"
+        style="padding: 14px 28px; background: var(--gold); color: #000; border: none; font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; cursor: pointer;"
+        onclick="showPage('home');clearCart()">Back to Home</button>
+      <button class="btn-o"
+        style="padding: 14px 28px; background: none; border: 1px solid #333; color: #fff; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; cursor: pointer;"
+        onclick="printOrder()"><i class="fa-solid fa-file-invoice" style="margin-right: 8px;"></i> Download
+        Invoice</button>
+      <!-- <button class="btn-o" id="waSuccessBtn"
+        style="padding: 14px 28px; background: #25D366; color: #fff; border: none; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; display: flex; align-items: center; gap: 8px;"><i
+          class="fa-brands fa-whatsapp"></i> WhatsApp Status</button> -->
+      <button class="btn-o"
+        style="padding: 14px 28px; background: none; border: 1px solid #333; color: #fff; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; cursor: pointer;"
+        onclick="showPage('profile')">Track Order</button>
+    </div>
   </div>
   <!-- ════════════ LOGIN PAGE ════════════ -->
   <div class="page" id="page-login">

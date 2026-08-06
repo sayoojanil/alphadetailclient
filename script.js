@@ -382,11 +382,9 @@ if (!pg) {
   function isStarterKitCart() {
     return STARTER_IDS.every(id => cart.some(c => c.id === id)) && !isProKitCart();
   }
-  function getShipping() {
-    if (isProKitCart()) return 0;
-    const qty = cart.reduce((s, c) => s + c.qty, 0);
-    return qty * 40;
-  }
+function getShipping() {
+  return 0;
+}
   
   window.removeProKit = function() {
     const proIds = PRODS.map(p => p.id);

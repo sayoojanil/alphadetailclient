@@ -1,8 +1,8 @@
 (function () {
   'use strict';
 
-  // const API_BASE = 'http://localhost:5000/api';
-  const API_BASE = 'https://alphadetailserver.vercel.app/api';
+  const API_BASE = 'http://localhost:5000/api';
+  // const API_BASE = 'https://alphadetailserver.vercel.app/api';
 
 
   // ══ LOADER HELPERS ══
@@ -767,6 +767,9 @@ function getShipping() {
       const orders = await apiReq('/orders/my-orders');
       document.getElementById('profOrderCount').textContent = orders.length;
 
+      window.userOrdersCache = {};
+      orders.forEach(o => { if (o.orderNum) window.userOrdersCache[o.orderNum] = o; });
+
       if (orders.length === 0) {
         list.innerHTML = `<div class="cart-empty" style="padding:40px 0;"><div class="ce-icon" style="font-size:30px;"><i class="fa-solid fa-box-open"></i></div><div class="ce-title" style="font-size:18px;">No orders yet</div><button class="btn-o" onclick="showPage('shop')">Start Shopping</button></div>`;
         return;
@@ -796,11 +799,31 @@ function getShipping() {
         const isCancelled = o.status === 'cancelled';
         const progressWidth = isCancelled ? 100 : Math.max(0, currentIdx) * (100 / (statuses.length - 1));
 
+        const addr = o.address || {};
+        const fullName = `${addr.first || ''} ${addr.last || ''}`.trim() || 'Customer';
+        const fullAddrStr = [addr.houseNo, addr.addr, addr.landmark, addr.city, addr.district, addr.state, addr.pin ? `- ${addr.pin}` : '']
+          .filter(Boolean).join(', ');
+
+        const payStatus = o.paymentStatus || 'pending';
+        const subtotal = o.subtotal || o.items.reduce((acc, i) => acc + (i.price * i.qty), 0);
+        const shipping = o.shipping || 0;
+        const bundleDisc = o.bundleDiscount || 0;
+        const couponDisc = o.couponDiscount || o.discount || 0;
+
+        const invoiceButtonHTML = `
+          <button class="poi-btn-invoice" onclick="downloadInvoice('${o.orderNum}')">
+            <i class="fa-solid fa-file-invoice"></i> Download Invoice
+          </button>
+        `;
+
         return `
         <div class="prof-order-item">
           <div class="poi-head">
-            <div class="poi-num">Order #${o.orderNum}</div>
-            <div class="poi-date">${new Date(o.createdAt).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })}</div>
+            <div>
+              <div class="poi-num">Order #${o.orderNum}</div>
+              <div class="poi-date"><i class="fa-regular fa-calendar"></i> Placed on ${new Date(o.createdAt).toLocaleDateString('en-IN', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' })}</div>
+            </div>
+            ${invoiceButtonHTML}
           </div>
           
           <div class="order-progress-wrap">
@@ -825,9 +848,69 @@ function getShipping() {
             </div>
           </div>
 
-          <div class="poi-items">
-            ${o.items.map(i => `<div class="poi-item"><span>${i.name} x ${i.qty}</span><span>₹${(i.price * i.qty).toLocaleString('en-IN')}</span></div>`).join('')}
+          <!-- DETAILED INFO GRID (Address & Payment) -->
+          <div class="poi-meta-grid">
+            <div class="poi-info-box">
+              <div class="poi-info-title"><i class="fa-solid fa-location-dot"></i> Delivery Address</div>
+              <div class="poi-info-text">
+                <strong>${fullName}</strong><br>
+                ${fullAddrStr || 'N/A'}<br>
+                Phone: ${addr.phone || 'N/A'} ${addr.secondaryPhone ? `/ ${addr.secondaryPhone}` : ''}<br>
+                Email: ${addr.email || 'N/A'}
+              </div>
+            </div>
+
+            <div class="poi-info-box">
+              <div class="poi-info-title"><i class="fa-solid fa-credit-card"></i> Payment & Order Info</div>
+              <div class="poi-info-text">
+                Method: <strong>${(o.paymentMethod || 'COD').toUpperCase()}</strong> 
+                <span class="poi-pay-tag ${payStatus}">${payStatus.toUpperCase()}</span><br>
+                ${o.razorpayPaymentId ? `Payment ID: <strong>${o.razorpayPaymentId}</strong><br>` : ''}
+                ${o.razorpayOrderId ? `Razorpay Order ID: <strong>${o.razorpayOrderId}</strong><br>` : ''}
+                Order Status: <strong style="color:var(--gold);">${o.status.toUpperCase()}</strong>
+              </div>
+            </div>
           </div>
+
+          <!-- ITEMS LIST -->
+          <div style="font-size:12px; font-weight:700; color:#fff; margin-bottom:8px;"><i class="fa-solid fa-boxes-packing"></i> ORDERED ITEMS</div>
+          <div class="poi-items">
+            ${o.items.map(i => `
+              <div class="poi-item">
+                <span>${i.name} &times; ${i.qty}</span>
+                <span>₹${(i.price * i.qty).toLocaleString('en-IN')}</span>
+              </div>
+            `).join('')}
+          </div>
+
+          <!-- PRICE BREAKDOWN -->
+          <div class="poi-price-breakdown">
+            <div class="poi-pb-row">
+              <span>Subtotal:</span>
+              <span>₹${subtotal.toLocaleString('en-IN')}</span>
+            </div>
+            <div class="poi-pb-row">
+              <span>Shipping:</span>
+              <span>${shipping === 0 ? 'FREE' : `₹${shipping.toLocaleString('en-IN')}`}</span>
+            </div>
+            ${bundleDisc > 0 ? `
+              <div class="poi-pb-row discount">
+                <span>${o.bundleLabel || 'Bundle Savings'}:</span>
+                <span>- ₹${bundleDisc.toLocaleString('en-IN')}</span>
+              </div>
+            ` : ''}
+            ${couponDisc > 0 ? `
+              <div class="poi-pb-row discount">
+                <span>Coupon Discount:</span>
+                <span>- ₹${couponDisc.toLocaleString('en-IN')}</span>
+              </div>
+            ` : ''}
+            <div class="poi-pb-row total-row">
+              <span>Grand Total:</span>
+              <span>₹${o.total.toLocaleString('en-IN')}</span>
+            </div>
+          </div>
+
           <div class="poi-footer">
             <div class="poi-status" style="border-color:${o.status === 'delivered' ? 'var(--green)' : (isCancelled ? 'var(--red)' : 'var(--gold)')};color:${o.status === 'delivered' ? 'var(--green)' : (isCancelled ? 'var(--red)' : 'var(--gold)')}">${o.status.toUpperCase()}</div>
             <div class="poi-total">Total: ₹${o.total.toLocaleString('en-IN')}</div>
@@ -1210,7 +1293,7 @@ function getShipping() {
           }
         },
         prefill: { name: addr.first, email: addr.email, contact: addr.phone },
-        theme: { color: "#d4af37" }
+        theme: { color: "#000000ff" }
       };
       const rzp = new Razorpay(opt);
       rzp.open();
@@ -1436,514 +1519,394 @@ function getShipping() {
     }
   }
 
+  window.downloadInvoice = function (orderNum) {
+    let orderData = window.userOrdersCache && window.userOrdersCache[orderNum];
+    if (!orderData && typeof lastOrder !== 'undefined' && lastOrder && lastOrder.orderNum === orderNum) {
+      orderData = lastOrder;
+    }
+    if (!orderData) {
+      return toast('Order details not found', { type: 'error' });
+    }
+    window.renderInvoicePage(orderData);
+  };
+
   window.printOrder = function () {
     if (!lastOrder) return toast('No order details found to print', { type: 'error' });
+    window.renderInvoicePage(lastOrder);
+  };
+
+  window.renderInvoicePage = function (o) {
+    if (!o) return toast('No order data available for invoice', { type: 'error' });
 
     const w = window.open('', '_blank');
-    const itemsHTML = lastOrder.items.map(i => `
-    <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #eee; padding:10px 0;">
-      <div style="display:flex; align-items:center; gap:15px;">
-        <div style="width:50px; height:50px; background:#f0f0f0;">${makeImgHTML(i.id, i.name, 'width:100%;height:100%;object-fit:cover;')}</div>
-        <div>
-          <div style="font-weight:bold; font-size:14px;">${i.name}</div>
-          <div style="font-size:12px; color:#666;">Quantity: ${i.qty}</div>
-        </div>
+    if (!w) return toast('Pop-up blocked. Please allow pop-ups to view invoice.', { type: 'error' });
+
+    const addr = o.address || {};
+    const fullName = `${addr.first || ''} ${addr.last || ''}`.trim() || 'Valued Customer';
+    const subtotal = o.subtotal || (o.items || []).reduce((acc, i) => acc + ((i.price || 0) * (i.qty || 1)), 0);
+    const shipping = o.shipping || 0;
+    const bundleDisc = o.bundleDiscount || 0;
+    const couponDisc = o.couponDiscount || o.discount || 0;
+    const grandTotal = o.total || (subtotal + shipping - bundleDisc - couponDisc);
+
+    const itemsHTML = (o.items || []).map((item, index) => {
+      const itemTotal = (item.price || 0) * (item.qty || 1);
+      return `
+        <tr>
+          <td style="padding: 12px; border-bottom: 1px solid #edf2f7; text-align: center; font-weight: 600; color: #718096;">${index + 1}</td>
+          <td style="padding: 12px; border-bottom: 1px solid #edf2f7;">
+            <div style="font-weight: 700; color: #2d3748; font-size: 14px;">${item.name || 'Product'}</div>
+          </td>
+          <td style="padding: 12px; border-bottom: 1px solid #edf2f7; text-align: center; font-weight: 600; color: #4a5568;">${item.qty || 1}</td>
+          <td style="padding: 12px; border-bottom: 1px solid #edf2f7; text-align: right; color: #4a5568;">&#8377;${(item.price || 0).toLocaleString('en-IN')}</td>
+          <td style="padding: 12px; border-bottom: 1px solid #edf2f7; text-align: right; font-weight: 700; color: #1a202c;">&#8377;${itemTotal.toLocaleString('en-IN')}</td>
+        </tr>
+      `;
+    }).join('');
+
+    const formattedDate = new Date(o.createdAt || Date.now()).toLocaleDateString('en-IN', {
+      day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit'
+    });
+
+    const payStatus = (o.paymentStatus || 'pending').toUpperCase();
+    const payMethod = (o.paymentMethod || 'COD').toUpperCase();
+
+    const html = `<!DOCTYPE html>
+    <html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Tax Invoice #${o.orderNum} | AlphaDetail</title>
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+      <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+      <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+          background: #f1f5f9;
+          font-family: 'Inter', -apple-system, sans-serif;
+          color: #1e293b;
+          padding: 30px 15px;
+          line-height: 1.5;
+        }
+        .invoice-card {
+          max-width: 900px;
+          margin: 0 auto;
+          background: #ffffff;
+          border-radius: 16px;
+          box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
+          overflow: hidden;
+          border: 1px solid #e2e8f0;
+        }
+        .inv-header {
+          background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+          color: #ffffff;
+          padding: 30px 40px;
+          display: flex;
+          justify-content: space-between;
+          align-items: flex-start;
+          flex-wrap: wrap;
+          gap: 20px;
+        }
+        .brand-title {
+          font-family: 'Outfit', sans-serif;
+          font-size: 26px;
+          font-weight: 800;
+          letter-spacing: 1px;
+          color: #ffffff;
+        }
+        .brand-sub {
+          font-size: 11px;
+          color: #94a3b8;
+          margin-top: 4px;
+        }
+        .badge-tax {
+          display: inline-block;
+          background: rgba(255, 255, 255, 0.1);
+          border: 1px solid rgba(255, 255, 255, 0.2);
+          padding: 4px 12px;
+          border-radius: 20px;
+          font-size: 12px;
+          font-weight: 700;
+          letter-spacing: 1px;
+          color: #38bdf8;
+          text-transform: uppercase;
+        }
+        .inv-meta-right {
+          text-align: right;
+        }
+        .ord-id {
+          font-family: 'Outfit', sans-serif;
+          font-size: 18px;
+          font-weight: 700;
+          color: #f8fafc;
+          margin-top: 6px;
+        }
+        .ord-date {
+          font-size: 12px;
+          color: #cbd5e1;
+        }
+        .inv-body {
+          padding: 40px;
+        }
+        .info-grid {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 24px;
+          margin-bottom: 30px;
+        }
+        @media (max-width: 600px) {
+          .info-grid { grid-template-columns: 1fr; }
+          .inv-header { padding: 25px 20px; }
+          .inv-body { padding: 20px; }
+        }
+        .info-box {
+          background: #f8fafc;
+          border: 1px solid #e2e8f0;
+          border-radius: 12px;
+          padding: 18px 20px;
+        }
+        .info-box-title {
+          font-size: 11px;
+          font-weight: 800;
+          letter-spacing: 1px;
+          text-transform: uppercase;
+          color: #2563eb;
+          margin-bottom: 10px;
+        }
+        .info-box-content {
+          font-size: 13px;
+          color: #334155;
+          line-height: 1.6;
+        }
+        .info-box-content strong {
+          color: #0f172a;
+        }
+        .pay-status-tag {
+          display: inline-block;
+          font-weight: 800;
+          font-size: 10px;
+          padding: 2px 8px;
+          border-radius: 4px;
+          margin-left: 6px;
+        }
+        .pay-status-tag.PAID { background: #dcfce7; color: #15803d; border: 1px solid #bbf7d0; }
+        .pay-status-tag.PENDING { background: #fef9c3; color: #a16207; border: 1px solid #fef08a; }
+        .pay-status-tag.FAILED { background: #fee2e2; color: #b91c1c; border: 1px solid #fca5a5; }
+
+        .items-table {
+          width: 100%;
+          border-collapse: collapse;
+          margin-bottom: 30px;
+        }
+        .items-table th {
+          background: #0f172a;
+          color: #ffffff;
+          font-size: 11px;
+          font-weight: 700;
+          letter-spacing: 0.5px;
+          text-transform: uppercase;
+          padding: 12px;
+        }
+        .items-table td {
+          font-size: 13px;
+        }
+
+        .summary-wrapper {
+          display: flex;
+          justify-content: flex-end;
+          margin-bottom: 30px;
+        }
+        .summary-card {
+          width: 320px;
+          background: #f8fafc;
+          border: 1px solid #e2e8f0;
+          border-radius: 12px;
+          padding: 16px 20px;
+        }
+        .summary-row {
+          display: flex;
+          justify-content: space-between;
+          font-size: 13px;
+          color: #475569;
+          margin-bottom: 8px;
+        }
+        .summary-row.discount {
+          color: #16a34a;
+          font-weight: 600;
+        }
+        .summary-row.grand-total {
+          border-top: 2px solid #cbd5e1;
+          padding-top: 10px;
+          margin-top: 10px;
+          font-weight: 800;
+          font-size: 16px;
+          color: #0f172a;
+        }
+
+        .inv-footer {
+          background: #f8fafc;
+          border-top: 1px solid #e2e8f0;
+          padding: 20px 40px;
+          text-align: center;
+          font-size: 11px;
+          color: #64748b;
+        }
+
+        .no-print-bar {
+          position: sticky;
+          top: 0;
+          background: #ffffff;
+          padding: 15px 0;
+          text-align: center;
+          box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+          margin-bottom: 20px;
+          z-index: 100;
+        }
+        .btn-print-now {
+          background: #2563eb;
+          color: #ffffff;
+          border: none;
+          padding: 10px 24px;
+          border-radius: 8px;
+          font-weight: 700;
+          font-size: 14px;
+          cursor: pointer;
+          box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+          transition: all 0.2s ease;
+        }
+        .btn-print-now:hover {
+          background: #1d4ed8;
+          transform: translateY(-1px);
+        }
+
+        @media print {
+          body { background: #ffffff; padding: 0; }
+          .no-print-bar { display: none !important; }
+          .invoice-card { box-shadow: none; border: none; border-radius: 0; max-width: 100%; }
+        }
+      </style>
+    </head>
+    <body>
+
+      <div class="no-print-bar">
+        <button class="btn-print-now" onclick="window.print()">🖨️ Print / Save as PDF</button>
       </div>
-      <div style="font-weight:bold;">₹${(i.price * i.qty).toLocaleString('en-IN')}</div>
-    </div>
-  `).join('');
 
-    const html = `
-    <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title>Invoice | AlphaDetail Car Care</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      background: #e9eef3;
-      font-family: 'Inter', 'Segoe UI', 'Roboto', system-ui, -apple-system, 'BlinkMacSystemFont', sans-serif;
-      padding: 2rem 1rem;
-      color: #1a2c3e;
-    }
-
-    /* main invoice card */
-    .invoice-container {
-      max-width: 1100px;
-      margin: 0 auto;
-      background: #ffffff;
-      border-radius: 28px;
-      box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.12), 0 2px 6px rgba(0, 0, 0, 0.02);
-      overflow: hidden;
-      transition: all 0.2s ease;
-    }
-
-    /* inner content with generous padding */
-    .invoice-inner {
-      padding: 2rem 2.2rem 2.2rem 2.2rem;
-    }
-
-    /* header area: refined brand and invoice badge */
-    .header-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      flex-wrap: wrap;
-      gap: 1rem;
-      padding-bottom: 1.8rem;
-      margin-bottom: 2rem;
-      border-bottom: 2px solid #f0f2f5;
-    }
-
-    .brand-section {
-      display: flex;
-      flex-direction: column;
-      gap: 0.4rem;
-    }
-
-    .brand-name {
-      font-size: 2rem;
-      font-weight: 700;
-      letter-spacing: -0.5px;
-      background: linear-gradient(135deg, #1f2e3a 0%, #2c3e4e 100%);
-      background-clip: text;
-      -webkit-background-clip: text;
-      color: transparent;
-      line-height: 1.2;
-    }
-
-    .brand-tagline {
-      font-size: 0.8rem;
-      font-weight: 500;
-      color: #5d6f7f;
-      letter-spacing: 0.3px;
-    }
-
-    .invoice-meta {
-      text-align: right;
-      background: #f8fafc;
-      padding: 0.9rem 1.4rem;
-      border-radius: 24px;
-    }
-
-    .invoice-badge {
-      font-size: 1.5rem;
-      font-weight: 800;
-      color: #1f5e3a;
-      letter-spacing: 1px;
-      margin-bottom: 0.3rem;
-    }
-
-    .meta-detail {
-      font-size: 0.85rem;
-      color: #2c3e4e;
-      font-weight: 500;
-    }
-
-    /* 2 column grids */
-    .info-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 2rem;
-      margin-bottom: 2.2rem;
-    }
-
-    .info-card {
-      background: #fbfdff;
-      border-radius: 20px;
-      padding: 0.2rem 0;
-    }
-
-    .section-title {
-      font-size: 0.75rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 1.2px;
-      color: #4f7a5c;
-      margin-bottom: 1rem;
-      border-left: 3px solid #4f7a5c;
-      padding-left: 0.75rem;
-    }
-
-    .info-content {
-      font-size: 0.9rem;
-      line-height: 1.5;
-      color: #1e2f3c;
-    }
-
-    .info-content strong {
-      font-weight: 700;
-      color: #0f2c38;
-    }
-
-    .info-content p {
-      margin-top: 0.2rem;
-    }
-
-    /* items table - clean and professional */
-    .items-section {
-      margin: 2rem 0 1.8rem;
-    }
-
-    .items-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 0.85rem;
-      border-radius: 18px;
-      overflow: hidden;
-      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
-    }
-
-    .items-table th {
-      text-align: left;
-      padding: 1rem 0.8rem;
-      background-color: #f4f7fb;
-      font-weight: 600;
-      color: #1f4d3a;
-      border-bottom: 1px solid #e2e8f0;
-      font-size: 0.8rem;
-      letter-spacing: 0.3px;
-    }
-
-    .items-table td {
-      padding: 1rem 0.8rem;
-      border-bottom: 1px solid #edf2f7;
-      vertical-align: top;
-      color: #2d3e50;
-    }
-
-    .items-table tr:last-child td {
-      border-bottom: none;
-    }
-
-    .product-name {
-      font-weight: 600;
-      color: #1e293b;
-    }
-
-    .product-sku {
-      font-size: 0.7rem;
-      color: #6c869a;
-      margin-top: 4px;
-    }
-
-    .text-right {
-      text-align: right;
-    }
-
-    /* totals panel - modern and airy */
-    .totals-panel {
-      margin-top: 1.5rem;
-      display: flex;
-      justify-content: flex-end;
-    }
-
-    .totals-card {
-      width: 320px;
-      background: #fefefe;
-      border-radius: 24px;
-      padding: 1.2rem 1.6rem;
-      border: 1px solid #eef2f8;
-      box-shadow: 0 6px 12px -8px rgba(0, 0, 0, 0.05);
-    }
-
-    .totals-row {
-      display: flex;
-      justify-content: space-between;
-      font-size: 0.85rem;
-      margin-bottom: 0.7rem;
-      color: #2c4b3e;
-    }
-
-    .totals-row.discount-row {
-      color: #2b7a4b;
-      font-weight: 500;
-    }
-
-    .grand-total-row {
-      display: flex;
-      justify-content: space-between;
-      font-weight: 800;
-      font-size: 1.2rem;
-      margin-top: 0.9rem;
-      padding-top: 0.9rem;
-      border-top: 2px solid #e2edf2;
-      color: #1f3b2c;
-    }
-
-    .payment-status {
-      display: inline-block;
-      background: #eef6ef;
-      padding: 0.2rem 0.7rem;
-      border-radius: 50px;
-      font-size: 0.7rem;
-      font-weight: 700;
-      color: #1e6f3f;
-    }
-
-    .payment-status.paid {
-      background: #e0f2e6;
-      color: #106a3b;
-    }
-
-    /* thank you footer */
-    .footer-thanks {
-      margin-top: 2.5rem;
-      text-align: center;
-      padding-top: 1.2rem;
-      border-top: 1px solid #eef2f8;
-      font-size: 0.75rem;
-      color: #6d8a9c;
-      letter-spacing: 0.2px;
-    }
-
-    /* print button & print styles */
-    .print-actions {
-      text-align: right;
-      margin-top: 1.2rem;
-      padding: 0 0 1rem 0;
-    }
-
-    .btn-print {
-      background: #2c3e4e;
-      border: none;
-      padding: 0.7rem 1.8rem;
-      border-radius: 40px;
-      font-weight: 600;
-      font-size: 0.8rem;
-      color: white;
-      cursor: pointer;
-      transition: 0.2s;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-      font-family: inherit;
-    }
-
-    .btn-print:hover {
-      background: #1f5e3a;
-      transform: translateY(-1px);
-    }
-
-    @media print {
-      body {
-        background: white;
-        padding: 0;
-        margin: 0;
-      }
-      .invoice-container {
-        box-shadow: none;
-        border-radius: 0;
-        margin: 0;
-        max-width: 100%;
-      }
-      .invoice-inner {
-        padding: 0.8in;
-      }
-      .print-actions {
-        display: none;
-      }
-      .btn-print {
-        display: none;
-      }
-      .totals-card {
-        box-shadow: none;
-        border: 1px solid #ddd;
-      }
-      .items-table th {
-        background: #f1f5f9;
-        -webkit-print-color-adjust: exact;
-        print-color-adjust: exact;
-      }
-      .payment-status {
-        -webkit-print-color-adjust: exact;
-        print-color-adjust: exact;
-      }
-    }
-
-    /* responsive */
-    @media (max-width: 680px) {
-      .invoice-inner {
-        padding: 1.2rem;
-      }
-      .info-grid {
-        grid-template-columns: 1fr;
-        gap: 1rem;
-      }
-      .totals-panel {
-        justify-content: stretch;
-      }
-      .totals-card {
-        width: 100%;
-      }
-      .items-table th, .items-table td {
-        padding: 0.7rem 0.5rem;
-      }
-      .header-row {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-      .invoice-meta {
-        text-align: left;
-        width: 100%;
-      }
-    }
-  </style>
-</head>
-<body>
-<div class="invoice-container">
-  <div class="invoice-inner">
-    <!-- HEADER: refined brand + meta -->
-    <div class="header-row">
-      <div class="brand-section">
-        <div class="brand-name">ALPHADETAIL</div>
-        <div class="brand-tagline">Precision DIY Car Care · Kerala, India</div>
-      </div>
-      <div class="invoice-meta">
-        <div class="invoice-badge">TAX INVOICE</div>
-        <div class="meta-detail"><strong>Order #ORD-${lastOrder.orderNum || '100294'}</strong></div>
-        <div class="meta-detail">Issued: ${new Date(lastOrder.createdAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' })}</div>
-      </div>
-    </div>
-
-    <!-- CUSTOMER & SHIPPING (two column) -->
-    <div class="info-grid">
-      <div class="info-card">
-        <div class="section-title">BILL TO</div>
-        <div class="info-content">
-          <strong>${lastOrder.address.first} ${lastOrder.address.last || ''}</strong><br>
-          ${lastOrder.address.email}<br>
-          ${lastOrder.address.phone}<br>
-          ${lastOrder.address.addr ? lastOrder.address.addr : ''}<br>
-          ${lastOrder.address.city ? lastOrder.address.city + ', ' : ''} ${lastOrder.address.pin || ''}
-        </div>
-      </div>
-      <div class="info-card">
-        <div class="section-title">SHIP TO</div>
-        <div class="info-content">
-          ${lastOrder.address.first} ${lastOrder.address.last || ''}<br>
-          ${lastOrder.address.addr || '—'}<br>
-          ${lastOrder.address.city || ''} ${lastOrder.address.pin ? '- ' + lastOrder.address.pin : ''}<br>
-          Kerala, India
-        </div>
-      </div>
-    </div>
-
-    <!-- ORDER ITEMS (dynamic) -->
-    <div class="items-section">
-      <div class="section-title">ORDER SUMMARY</div>
-      <table class="items-table">
-        <thead>
-          <tr>
-            <th>Item</th>
-            <th class="text-right">Qty</th>
-            <th class="text-right">Unit Price</th>
-            <th class="text-right">Total</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${itemsHTML || `
-            <tr>
-              <td colspan="4" style="text-align:center; padding:2rem;">No items found</td>
-            </tr>
-          `}
-        </tbody>
-      </table>
-    </div>
-
-    <!-- TOTALS + PAYMENT INFO (grid layout refined) -->
-    <div class="info-grid" style="margin-bottom: 0.5rem;">
-      <div class="info-card">
-        <div class="section-title">PAYMENT DETAILS</div>
-        <div class="info-content">
-          <span style="font-weight:500;">Method:</span> ${(lastOrder.paymentMethod || 'card').toUpperCase()} 
-          <span style="display:inline-block; margin-left: 0.6rem;"></span><br>
-          <span style="font-weight:500;">Status:</span> 
-          <span class="payment-status ${lastOrder.paymentStatus === 'paid' ? 'paid' : ''}">${(lastOrder.paymentStatus || 'pending').toUpperCase()}</span>
-          <p style="margin-top: 10px; font-size:0.8rem; color:#4f6f8a;">
-            ${lastOrder.paymentStatus === 'paid' ? '✓ Payment received successfully' : 'Payment confirmation pending'}
-          </p>
-        </div>
-      </div>
-      <div class="totals-panel" style="justify-content: flex-end; margin:0;">
-        <div class="totals-card">
-          <div class="totals-row">
-            <span>Subtotal</span>
-            <span>₹${Math.round(lastOrder.subtotal || 0).toLocaleString('en-IN')}</span>
+      <div class="invoice-card">
+        <!-- HEADER -->
+        <div class="inv-header">
+          <div>
+            <div class="brand-title">ALPHADETAIL</div>
+            <div class="brand-sub">PRECISION DIY CAR CARE · KERALA, INDIA</div>
+            <div class="brand-sub">Support: +91 7025225245 | alphadetail2f@gmail.com</div>
           </div>
-          <div class="totals-row">
-            <span>Shipping (standard)</span>
-            <span>₹${Math.round(lastOrder.shipping || 0).toLocaleString('en-IN')}</span>
-          </div>
-          ${(lastOrder.bundleDiscount && lastOrder.bundleDiscount > 0) ? `
-          <div class="totals-row discount-row">
-            <span>${lastOrder.bundleLabel || 'Bundle saving'}</span>
-            <span>- ₹${Math.round(lastOrder.bundleDiscount).toLocaleString('en-IN')}</span>
-          </div>
-          ` : ''}
-          ${(lastOrder.couponDiscount && lastOrder.couponDiscount > 0) ? `
-          <div class="totals-row discount-row">
-            <span>Coupon discount</span>
-            <span>- ₹${Math.round(lastOrder.couponDiscount).toLocaleString('en-IN')}</span>
-          </div>
-          ` : ''}
-          <div class="grand-total-row">
-            <span>Grand Total</span>
-            <span>₹${Math.round(lastOrder.total || 0).toLocaleString('en-IN')}</span>
-          </div>
-          <div style="font-size:0.7rem; margin-top:0.7rem; text-align:center; color:#6c8d9e;">
-            Inclusive of all taxes
+          <div class="inv-meta-right">
+            <div class="badge-tax">OFFICIAL TAX INVOICE</div>
+            <div class="ord-id">Order #${o.orderNum}</div>
+            <div class="ord-date">Issued: ${formattedDate}</div>
           </div>
         </div>
-      </div>
-    </div>
 
-    <!-- Additional note: professional touch -->
-    <div style="background: #f9fbfd; border-radius: 20px; padding: 0.8rem 1rem; margin-top: 1rem;">
-      <div style="display: flex; gap: 1rem; flex-wrap: wrap; justify-content: space-between; align-items: center;">
-        <div style="font-size: 0.75rem; color: #4a6f88;">
-          <span style="font-weight:600;">📞 Support:</span> +91 7025225245 &nbsp;|&nbsp;
-          <span style="font-weight:600;">✉️alphadetail2f@gmail.com</span>
+        <div class="inv-body">
+
+          <!-- USER & PAYMENT DETAILS GRID -->
+          <div class="info-grid">
+            <!-- USER DETAILS -->
+            <div class="info-card info-box">
+              <div class="info-box-title">📍 CUSTOMER & SHIPPING DETAILS</div>
+              <div class="info-box-content">
+                <strong>${fullName}</strong><br>
+                Email: ${addr.email || 'N/A'}<br>
+                Phone: ${addr.phone || 'N/A'} ${addr.secondaryPhone ? ` / ${addr.secondaryPhone}` : ''}<br>
+                Address: ${addr.houseNo ? addr.houseNo + ', ' : ''}${addr.addr || ''}<br>
+                ${addr.landmark ? 'Landmark: ' + addr.landmark + '<br>' : ''}
+                ${addr.city ? addr.city + ', ' : ''}${addr.district ? addr.district + ', ' : ''}${addr.state || 'Kerala'} ${addr.pin ? '- ' + addr.pin : ''}
+              </div>
+            </div>
+
+            <!-- PAYMENT & ORDER DETAILS -->
+            <div class="info-card info-box">
+              <div class="info-box-title">💳 PAYMENT & ORDER STATUS</div>
+              <div class="info-box-content">
+                Payment Method: <strong>${payMethod}</strong><br>
+                Payment Status: <span class="pay-status-tag ${payStatus}">${payStatus}</span><br>
+                Order Fulfillment: <strong style="color:#2563eb;">${(o.status || 'ordered').toUpperCase()}</strong><br>
+                ${o.razorpayPaymentId ? `Razorpay Payment ID: <strong>${o.razorpayPaymentId}</strong><br>` : ''}
+                ${o.razorpayOrderId ? `Razorpay Order ID: <strong>${o.razorpayOrderId}</strong><br>` : ''}
+                GSTIN: <strong>32ABCDE1234F1Z5</strong>
+              </div>
+            </div>
+          </div>
+
+          <!-- PRODUCTS DETAILS TABLE -->
+          <div style="font-size:12px; font-weight:800; letter-spacing:1px; text-transform:uppercase; color:#0f172a; margin-bottom:12px;">
+            🛒 ORDERED PRODUCTS SUMMARY
+          </div>
+          <table class="items-table">
+            <thead>
+              <tr>
+                <th style="border-top-left-radius: 8px; width: 40px;">#</th>
+                <th style="text-align: left;">Product Name & Description</th>
+                <th style="width: 70px; text-align: center;">Qty</th>
+                <th style="width: 120px; text-align: right;">Unit Price</th>
+                <th style="border-top-right-radius: 8px; width: 130px; text-align: right;">Total Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${itemsHTML}
+            </tbody>
+          </table>
+
+          <!-- AMOUNT DETAILS / SUMMARY -->
+          <div class="summary-wrapper">
+            <div class="summary-card">
+              <div class="summary-row">
+                <span>Subtotal:</span>
+                <span>&#8377;${subtotal.toLocaleString('en-IN')}</span>
+              </div>
+              <div class="summary-row">
+                <span>Shipping Fee:</span>
+                <span>${shipping === 0 ? 'FREE' : '&#8377;' + shipping.toLocaleString('en-IN')}</span>
+              </div>
+              ${bundleDisc > 0 ? `
+                <div class="summary-row discount">
+                  <span>${o.bundleLabel || 'Bundle Savings'}:</span>
+                  <span>- &#8377;${bundleDisc.toLocaleString('en-IN')}</span>
+                </div>
+              ` : ''}
+              ${couponDisc > 0 ? `
+                <div class="summary-row discount">
+                  <span>Coupon Discount:</span>
+                  <span>- &#8377;${couponDisc.toLocaleString('en-IN')}</span>
+                </div>
+              ` : ''}
+              <div class="summary-row grand-total">
+                <span>Grand Total:</span>
+                <span>&#8377;${grandTotal.toLocaleString('en-IN')}</span>
+              </div>
+              <div style="font-size: 10px; color: #94a3b8; text-align: right; margin-top: 4px;">
+                (Inclusive of all taxes)
+              </div>
+            </div>
+          </div>
+
         </div>
-        <div style="font-size: 0.7rem; color: #7f9bb0;">
-          GSTIN: 32ABCDE1234F1Z5
+
+        <!-- FOOTER -->
+        <div class="inv-footer">
+          Thank you for choosing <strong>AlphaDetail</strong>! Drive with confidence, shine with pride.<br>
+          This is an official computer-generated Tax Invoice and does not require a physical signature.
         </div>
       </div>
-    </div>
 
-    <div class="footer-thanks">
-       Thank you for choosing AlphaDetail, drive with confidence, shine with pride.<br>
-      This is a digitally generated invoice and does not require a physical signature.
-    </div>
-  </div>
-
-  <div class="print-actions">
-    <button class="btn-print no-print" onclick="window.print();"> Print / Save as PDF</button>
-  </div>
-</div>
-
-<script>
-  // (optional) Auto adjust for missing bundleLabel / fallback values – but template is robust
-  window.onload = function() {
-    // ensure any missing label defaults if needed
-    if (typeof lastOrder !== 'undefined' && lastOrder && !lastOrder.bundleLabel && lastOrder.bundleDiscount > 0) {
-      // In case dynamic label missing, but we already have a fallback inside template
-      // This is just a graceful client side safe check (no action required)
-    }
-    // Any interactive polish: nothing heavy
-    console.log("Professional Invoice Ready");
-    setTimeout(() => { window.print(); }, 800);
-  };
-</script>
-
-</body>
-</html>
-  `;
+      <script>
+        window.onload = function() {
+          setTimeout(function() { window.print(); }, 600);
+        };
+      </script>
+    </body>
+    </html>`;
 
     w.document.open();
     w.document.write(html);

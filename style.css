@@ -2009,6 +2009,62 @@ header.scrolled {
   letter-spacing: 1.5px;
 }
 
+.pd-qty-add-wrap {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.pd-qty-ctrl {
+  display: flex;
+  align-items: center;
+  background: var(--mid, #111);
+  border: 1px solid #2a2a2a;
+  height: 54px;
+  box-sizing: border-box;
+}
+
+.pd-qty-btn {
+  width: 44px;
+  height: 100%;
+  background: #181818;
+  border: none;
+  color: var(--white, #fff);
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all .2s;
+  user-select: none;
+}
+
+.pd-qty-btn:hover {
+  background: var(--gold);
+  color: var(--black);
+}
+
+.pd-qty-input {
+  width: 44px;
+  height: 100%;
+  background: transparent;
+  border: none;
+  color: var(--white, #fff);
+  font-size: 14px;
+  text-align: center;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 700;
+  outline: none;
+  -moz-appearance: textfield;
+}
+
+.pd-qty-input::-webkit-outer-spin-button,
+.pd-qty-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
 .pd-add {
   background: var(--gold);
   color: var(--black);
@@ -2021,7 +2077,9 @@ header.scrolled {
   cursor: pointer;
   font-family: 'DM Sans', sans-serif;
   transition: all .4s;
-  width: 100%;
+  flex: 1;
+  height: 54px;
+  box-sizing: border-box;
 }
 
 .pd-add:hover {

@@ -397,7 +397,15 @@
 
               <div class="pd-action">
                 <div class="pd-ml">Standard Bottle · 473ml</div>
-                <button class="pd-add" id="pdAddBtn">Add to Cart →</button>
+                <div class="pd-qty-add-wrap">
+                  <div class="pd-qty-ctrl">
+                  <button class="pd-add" id="pdAddBtn">Add to Cart →</button>
+
+                    <button type="button" class="pd-qty-btn" id="pdQtyMinus" onclick="changePdQty(-1)">−</button>
+                    <input type="number" id="pdQtyInput" class="pd-qty-input" value="1" min="1" readonly>
+                    <button type="button" class="pd-qty-btn" id="pdQtyPlus" onclick="changePdQty(1)">+</button>
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -556,8 +564,8 @@
               <div class="pay-opts">
               <label class="pay-opt" id="pm-cod" onclick="selPM(this,'cod')"><input type="radio" name="pm"><span class="pay-lbl">Cash on Delivery</span><span class="pay-icon"><i class="fa-solid fa-money-bill-wave"></i></span></label>
               <label class="pay-opt sel" id="pm-upi" onclick="selPM(this,'upi')"><input type="radio" name="pm" checked><span class="pay-lbl">UPI / PhonePe / GPay</span><span class="pay-icon"><i class="fa-solid fa-mobile-screen-button"></i></span></label>
-              <label class="pay-opt" id="pm-card" onclick="selPM(this,'card')"><input type="radio" name="pm"><span class="pay-lbl">Credit / Debit Card</span><span class="pay-icon"><i class="fa-solid fa-credit-card"></i></span></label>
-              <label class="pay-opt" id="pm-nb" onclick="selPM(this,'nb')"><input type="radio" name="pm"><span class="pay-lbl">Net Banking</span><span class="pay-icon"><i class="fa-solid fa-building-columns"></i></span></label>
+              <!-- <label class="pay-opt" id="pm-card" onclick="selPM(this,'card')"><input type="radio" name="pm"><span class="pay-lbl">Credit / Debit Card</span><span class="pay-icon"><i class="fa-solid fa-credit-card"></i></span></label> -->
+              <!-- <label class="pay-opt" id="pm-nb" onclick="selPM(this,'nb')"><input type="radio" name="pm"><span class="pay-lbl">Net Banking</span><span class="pay-icon"><i class="fa-solid fa-building-columns"></i></span></label> -->
               </div>
               <div id="upiF" style="display:none;margin-top:13px;"><div class="fg"><label class="fl">UPI ID</label><input class="fi" placeholder="name@upi"></div></div>
               <div id="cardF" style="display:none;margin-top:13px;">
@@ -584,8 +592,8 @@
             </div>
             <div class="fe" id="chkGlobalE" style="font-size:12px;margin-top:12px;"></div>
             <button class="place-btn" onclick="placeOrder()">Place Order →</button>
-            <button class="place-btn wa-btn" onclick="orderViaWhatsApp()">Order through WhatsApp <i
-                class="fa-brands fa-whatsapp"></i></button>
+            <!-- <button class="place-btn wa-btn" onclick="orderViaWhatsApp()">Order through WhatsApp <i
+                class="fa-brands fa-whatsapp"></i></button> -->
 
           </div>
         </div>

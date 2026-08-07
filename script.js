@@ -267,6 +267,9 @@ if (!pg) {
     const mw = document.getElementById('pdMainWrap');
     mw.innerHTML = makeImgHTML(p.id, p.name);
 
+    const pdQtyInput = document.getElementById('pdQtyInput');
+    if (pdQtyInput) pdQtyInput.value = 1;
+
     const addBtn = document.getElementById('pdAddBtn');
     if (p.inStock === false) {
       addBtn.textContent = 'Sold Out';
@@ -277,7 +280,10 @@ if (!pg) {
       addBtn.textContent = 'Add to Cart';
       addBtn.style.opacity = '1';
       addBtn.style.cursor = 'pointer';
-      addBtn.onclick = () => { addToCart(p.id); };
+      addBtn.onclick = () => {
+        const qtyVal = parseInt(document.getElementById('pdQtyInput')?.value, 10) || 1;
+        addToCart(p.id, qtyVal);
+      };
     }
 
     document.getElementById('pdUsage').innerHTML = (p.howToUse && p.howToUse.length > 0) ?
@@ -287,21 +293,31 @@ if (!pg) {
     showPage('product');
   };
 
+  window.changePdQty = function (delta) {
+    const input = document.getElementById('pdQtyInput');
+    if (!input) return;
+    let current = parseInt(input.value, 10) || 1;
+    current = Math.max(1, current + delta);
+    input.value = current;
+  };
+
   // ══ CART ══
-  window.addToCart = function (id) {
+  window.addToCart = function (id, qtyToAdd = 1) {
     const p = PRODS.find(x => x.id === id);
     if (!p) return;
     if (p.inStock === false) {
       return toast(p.name + ' is Out of Stock', { type: 'error', icon: 'fa-solid fa-circle-xmark' });
     }
+    const quantity = Math.max(1, parseInt(qtyToAdd, 10) || 1);
     const ex = cart.find(c => c.id === id);
     if (ex) {
-      ex.qty++;
+      ex.qty += quantity;
     } else {
-      cart.push({ id: p.id, name: p.name, sub: p.sub, price: p.price, img: p.id, qty: 1 });
+      cart.push({ id: p.id, name: p.name, sub: p.sub, price: p.price, img: p.id, qty: quantity });
     }
     updateBadge();
-    toast(p.name + ' added to cart', {
+    const msg = quantity > 1 ? `${quantity}x ${p.name} added to cart` : `${p.name} added to cart`;
+    toast(msg, {
       type: 'success', icon: 'fa-solid fa-circle-check',
       action: { label: 'View Cart →', onClick: "showPage('cart')" }
     });

@@ -729,6 +729,29 @@ function getShipping() {
     }
   }
 
+  window.switchProfileTab = function (tabName) {
+    document.querySelectorAll('.prof-nav-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.tab === tabName);
+    });
+    document.querySelectorAll('.prof-tab-content').forEach(content => {
+      content.classList.remove('active');
+    });
+    const targetId = tabName === 'orders' ? 'profTabOrders' : 'profTabDetails';
+    const activeTab = document.getElementById(targetId);
+    if (activeTab) {
+      activeTab.classList.add('active');
+    }
+  };
+
+  window.showProfileTab = function (tabName) {
+    showPage('profile');
+    switchProfileTab(tabName);
+    const profMain = document.querySelector('.prof-main');
+    if (profMain) {
+      profMain.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
+
   async function renderProfile() {
     if (!currentUser) return showPage('login');
     document.getElementById('profName').textContent = currentUser.firstName + (currentUser.lastName ? ' ' + currentUser.lastName : '');
@@ -1599,7 +1622,7 @@ function getShipping() {
           border: 1px solid #e2e8f0;
         }
         .inv-header {
-          background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+          background: linear-gradient(135deg, #ffffffff 0%rgba(255, 255, 255, 1)3b 100%);
           color: #ffffff;
           padding: 30px 40px;
           display: flex;
@@ -1613,7 +1636,7 @@ function getShipping() {
           font-size: 26px;
           font-weight: 800;
           letter-spacing: 1px;
-          color: #ffffff;
+          color: #1f1f1fff;
         }
         .brand-sub {
           font-size: 11px;
@@ -1639,12 +1662,12 @@ function getShipping() {
           font-family: 'Outfit', sans-serif;
           font-size: 18px;
           font-weight: 700;
-          color: #f8fafc;
+          color: #1c1c1cff;
           margin-top: 6px;
         }
         .ord-date {
           font-size: 12px;
-          color: #cbd5e1;
+          color: #1c1c1c;
         }
         .inv-body {
           padding: 40px;
@@ -1790,7 +1813,7 @@ function getShipping() {
     <body>
 
       <div class="no-print-bar">
-        <button class="btn-print-now" onclick="window.print()">🖨️ Print / Save as PDF</button>
+        <button class="btn-print-now" onclick="window.print()"> Print / Save as PDF</button>
       </div>
 
       <div class="invoice-card">

@@ -646,12 +646,9 @@
         style="padding: 14px 28px; background: none; border: 1px solid #333; color: #fff; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; cursor: pointer;"
         onclick="printOrder()"><i class="fa-solid fa-file-invoice" style="margin-right: 8px;"></i> Download
         Invoice</button>
-      <!-- <button class="btn-o" id="waSuccessBtn"
-        style="padding: 14px 28px; background: #25D366; color: #fff; border: none; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; display: flex; align-items: center; gap: 8px;"><i
-          class="fa-brands fa-whatsapp"></i> WhatsApp Status</button> -->
       <button class="btn-o"
         style="padding: 14px 28px; background: none; border: 1px solid #333; color: #fff; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; cursor: pointer;"
-        onclick="showPage('profile')">Track Order</button>
+        onclick="showProfileTab('orders')">Track Order</button>
     </div>
   </div>
   <!-- ════════════ LOGIN PAGE ════════════ -->
@@ -716,10 +713,8 @@
             placeholder="Repeat password">
           <div class="fe" id="rConfE">Passwords do not match</div>
         </div>
-        <div class="fcheck"><input type="checkbox" id="rTerms"><label for="">I agree to the <a
-              onclick="showPage('privacy')"
-              style="color:var(--gold); text-decoration:underline; cursor:pointer;">Privacy & policy</a></label></div>
-        <div class="fe" id="rTermsE" style="margin-top:-8px;margin-bottom:12px;">Please accept the terms</div>
+        <div class="fcheck"><input type="checkbox" id="agree"><label for="agree">I agree to the <a
+              onclick="showPage('privacy')">Terms &amp; Privacy Policy</a></label></div>
         <button class="auth-sub-btn" id="regBtn" onclick="doRegister()">Create Account →</button>
         <div class="auth-div"><span>or</span></div>
         <div class="auth-switch">Already have an account? <a onclick="showPage('login')">Sign in →</a></div>
@@ -753,90 +748,104 @@
               <div class="ps-lbl">Orders Placed</div>
             </div>
           </div>
+          <div class="prof-nav-menu">
+            <button class="prof-nav-btn active" data-tab="details" onclick="switchProfileTab('details')">
+              <i class="fa-solid fa-user"></i> Personal Details
+            </button>
+            <button class="prof-nav-btn" data-tab="orders" onclick="switchProfileTab('orders')">
+              <i class="fa-solid fa-box-open"></i> Order Details
+            </button>
+          </div>
           <button class="mob-item" style="border:none;background:var(--mid);margin-top:12px;padding-left:20px;"
             onclick="doLogout()">Sign Out ⬅</button>
         </div>
         <div class="prof-main">
-          <div class="chk-form"
-            style="margin-top:0; padding:24px; background:var(--grey); border:1px solid var(--border); margin-bottom:40px;">
-            <div class="chk-sec-h" style="margin-top:0;">Personal Details</div>
-            <div class="fg2">
-              <div class="fg"><label class="fl">First Name *</label><input class="fi" id="pFirst"
-                  placeholder="First Name">
-                <div class="fe" id="pFirstE">Required</div>
-              </div>
-              <div class="fg"><label class="fl">Last Name</label><input class="fi" id="pLast" placeholder="Last Name">
-                <div class="fe" id="pLastE">Required</div>
-              </div>
-            </div>
-            <div class="fg"><label class="fl">Email Address *</label><input class="fi" id="pEmail" type="email"
-                placeholder="Email" readonly style="background:var(--mid); cursor:not-allowed; opacity:0.8;">
-              <div class="fe" id="pEmailE">Valid email required</div>
-            </div>
-            <div class="fg2">
-              <div class="fg">
-                <label class="fl">Phone *</label>
-                <div style="display:flex; gap:5px;">
-                  <input class="fi" id="pPhoneCode" style="width:70px;" value="+91" placeholder="+91">
-                  <input class="fi" id="pPhone" type="tel" placeholder="Phone" style="flex:1;" maxlength="10"
-                    oninput="this.value=this.value.replace(/\D/g,'')">
+          <!-- TAB 1: PERSONAL DETAILS -->
+          <div class="prof-tab-content active" id="profTabDetails">
+            <div class="chk-form"
+              style="margin-top:0; padding:24px; background:var(--grey); border:1px solid var(--border); margin-bottom:40px;">
+              <div class="chk-sec-h" style="margin-top:0;">Personal Details</div>
+              <div class="fg2">
+                <div class="fg"><label class="fl">First Name *</label><input class="fi" id="pFirst"
+                    placeholder="First Name">
+                  <div class="fe" id="pFirstE">Required</div>
                 </div>
-                <div class="fe" id="pPhoneE">Required (10 digits)</div>
+                <div class="fg"><label class="fl">Last Name</label><input class="fi" id="pLast" placeholder="Last Name">
+                  <div class="fe" id="pLastE">Required</div>
+                </div>
               </div>
-              <div class="fg"><label class="fl">Secondary Phone</label><input class="fi" id="pSecondaryPhone" type="tel"
-                  placeholder="Optional" maxlength="10" oninput="this.value=this.value.replace(/\D/g,'')"></div>
-            </div>
-            <div class="fg2">
-              <div class="fg"><label class="fl">Country *</label><input class="fi" id="pCountry" value="India">
-                <div class="fe" id="pCountryE">Required</div>
+              <div class="fg"><label class="fl">Email Address *</label><input class="fi" id="pEmail" type="email"
+                  placeholder="Email" readonly style="background:var(--mid); cursor:not-allowed; opacity:0.8;">
+                <div class="fe" id="pEmailE">Valid email required</div>
               </div>
-              <div class="fg"><label class="fl">State *</label><input class="fi" id="pState" value="Kerala">
-                <div class="fe" id="pStateE">Required</div>
+              <div class="fg2">
+                <div class="fg">
+                  <label class="fl">Phone *</label>
+                  <div style="display:flex; gap:5px;">
+                    <input class="fi" id="pPhoneCode" style="width:70px;" value="+91" placeholder="+91">
+                    <input class="fi" id="pPhone" type="tel" placeholder="Phone" style="flex:1;" maxlength="10"
+                      oninput="this.value=this.value.replace(/\D/g,'')">
+                  </div>
+                  <div class="fe" id="pPhoneE">Required (10 digits)</div>
+                </div>
+                <div class="fg"><label class="fl">Secondary Phone</label><input class="fi" id="pSecondaryPhone" type="tel"
+                    placeholder="Optional" maxlength="10" oninput="this.value=this.value.replace(/\D/g,'')"></div>
               </div>
-            </div>
+              <div class="fg2">
+                <div class="fg"><label class="fl">Country *</label><input class="fi" id="pCountry" value="India">
+                  <div class="fe" id="pCountryE">Required</div>
+                </div>
+                <div class="fg"><label class="fl">State *</label><input class="fi" id="pState" value="Kerala">
+                  <div class="fe" id="pStateE">Required</div>
+                </div>
+              </div>
 
+              <div class="hr" style="margin:20px 0;"></div>
+              <div class="chk-sec-h" style="margin-top:0;">Delivery Address</div>
 
-            <div class="hr" style="margin:20px 0;"></div>
-            <div class="chk-sec-h" style="margin-top:0;">Delivery Address</div>
+              <div class="fg2">
+                <div class="fg"><label class="fl">Flat / House No. *</label><input class="fi" id="pHouse"
+                    placeholder="Flat No.">
+                  <div class="fe" id="pHouseE">Required</div>
+                </div>
+                <div class="fg"><label class="fl">Area / Street *</label><input class="fi" id="pAddr"
+                    placeholder="Street Address">
+                  <div class="fe" id="pAddrE">Required</div>
+                </div>
+              </div>
+              <div class="fg"><label class="fl">Landmark</label><input class="fi" id="pLandmark" placeholder="Near ...">
+              </div>
 
-            <div class="fg2">
-              <div class="fg"><label class="fl">Flat / House No. *</label><input class="fi" id="pHouse"
-                  placeholder="Flat No.">
-                <div class="fe" id="pHouseE">Required</div>
+              <div class="fg2">
+                <div class="fg"><label class="fl">City *</label><input class="fi" id="pCity" placeholder="City">
+                  <div class="fe" id="pCityE">Required</div>
+                </div>
+                <div class="fg"><label class="fl">District *</label><input class="fi" id="pDistrict"
+                    placeholder="District">
+                  <div class="fe" id="pDistrictE">Required</div>
+                </div>
+                <div class="fg"><label class="fl">PIN Code *</label><input class="fi" id="pPin" placeholder="682xxx"
+                    maxlength="6" oninput="this.value=this.value.replace(/\D/g,'')">
+                  <div class="fe" id="pPinE">Required (6 digits)</div>
+                </div>
               </div>
-              <div class="fg"><label class="fl">Area / Street *</label><input class="fi" id="pAddr"
-                  placeholder="Street Address">
-                <div class="fe" id="pAddrE">Required</div>
-              </div>
+              <button class="place-btn" onclick="updateProfile()" id="profUpdateBtn" style="margin-top:20px;">Save Profile
+                Changes</button>
             </div>
-            <div class="fg"><label class="fl">Landmark</label><input class="fi" id="pLandmark" placeholder="Near ...">
-            </div>
-
-            <div class="fg2">
-              <div class="fg"><label class="fl">City *</label><input class="fi" id="pCity" placeholder="City">
-                <div class="fe" id="pCityE">Required</div>
-              </div>
-              <div class="fg"><label class="fl">District *</label><input class="fi" id="pDistrict"
-                  placeholder="District">
-                <div class="fe" id="pDistrictE">Required</div>
-              </div>
-              <div class="fg"><label class="fl">PIN Code *</label><input class="fi" id="pPin" placeholder="682xxx"
-                  maxlength="6" oninput="this.value=this.value.replace(/\D/g,'')">
-                <div class="fe" id="pPinE">Required (6 digits)</div>
-              </div>
-            </div>
-            <button class="place-btn" onclick="updateProfile()" id="profUpdateBtn" style="margin-top:20px;">Save Profile
-              Changes</button>
           </div>
 
-          <div class="chk-sec-h" style="margin-top:0;">My Order History</div>
-          <div id="profOrdersList" class="prof-orders-list">
-            <div class="cart-empty" style="padding:40px 0;">
-              <div class="ce-icon" style="font-size:30px;"><i class="fa-solid fa-box-open"></i></div>
-              <div class="ce-title" style="font-size:18px;">No orders yet</div><button class="btn-o"
-                onclick="showPage('shop')">Start Shopping</button>
+          <!-- TAB 2: ORDER DETAILS & HISTORY -->
+          <div class="prof-tab-content" id="profTabOrders">
+            <div class="chk-sec-h" style="margin-top:0;">Order Details &amp; History</div>
+            <div id="profOrdersList" class="prof-orders-list">
+              <div class="cart-empty" style="padding:40px 0;">
+                <div class="ce-icon" style="font-size:30px;"><i class="fa-solid fa-box-open"></i></div>
+                <div class="ce-title" style="font-size:18px;">No orders yet</div><button class="btn-o"
+                  onclick="showPage('shop')">Start Shopping</button>
+              </div>
             </div>
           </div>
+        </div>
         </div>
       </div>
     </div>

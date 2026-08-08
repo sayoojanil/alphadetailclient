@@ -1,8 +1,10 @@
 (function () {
   'use strict';
 
-  // const API_BASE = 'http://localhost:5000/api';
-  const API_BASE = 'https://alphadetailserver.vercel.app/api';
+  // ── API Base ─────────────────────────────────────────────────────────
+  // Resolved from config.js (window.ENV). Never hardcode URLs here.
+  const API_BASE = (window.ENV && window.ENV.API_BASE);
+
 
 
   // ══ LOADER HELPERS ══
@@ -33,6 +35,7 @@
   let cart = JSON.parse(localStorage.getItem('alphaCart') || '[]');
   let currentUser = null, redirectAfterAuth = null;
   let PRODS = [];
+  let KITS = { starter: null, pro: null };
   let filteredProds = [];
   let cartBundleDiscount = 0;
   let cartBundleLabel = '';
@@ -91,6 +94,62 @@
     }
   }
 
+  // ══ FETCH & RENDER BUNDLE KITS FROM BACKEND ══
+  function fmt(n) { return '₹' + Math.round(n).toLocaleString('en-IN'); }
+
+  async function fetchKits() {
+    try {
+      const data = await apiReq('/products/kits');
+      if (!data || !data.starter || !data.pro) return;
+      KITS = data;
+
+      // ── Render Starter Kit ──
+      const sName = document.getElementById('starterKitName');
+      const sTagline = document.getElementById('starterKitTagline');
+      const sItems = document.getElementById('starterKitItems');
+      const sOriginal = document.getElementById('starterKitOriginal');
+      const sDiscTag = document.getElementById('starterKitDiscTag');
+      const sPrice = document.getElementById('starterKitPrice');
+      const sSave = document.getElementById('starterKitSave');
+
+      if (sName) sName.textContent = data.starter.name;
+      if (sTagline) sTagline.textContent = data.starter.tagline;
+      if (sItems) {
+        sItems.innerHTML = data.starter.items.map(item =>
+          `<li>${item.name} — ${item.sub} · ${item.ml} <span class="kit-item-price">${fmt(item.price)}</span></li>`
+        ).join('');
+      }
+      if (sOriginal) sOriginal.textContent = fmt(data.starter.subtotal);
+      if (sDiscTag) sDiscTag.textContent = data.starter.discountTag;
+      if (sPrice) sPrice.textContent = fmt(data.starter.total);
+      if (sSave) sSave.textContent = `You save ${fmt(data.starter.discount)} automatically`;
+
+      // ── Render Pro Kit ──
+      const pName = document.getElementById('proKitName');
+      const pTagline = document.getElementById('proKitTagline');
+      const pItems = document.getElementById('proKitItems');
+      const pOriginal = document.getElementById('proKitOriginal');
+      const pDiscTag = document.getElementById('proKitDiscTag');
+      const pPrice = document.getElementById('proKitPrice');
+      const pSave = document.getElementById('proKitSave');
+
+      if (pName) pName.textContent = data.pro.name;
+      if (pTagline) pTagline.textContent = data.pro.tagline;
+      if (pItems) {
+        pItems.innerHTML = data.pro.items.map(item =>
+          `<li>${item.name} — ${item.sub} · ${item.ml} <span class="kit-item-price">${fmt(item.price)}</span></li>`
+        ).join('');
+      }
+      if (pOriginal) pOriginal.textContent = fmt(data.pro.subtotal);
+      if (pDiscTag) pDiscTag.textContent = data.pro.discountTag;
+      if (pPrice) pPrice.textContent = fmt(data.pro.total);
+      if (pSave) pSave.textContent = `You save ${fmt(data.pro.discount)} automatically`;
+
+    } catch (e) {
+      console.error('Failed to fetch kit data from server', e);
+    }
+  }
+
   function updateFilterCounts() {
     const tabs = document.querySelectorAll('.ftab');
     tabs.forEach(tab => {
@@ -105,7 +164,25 @@
       tab.textContent = `${label} (${count})`;
     });
   }
+  window.togglePassword = function (inputId, btn) {
+    const input = document.getElementById(inputId);
+    if (!input) return;
+    const icon = btn ? btn.querySelector("i") : null;
 
+    if (input.type === "password") {
+      input.type = "text";
+      if (icon) {
+        icon.classList.remove("fa-eye");
+        icon.classList.add("fa-eye-slash");
+      }
+    } else {
+      input.type = "password";
+      if (icon) {
+        icon.classList.remove("fa-eye-slash");
+        icon.classList.add("fa-eye");
+      }
+    }
+  };
   // ══ IMAGE HELPERS ══
   function makeImgHTML(prodId, alt, style) {
     const p = PRODS.find(x => x.id === prodId);
@@ -337,13 +414,14 @@ if (!pg) {
   window.addBundleToCart = function (type) {
     let bundleItems = [];
     if (type === 'starter') {
-      bundleItems = ['nano', 'gleam', 'cabin', 'surface'];
-      cartBundleDiscount = 0.05;
-      cartBundleLabel = 'Starter Kit Discount (5%)';
+      // Use fetched kit data if available, fall back to static IDs
+      bundleItems = KITS.starter ? KITS.starter.items.map(i => i.id) : ['nano', 'gleam', 'cabin', 'surface'];
+      cartBundleDiscount = KITS.starter ? KITS.starter.discountRate : 0.05;
+      cartBundleLabel = KITS.starter ? KITS.starter.discountLabel : 'Starter Kit Discount (5%)';
     } else if (type === 'pro') {
-      bundleItems = PRODS.map(p => p.id);
-      cartBundleDiscount = 0.10;
-      cartBundleLabel = 'Pro Kit Discount (10%)';
+      bundleItems = KITS.pro ? KITS.pro.items.map(i => i.id) : PRODS.map(p => p.id);
+      cartBundleDiscount = KITS.pro ? KITS.pro.discountRate : 0.10;
+      cartBundleLabel = KITS.pro ? KITS.pro.discountLabel : 'Pro Kit Discount (10%)';
     }
 
     for (const id of bundleItems) {
@@ -394,9 +472,10 @@ if (!pg) {
     if (PRODS.length === 0) return false;
     return PRODS.every(p => cart.some(c => c.id === p.id));
   }
-  const STARTER_IDS = ['nano', 'gleam', 'cabin', 'surface'];
+  const STARTER_IDS = ['nano', 'gleam', 'cabin', 'surface']; // fallback if KITS not loaded
+  function getStarterIds() { return KITS.starter ? KITS.starter.items.map(i => i.id) : STARTER_IDS; }
   function isStarterKitCart() {
-    return STARTER_IDS.every(id => cart.some(c => c.id === id)) && !isProKitCart();
+    return getStarterIds().every(id => cart.some(c => c.id === id)) && !isProKitCart();
   }
 function getShipping() {
   return 0;
@@ -409,7 +488,7 @@ function getShipping() {
     toast('Alpha Pro Kit removed', { type: 'info' });
   };
   window.removeStarterKit = function() {
-    cart = cart.filter(c => !STARTER_IDS.includes(c.id));
+    cart = cart.filter(c => !getStarterIds().includes(c.id));
     updateBadge(); renderCart();
     toast('Alpha Starter Kit removed', { type: 'info' });
   };
@@ -799,10 +878,10 @@ function getShipping() {
       }
 
       const groups = {
-        'upi': { name: 'UPI PAYMENTS', icon: 'fa-mobile-screen-button', list: [] },
+        'upi': { name: 'UPI PAYMENTS',list: [] },
         'nb': { name: 'NET BANKING', icon: 'fa-building-columns', list: [] },
-        'card': { name: 'CARD PAYMENTS', icon: 'fa-credit-card', list: [] },
-        'cod': { name: 'CASH ON DELIVERY', icon: 'fa-money-bill-wave', list: [] },
+        'card': { name: 'CARD PAYMENTS', list: [] },
+        'cod': { name: 'CASH ON DELIVERY', list: [] },
         'razorpay': { name: 'RAZORPAY ORDERS', icon: 'fa-credit-card', list: [] }
       };
 
@@ -1233,101 +1312,207 @@ function getShipping() {
     return isValid;
   }
 
-  window.placeOrder = async function () {
-    if (!currentUser) {
-      redirectAfterAuth = 'checkout';
-      showPage('login');
-      toast('Please sign in to place your order', { type: 'info', icon: 'fa-solid fa-user-lock' });
-      return;
+  // ══ PLACE ORDER BUTTON LOADER ══
+function setPlaceOrderLoading(loading) {
+  const btn = document.querySelector('.place-btn');
+  if (!btn) return;
+
+  if (loading) {
+    if (!btn.dataset.originalText) {
+      btn.dataset.originalText = btn.innerHTML;
     }
 
-    if (!validateCheckoutData()) return;
+    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processing...';
+    btn.disabled = true;
+    btn.style.pointerEvents = 'none';
+    btn.style.opacity = '0.7';
+    btn.style.cursor = 'not-allowed';
+  } else {
+    btn.innerHTML = btn.dataset.originalText || 'Place Order →';
+    btn.disabled = false;
+    btn.style.pointerEvents = '';
+    btn.style.opacity = '';
+    btn.style.cursor = '';
+    delete btn.dataset.originalText;
+  }
+}
 
-    const sub = getSubtotal(), total = getFinalTotal();
-    const addr = {
-      first: document.getElementById('cFirst').value,
-      email: document.getElementById('cEmail').value,
-      phone: document.getElementById('cPhone').value,
-      phoneCode: document.getElementById('cPhoneCode').value,
-      secondaryPhone: document.getElementById('cSecondaryPhone').value,
-      country: document.getElementById('cCountry').value,
-      houseNo: document.getElementById('cHouse').value,
-      addr: document.getElementById('cAddr').value,
-      landmark: document.getElementById('cLandmark').value,
-      city: document.getElementById('cCity').value,
+  window.placeOrder = async function () {
+  if (!currentUser) {
+    redirectAfterAuth = 'checkout';
+    showPage('login');
+    toast('Please sign in to place your order', {
+      type: 'info',
+      icon: 'fa-solid fa-user-lock'
+    });
+    return;
+  }
 
-      district: document.getElementById('cDistrict').value,
-      pin: document.getElementById('cPin').value,
-      state: document.getElementById('cState').value
+  // Validate BEFORE showing loading
+  if (!validateCheckoutData()) return;
+
+  // Start button loading
+  setPlaceOrderLoading(true);
+
+  const sub = getSubtotal();
+  const total = getFinalTotal();
+
+  const addr = {
+    first: document.getElementById('cFirst').value,
+    email: document.getElementById('cEmail').value,
+    phone: document.getElementById('cPhone').value,
+    phoneCode: document.getElementById('cPhoneCode').value,
+    secondaryPhone: document.getElementById('cSecondaryPhone').value,
+    country: document.getElementById('cCountry').value,
+    houseNo: document.getElementById('cHouse').value,
+    addr: document.getElementById('cAddr').value,
+    landmark: document.getElementById('cLandmark').value,
+    city: document.getElementById('cCity').value,
+    district: document.getElementById('cDistrict').value,
+    pin: document.getElementById('cPin').value,
+    state: document.getElementById('cState').value
+  };
+
+  // Detect payment method
+  const method =
+    document.querySelector('input[name="pm"]:checked')
+      ?.parentElement?.id?.split('-')[1] || 'cod';
+
+  // COD
+  if (method === 'cod') {
+    try {
+      await saveOrder(
+        null,
+        null,
+        null,
+        'cod',
+        'pending',
+        addr
+      );
+    } finally {
+      setPlaceOrderLoading(false);
+    }
+
+    return;
+  }
+
+  const finalMethod = method;
+
+  // Razorpay
+  try {
+    const rOrder = await apiReq('/payments/create-id', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        total: Number(total),
+        customer: {
+          name: addr.first,
+          email: addr.email,
+          phone: addr.phone
+        }
+      })
+    });
+
+    toggleLoader(true);
+
+    const opt = {
+      key: rOrder.key_id,
+      amount: rOrder.amount,
+      currency: "INR",
+      name: "AlphaDetail",
+      description: "Order Checkout",
+      order_id: rOrder.id,
+
+      handler: function (resp) {
+        toggleLoader(true);
+
+        apiReq('/payments/verify', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(resp)
+        })
+        .then(v => {
+          if (v.success) {
+            return saveOrder(
+              null,
+              rOrder.id,
+              resp.razorpay_payment_id,
+              finalMethod,
+              'paid',
+              addr
+            );
+          } else {
+            toggleLoader(false);
+            setPlaceOrderLoading(false);
+
+            toast(
+              'Payment verification failed. Please contact support.',
+              { type: 'error' }
+            );
+          }
+        })
+        .catch(err => {
+          toggleLoader(false);
+          setPlaceOrderLoading(false);
+
+          toast(
+            'Verification error: ' + err.message,
+            { type: 'error' }
+          );
+        })
+        .finally(() => {
+          setPlaceOrderLoading(false);
+        });
+      },
+
+      modal: {
+        ondismiss: function () {
+          toggleLoader(false);
+          setPlaceOrderLoading(false);
+
+          toast('Payment cancelled', {
+            type: 'info'
+          });
+        }
+      },
+
+      prefill: {
+        name: addr.first,
+        email: addr.email,
+        contact: addr.phone
+      },
+
+      theme: {
+        color: "#000000ff"
+      }
     };
 
-    // Detect Method
+    const rzp = new Razorpay(opt);
 
-    const method = document.querySelector('input[name="pm"]:checked')?.parentElement?.id?.split('-')[1] || 'cod';
+    rzp.open();
 
-    if (method === 'cod') {
-      return saveOrder(null, null, null, 'cod', 'pending', addr);
-    }
+    // Hide global loader after Razorpay opens
+    setTimeout(() => toggleLoader(false), 2000);
 
-    const finalMethod = method; // Use original detected method (upi, nb, card)
+  } catch (e) {
+    toggleLoader(false);
+    setPlaceOrderLoading(false);
 
-    // Razorpay Order Creation
-    try {
-      const rOrder = await apiReq('/payments/create-id', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          total: Number(total),
-          customer: { name: addr.first, email: addr.email, phone: addr.phone }
-        })
-      });
+    console.error('Payment Error:', e);
 
-      toggleLoader(true);
-
-      const opt = {
-        key: rOrder.key_id,
-        amount: rOrder.amount,
-        currency: "INR",
-        name: "AlphaDetail",
-        description: "Order Checkout",
-        order_id: rOrder.id,
-        handler: function (resp) {
-          // Modal is hidden as soon as this is called
-          toggleLoader(true);
-          apiReq('/payments/verify', {
-            method: 'POST', headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(resp)
-          }).then(v => {
-            if (v.success) {
-              saveOrder(null, rOrder.id, resp.razorpay_payment_id, finalMethod, 'paid', addr);
-            } else {
-              toggleLoader(false);
-              toast('Payment verification failed. Please contact support.', { type: 'error' });
-            }
-          }).catch(err => {
-            toggleLoader(false);
-            toast('Verification error: ' + err.message, { type: 'error' });
-          });
-        },
-        modal: {
-          ondismiss: function () {
-            toggleLoader(false);
-            toast('Payment cancelled', { type: 'info' });
-          }
-        },
-        prefill: { name: addr.first, email: addr.email, contact: addr.phone },
-        theme: { color: "#000000ff" }
-      };
-      const rzp = new Razorpay(opt);
-      rzp.open();
-      // Modal covers the screen now, don't hide loader yet as it looks weird flickering
-      setTimeout(() => toggleLoader(false), 2000);
-    } catch (e) {
-      toggleLoader(false);
-      console.error('Payment Error:', e);
-      toast('Payment initialization failed: ' + e.message, { type: 'error', icon: 'fa-solid fa-circle-exclamation' });
-    }
-  };
+    toast(
+      'Payment initialization failed: ' + e.message,
+      {
+        type: 'error',
+        icon: 'fa-solid fa-circle-exclamation'
+      }
+    );
+  }
+};
   
   window.orderViaWhatsApp = function () {
     if (cart.length === 0) return toast('Cart is empty!', { type: 'error', icon: 'fa-solid fa-cart-shopping' });
@@ -1565,371 +1750,392 @@ function getShipping() {
     if (!w) return toast('Pop-up blocked. Please allow pop-ups to view invoice.', { type: 'error' });
 
     const addr = o.address || {};
-    const fullName = `${addr.first || ''} ${addr.last || ''}`.trim() || 'Valued Customer';
-    const subtotal = o.subtotal || (o.items || []).reduce((acc, i) => acc + ((i.price || 0) * (i.qty || 1)), 0);
-    const shipping = o.shipping || 0;
-    const bundleDisc = o.bundleDiscount || 0;
-    const couponDisc = o.couponDiscount || o.discount || 0;
-    const grandTotal = o.total || (subtotal + shipping - bundleDisc - couponDisc);
+    const fullName = `${addr.first || ''} ${addr.last || ''}`.trim() || 'Customer';
+    const items = Array.isArray(o.items) ? o.items : [];
 
-    const itemsHTML = (o.items || []).map((item, index) => {
-      const itemTotal = (item.price || 0) * (item.qty || 1);
+    const subtotal = Number(o.subtotal ?? items.reduce(
+      (sum, item) => sum + ((Number(item.price) || 0) * (Number(item.qty) || 1)), 0
+    ));
+    const shipping = Number(o.shipping || 0);
+    const bundleDisc = Number(o.bundleDiscount || 0);
+    const couponDisc = Number(o.couponDiscount ?? o.discount ?? 0);
+    const totalDiscount = bundleDisc + couponDisc;
+    const grandTotal = Number(o.total ?? (subtotal + shipping - totalDiscount));
+
+    const money = (value) => `&#8377;${Math.round(Number(value) || 0).toLocaleString('en-IN')}`;
+    const safe = (value, fallback = '—') => {
+      const text = String(value ?? '').trim();
+      return text || fallback;
+    };
+
+    const itemsHTML = items.map((item, index) => {
+      const qty = Number(item.qty) || 1;
+      const unitPrice = Number(item.price) || 0;
+      const gross = unitPrice * qty;
+      const itemDiscount = Number(item.discount || 0);
+      const taxableValue = item.taxableValue != null
+        ? Number(item.taxableValue)
+        : (itemDiscount ? gross - itemDiscount : null);
+      const taxValue = item.tax != null ? Number(item.tax) : null;
+      const itemTotal = item.total != null
+        ? Number(item.total)
+        : (taxableValue != null && taxValue != null
+          ? taxableValue + taxValue
+          : (gross - itemDiscount));
+
       return `
         <tr>
-          <td style="padding: 12px; border-bottom: 1px solid #edf2f7; text-align: center; font-weight: 600; color: #718096;">${index + 1}</td>
-          <td style="padding: 12px; border-bottom: 1px solid #edf2f7;">
-            <div style="font-weight: 700; color: #2d3748; font-size: 14px;">${item.name || 'Product'}</div>
+          <td class="center">${index + 1}</td>
+          <td>
+            <div class="product-title">${safe(item.name, 'Product')}</div>
+            ${item.sub ? `<div class="product-sub">${safe(item.sub)}</div>` : ''}
+            ${item.hsn ? `<div class="product-meta">HSN/SAC: ${safe(item.hsn)}</div>` : ''}
           </td>
-          <td style="padding: 12px; border-bottom: 1px solid #edf2f7; text-align: center; font-weight: 600; color: #4a5568;">${item.qty || 1}</td>
-          <td style="padding: 12px; border-bottom: 1px solid #edf2f7; text-align: right; color: #4a5568;">&#8377;${(item.price || 0).toLocaleString('en-IN')}</td>
-          <td style="padding: 12px; border-bottom: 1px solid #edf2f7; text-align: right; font-weight: 700; color: #1a202c;">&#8377;${itemTotal.toLocaleString('en-IN')}</td>
+          <td class="center">${qty}</td>
+          <td class="amount">${money(gross)}</td>
+          <td class="amount">${itemDiscount ? '-' + money(itemDiscount) : money(0)}</td>
+          <td class="amount">${taxableValue != null ? money(taxableValue) : '—'}</td>
+          <td class="amount">${taxValue != null ? money(taxValue) : '—'}</td>
+          <td class="amount strong">${money(itemTotal)}</td>
         </tr>
       `;
     }).join('');
 
     const formattedDate = new Date(o.createdAt || Date.now()).toLocaleDateString('en-IN', {
-      day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit'
+      day: '2-digit', month: '2-digit', year: 'numeric'
+    });
+    const formattedOrderDate = new Date(o.createdAt || Date.now()).toLocaleDateString('en-IN', {
+      day: '2-digit', month: '2-digit', year: 'numeric'
     });
 
-    const payStatus = (o.paymentStatus || 'pending').toUpperCase();
-    const payMethod = (o.paymentMethod || 'COD').toUpperCase();
+    const payMethod = safe(o.paymentMethod, 'COD').toUpperCase();
+    const payStatus = safe(o.paymentStatus, 'PENDING').toUpperCase();
+    const sellerGSTIN = safe(o.sellerGSTIN || o.gstin, '—');
+    const invoiceNumber = safe(o.invoiceNumber, `INV-${o.orderNum || Date.now()}`);
+    const sellerName = safe(o.sellerName, 'AlphaDetail');
+    const sellerAddress = safe(
+      o.sellerAddress,
+      'Kerala, India'
+    );
 
     const html = `<!DOCTYPE html>
-    <html lang="en">
-    <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Tax Invoice #${o.orderNum} | AlphaDetail</title>
-      <link rel="preconnect" href="https://fonts.googleapis.com">
-      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-      <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
-      <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-          background: #f1f5f9;
-          font-family: 'Inter', -apple-system, sans-serif;
-          color: #1e293b;
-          padding: 30px 15px;
-          line-height: 1.5;
-        }
-        .invoice-card {
-          max-width: 900px;
-          margin: 0 auto;
-          background: #ffffff;
-          border-radius: 16px;
-          box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
-          overflow: hidden;
-          border: 1px solid #e2e8f0;
-        }
-        .inv-header {
-          background: linear-gradient(135deg, #ffffffff 0%rgba(255, 255, 255, 1)3b 100%);
-          color: #ffffff;
-          padding: 30px 40px;
-          display: flex;
-          justify-content: space-between;
-          align-items: flex-start;
-          flex-wrap: wrap;
-          gap: 20px;
-        }
-        .brand-title {
-          font-family: 'Outfit', sans-serif;
-          font-size: 26px;
-          font-weight: 800;
-          letter-spacing: 1px;
-          color: #1f1f1fff;
-        }
-        .brand-sub {
-          font-size: 11px;
-          color: #94a3b8;
-          margin-top: 4px;
-        }
-        .badge-tax {
-          display: inline-block;
-          background: rgba(255, 255, 255, 0.1);
-          border: 1px solid rgba(255, 255, 255, 0.2);
-          padding: 4px 12px;
-          border-radius: 20px;
-          font-size: 12px;
-          font-weight: 700;
-          letter-spacing: 1px;
-          color: #38bdf8;
-          text-transform: uppercase;
-        }
-        .inv-meta-right {
-          text-align: right;
-        }
-        .ord-id {
-          font-family: 'Outfit', sans-serif;
-          font-size: 18px;
-          font-weight: 700;
-          color: #1c1c1cff;
-          margin-top: 6px;
-        }
-        .ord-date {
-          font-size: 12px;
-          color: #1c1c1c;
-        }
-        .inv-body {
-          padding: 40px;
-        }
-        .info-grid {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 24px;
-          margin-bottom: 30px;
-        }
-        @media (max-width: 600px) {
-          .info-grid { grid-template-columns: 1fr; }
-          .inv-header { padding: 25px 20px; }
-          .inv-body { padding: 20px; }
-        }
-        .info-box {
-          background: #f8fafc;
-          border: 1px solid #e2e8f0;
-          border-radius: 12px;
-          padding: 18px 20px;
-        }
-        .info-box-title {
-          font-size: 11px;
-          font-weight: 800;
-          letter-spacing: 1px;
-          text-transform: uppercase;
-          color: #2563eb;
-          margin-bottom: 10px;
-        }
-        .info-box-content {
-          font-size: 13px;
-          color: #334155;
-          line-height: 1.6;
-        }
-        .info-box-content strong {
-          color: #0f172a;
-        }
-        .pay-status-tag {
-          display: inline-block;
-          font-weight: 800;
-          font-size: 10px;
-          padding: 2px 8px;
-          border-radius: 4px;
-          margin-left: 6px;
-        }
-        .pay-status-tag.PAID { background: #dcfce7; color: #15803d; border: 1px solid #bbf7d0; }
-        .pay-status-tag.PENDING { background: #fef9c3; color: #a16207; border: 1px solid #fef08a; }
-        .pay-status-tag.FAILED { background: #fee2e2; color: #b91c1c; border: 1px solid #fca5a5; }
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tax Invoice #${safe(o.orderNum)}</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: #fff;
+      color: #212121;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 12px;
+      line-height: 1.45;
+    }
+    .print-bar {
+      padding: 12px;
+      text-align: center;
+      border-bottom: 1px solid #ddd;
+      background: #fff;
+    }
+    .print-btn {
+      border: 0;
+      background: #2874f0;
+      color: #fff;
+      padding: 9px 20px;
+      font-size: 13px;
+      font-weight: 700;
+      border-radius: 2px;
+      cursor: pointer;
+    }
+    .invoice {
+      width: 100%;
+      max-width: 900px;
+      margin: 20px auto;
+      border: 1px solid #d6d6d6;
+      background: #fff;
+    }
+    .top-note {
+      padding: 7px 12px;
+      border-bottom: 1px solid #d6d6d6;
+      font-size: 10px;
+      color: #555;
+      text-align: right;
+    }
+    .seller-header {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: 20px;
+      padding: 18px 20px;
+      border-bottom: 1px solid #d6d6d6;
+    }
+    .brand {
+      font-size: 22px;
+      font-weight: 700;
+      color: #111;
+      margin-bottom: 5px;
+    }
+    .seller-info {
+      color: #444;
+      line-height: 1.55;
+    }
+    .invoice-heading {
+      text-align: right;
+    }
+    .invoice-heading h1 {
+      margin: 0 0 10px;
+      font-size: 22px;
+      font-weight: 700;
+      color: #111;
+    }
+    .invoice-meta {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5px 14px;
+      text-align: left;
+      margin-left: auto;
+      max-width: 290px;
+    }
+    .invoice-meta span:nth-child(odd) {
+      color: #666;
+    }
+    .invoice-meta span:nth-child(even) {
+      text-align: right;
+      font-weight: 700;
+      color: #111;
+    }
+    .address-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border-bottom: 1px solid #d6d6d6;
+    }
+    .address-box {
+      padding: 14px 20px;
+      min-height: 130px;
+    }
+    .address-box + .address-box {
+      border-left: 1px solid #d6d6d6;
+    }
+    .section-title {
+      font-size: 11px;
+      font-weight: 700;
+      color: #555;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .customer-name {
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .items-wrap {
+      padding: 18px 20px 0;
+    }
+    .items-table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+    }
+    .items-table th {
+      background: #f2f2f2;
+      border: 1px solid #cfcfcf;
+      padding: 8px 6px;
+      font-size: 10px;
+      font-weight: 700;
+      color: #333;
+      text-transform: uppercase;
+    }
+    .items-table td {
+      border: 1px solid #d8d8d8;
+      padding: 9px 7px;
+      vertical-align: top;
+    }
+    .center { text-align: center; }
+    .amount { text-align: right; white-space: nowrap; }
+    .strong { font-weight: 700; }
+    .product-title { font-weight: 700; color: #111; }
+    .product-sub { color: #666; font-size: 10px; margin-top: 2px; }
+    .product-meta { color: #666; font-size: 9px; margin-top: 4px; }
+    .summary-area {
+      display: grid;
+      grid-template-columns: 1fr 330px;
+      gap: 20px;
+      padding: 18px 20px;
+    }
+    .payment-box {
+      border: 1px solid #d8d8d8;
+      padding: 12px;
+    }
+    .summary-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .summary-table td {
+      padding: 6px 0;
+    }
+    .summary-table td:last-child {
+      text-align: right;
+      white-space: nowrap;
+    }
+    .discount-row td {
+      color: #198754;
+    }
+    .grand-total td {
+      border-top: 2px solid #222;
+      padding-top: 10px;
+      font-size: 15px;
+      font-weight: 700;
+      color: #111;
+    }
+    .amount-words {
+      padding: 0 20px 16px;
+      font-size: 11px;
+      color: #444;
+    }
+    .footer {
+      border-top: 1px solid #d6d6d6;
+      padding: 14px 20px;
+      font-size: 10px;
+      color: #555;
+    }
+    .footer strong { color: #222; }
+    @media (max-width: 700px) {
+      .invoice { margin: 0; border-left: 0; border-right: 0; }
+      .seller-header,
+      .address-grid,
+      .summary-area { grid-template-columns: 1fr; }
+      .invoice-heading { text-align: left; }
+      .invoice-meta { margin-left: 0; }
+      .address-box + .address-box { border-left: 0; border-top: 1px solid #d6d6d6; }
+      .items-wrap { overflow-x: auto; }
+      .items-table { min-width: 760px; }
+    }
+    @media print {
+      body { background: #fff; }
+      .print-bar { display: none !important; }
+      .invoice {
+        max-width: none;
+        margin: 0;
+        border: 0;
+      }
+      @page {
+        size: A4;
+        margin: 10mm;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="print-bar">
+    <button class="print-btn" onclick="window.print()">Print / Save as PDF</button>
+  </div>
 
-        .items-table {
-          width: 100%;
-          border-collapse: collapse;
-          margin-bottom: 30px;
-        }
-        .items-table th {
-          background: #0f172a;
-          color: #ffffff;
-          font-size: 11px;
-          font-weight: 700;
-          letter-spacing: 0.5px;
-          text-transform: uppercase;
-          padding: 12px;
-        }
-        .items-table td {
-          font-size: 13px;
-        }
+  <div class="invoice">
+    <div class="top-note">E. &amp; O.E.</div>
 
-        .summary-wrapper {
-          display: flex;
-          justify-content: flex-end;
-          margin-bottom: 30px;
-        }
-        .summary-card {
-          width: 320px;
-          background: #f8fafc;
-          border: 1px solid #e2e8f0;
-          border-radius: 12px;
-          padding: 16px 20px;
-        }
-        .summary-row {
-          display: flex;
-          justify-content: space-between;
-          font-size: 13px;
-          color: #475569;
-          margin-bottom: 8px;
-        }
-        .summary-row.discount {
-          color: #16a34a;
-          font-weight: 600;
-        }
-        .summary-row.grand-total {
-          border-top: 2px solid #cbd5e1;
-          padding-top: 10px;
-          margin-top: 10px;
-          font-weight: 800;
-          font-size: 16px;
-          color: #0f172a;
-        }
-
-        .inv-footer {
-          background: #f8fafc;
-          border-top: 1px solid #e2e8f0;
-          padding: 20px 40px;
-          text-align: center;
-          font-size: 11px;
-          color: #64748b;
-        }
-
-        .no-print-bar {
-          position: sticky;
-          top: 0;
-          background: #ffffff;
-          padding: 15px 0;
-          text-align: center;
-          box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-          margin-bottom: 20px;
-          z-index: 100;
-        }
-        .btn-print-now {
-          background: #2563eb;
-          color: #ffffff;
-          border: none;
-          padding: 10px 24px;
-          border-radius: 8px;
-          font-weight: 700;
-          font-size: 14px;
-          cursor: pointer;
-          box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
-          transition: all 0.2s ease;
-        }
-        .btn-print-now:hover {
-          background: #1d4ed8;
-          transform: translateY(-1px);
-        }
-
-        @media print {
-          body { background: #ffffff; padding: 0; }
-          .no-print-bar { display: none !important; }
-          .invoice-card { box-shadow: none; border: none; border-radius: 0; max-width: 100%; }
-        }
-      </style>
-    </head>
-    <body>
-
-      <div class="no-print-bar">
-        <button class="btn-print-now" onclick="window.print()"> Print / Save as PDF</button>
-      </div>
-
-      <div class="invoice-card">
-        <!-- HEADER -->
-        <div class="inv-header">
-          <div>
-            <div class="brand-title">ALPHADETAIL</div>
-            <div class="brand-sub">PRECISION DIY CAR CARE · KERALA, INDIA</div>
-            <div class="brand-sub">Support: +91 7025225245 | alphadetail2f@gmail.com</div>
-          </div>
-          <div class="inv-meta-right">
-            <div class="badge-tax">OFFICIAL TAX INVOICE</div>
-            <div class="ord-id">Order #${o.orderNum}</div>
-            <div class="ord-date">Issued: ${formattedDate}</div>
-          </div>
-        </div>
-
-        <div class="inv-body">
-
-          <!-- USER & PAYMENT DETAILS GRID -->
-          <div class="info-grid">
-            <!-- USER DETAILS -->
-            <div class="info-card info-box">
-              <div class="info-box-title">📍 CUSTOMER & SHIPPING DETAILS</div>
-              <div class="info-box-content">
-                <strong>${fullName}</strong><br>
-                Email: ${addr.email || 'N/A'}<br>
-                Phone: ${addr.phone || 'N/A'} ${addr.secondaryPhone ? ` / ${addr.secondaryPhone}` : ''}<br>
-                Address: ${addr.houseNo ? addr.houseNo + ', ' : ''}${addr.addr || ''}<br>
-                ${addr.landmark ? 'Landmark: ' + addr.landmark + '<br>' : ''}
-                ${addr.city ? addr.city + ', ' : ''}${addr.district ? addr.district + ', ' : ''}${addr.state || 'Kerala'} ${addr.pin ? '- ' + addr.pin : ''}
-              </div>
-            </div>
-
-            <!-- PAYMENT & ORDER DETAILS -->
-            <div class="info-card info-box">
-              <div class="info-box-title">💳 PAYMENT & ORDER STATUS</div>
-              <div class="info-box-content">
-                Payment Method: <strong>${payMethod}</strong><br>
-                Payment Status: <span class="pay-status-tag ${payStatus}">${payStatus}</span><br>
-                Order Fulfillment: <strong style="color:#2563eb;">${(o.status || 'ordered').toUpperCase()}</strong><br>
-                ${o.razorpayPaymentId ? `Razorpay Payment ID: <strong>${o.razorpayPaymentId}</strong><br>` : ''}
-                ${o.razorpayOrderId ? `Razorpay Order ID: <strong>${o.razorpayOrderId}</strong><br>` : ''}
-                GSTIN: <strong>32ABCDE1234F1Z5</strong>
-              </div>
-            </div>
-          </div>
-
-          <!-- PRODUCTS DETAILS TABLE -->
-          <div style="font-size:12px; font-weight:800; letter-spacing:1px; text-transform:uppercase; color:#0f172a; margin-bottom:12px;">
-            🛒 ORDERED PRODUCTS SUMMARY
-          </div>
-          <table class="items-table">
-            <thead>
-              <tr>
-                <th style="border-top-left-radius: 8px; width: 40px;">#</th>
-                <th style="text-align: left;">Product Name & Description</th>
-                <th style="width: 70px; text-align: center;">Qty</th>
-                <th style="width: 120px; text-align: right;">Unit Price</th>
-                <th style="border-top-right-radius: 8px; width: 130px; text-align: right;">Total Amount</th>
-              </tr>
-            </thead>
-            <tbody>
-              ${itemsHTML}
-            </tbody>
-          </table>
-
-          <!-- AMOUNT DETAILS / SUMMARY -->
-          <div class="summary-wrapper">
-            <div class="summary-card">
-              <div class="summary-row">
-                <span>Subtotal:</span>
-                <span>&#8377;${subtotal.toLocaleString('en-IN')}</span>
-              </div>
-              <div class="summary-row">
-                <span>Shipping Fee:</span>
-                <span>${shipping === 0 ? 'FREE' : '&#8377;' + shipping.toLocaleString('en-IN')}</span>
-              </div>
-              ${bundleDisc > 0 ? `
-                <div class="summary-row discount">
-                  <span>${o.bundleLabel || 'Bundle Savings'}:</span>
-                  <span>- &#8377;${bundleDisc.toLocaleString('en-IN')}</span>
-                </div>
-              ` : ''}
-              ${couponDisc > 0 ? `
-                <div class="summary-row discount">
-                  <span>Coupon Discount:</span>
-                  <span>- &#8377;${couponDisc.toLocaleString('en-IN')}</span>
-                </div>
-              ` : ''}
-              <div class="summary-row grand-total">
-                <span>Grand Total:</span>
-                <span>&#8377;${grandTotal.toLocaleString('en-IN')}</span>
-              </div>
-              <div style="font-size: 10px; color: #94a3b8; text-align: right; margin-top: 4px;">
-                (Inclusive of all taxes)
-              </div>
-            </div>
-          </div>
-
-        </div>
-
-        <!-- FOOTER -->
-        <div class="inv-footer">
-          Thank you for choosing <strong>AlphaDetail</strong>! Drive with confidence, shine with pride.<br>
-          This is an official computer-generated Tax Invoice and does not require a physical signature.
+    <div class="seller-header">
+      <div>
+        <div class="brand">${sellerName}</div>
+        <div class="seller-info">
+          ${sellerAddress}<br>
+          ${o.sellerPhone ? `Phone: ${safe(o.sellerPhone)}<br>` : 'Phone: +91 7025225245<br>'}
+          ${o.sellerEmail ? `Email: ${safe(o.sellerEmail)}<br>` : 'Email: alphadetail2f@gmail.com<br>'}
+          GSTIN: ${sellerGSTIN}
         </div>
       </div>
 
-      <script>
-        window.onload = function() {
-          setTimeout(function() { window.print(); }, 600);
-        };
-      </script>
-    </body>
-    </html>`;
+      <div class="invoice-heading">
+        <h1>TAX INVOICE</h1>
+        <div class="invoice-meta">
+          <span>Invoice Number</span><span>${invoiceNumber}</span>
+          <span>Invoice Date</span><span>${formattedDate}</span>
+          <span>Order ID</span><span>${safe(o.orderNum)}</span>
+          <span>Order Date</span><span>${formattedOrderDate}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="address-grid">
+      <div class="address-box">
+        <div class="section-title">Bill To</div>
+        <div class="customer-name">${safe(fullName)}</div>
+        ${addr.email ? `Email: ${safe(addr.email)}<br>` : ''}
+        ${addr.phone ? `Phone: ${safe(addr.phone)}<br>` : ''}
+        ${addr.houseNo || addr.addr ? `Address: ${safe(addr.houseNo ? `${addr.houseNo}, ` : '')}${safe(addr.addr, '')}<br>` : ''}
+        ${addr.landmark ? `Landmark: ${safe(addr.landmark)}<br>` : ''}
+        ${addr.city ? `${safe(addr.city)}, ` : ''}${addr.district ? `${safe(addr.district)}, ` : ''}${safe(addr.state, 'Kerala')} ${addr.pin ? `- ${safe(addr.pin)}` : ''}
+      </div>
+
+      <div class="address-box">
+        <div class="section-title">Ship To</div>
+        <div class="customer-name">${safe(fullName)}</div>
+        ${addr.phone ? `Phone: ${safe(addr.phone)}<br>` : ''}
+        ${addr.houseNo || addr.addr ? `Address: ${safe(addr.houseNo ? `${addr.houseNo}, ` : '')}${safe(addr.addr, '')}<br>` : ''}
+        ${addr.landmark ? `Landmark: ${safe(addr.landmark)}<br>` : ''}
+        ${addr.city ? `${safe(addr.city)}, ` : ''}${addr.district ? `${safe(addr.district)}, ` : ''}${safe(addr.state, 'Kerala')} ${addr.pin ? `- ${safe(addr.pin)}` : ''}
+      </div>
+    </div>
+
+    <div class="items-wrap">
+      <table class="items-table">
+        <thead>
+          <tr>
+            <th style="width:34px;">#</th>
+            <th style="width:32%;">Product Title / Description</th>
+            <th style="width:55px;">Qty</th>
+            <th>Gross Amount</th>
+            <th>Discount</th>
+            <th>Taxable Value</th>
+            <th>Tax</th>
+            <th>Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${itemsHTML || `<tr><td colspan="8" class="center">No products found</td></tr>`}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="summary-area">
+      <div class="payment-box">
+        <div class="section-title">Payment &amp; Order Details</div>
+        Payment Method: <strong>${payMethod}</strong><br>
+        Payment Status: <strong>${payStatus}</strong><br>
+        Order Status: <strong>${safe(o.status, 'ORDERED').toUpperCase()}</strong>
+        ${o.razorpayPaymentId ? `<br>Payment ID: <strong>${safe(o.razorpayPaymentId)}</strong>` : ''}
+        ${o.razorpayOrderId ? `<br>Razorpay Order ID: <strong>${safe(o.razorpayOrderId)}</strong>` : ''}
+      </div>
+
+      <table class="summary-table">
+        <tr><td>Subtotal</td><td>${money(subtotal)}</td></tr>
+        <tr><td>Shipping</td><td>${shipping === 0 ? 'FREE' : money(shipping)}</td></tr>
+        ${bundleDisc > 0 ? `<tr class="discount-row"><td>${safe(o.bundleLabel, 'Bundle Discount')}</td><td>- ${money(bundleDisc)}</td></tr>` : ''}
+        ${couponDisc > 0 ? `<tr class="discount-row"><td>Coupon Discount</td><td>- ${money(couponDisc)}</td></tr>` : ''}
+        <tr class="grand-total"><td>Grand Total</td><td>${money(grandTotal)}</td></tr>
+      </table>
+    </div>
+
+    <div class="amount-words">
+      <strong>Amount Payable:</strong> ${money(grandTotal)}
+      &nbsp; | &nbsp; Prices shown are based on the order data recorded by AlphaDetail.
+    </div>
+
+    <div class="footer">
+      <strong>${sellerName}</strong><br>
+      This is a computer-generated tax invoice and does not require a physical signature.<br>
+      Please retain this invoice for your records.
+    </div>
+  </div>
+
+  <script>
+    window.onload = function () {
+      setTimeout(function () { window.print(); }, 500);
+    };
+  </script>
+</body>
+</html>`;
 
     w.document.open();
     w.document.write(html);
@@ -1976,6 +2182,7 @@ function getShipping() {
     }
     updateBadge();
     fetchProducts();
+    fetchKits();
     observeReveal();
 
     // Recover last order for print if visible

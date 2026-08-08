@@ -78,7 +78,7 @@
     <!-- HERO -->
     <section class="hero-sec">
       <div class="hero-bg-img"><img
-          src="C:\Users\ASUS\.gemini\antigravity\brain\6a56fd03-2cb0-41bb-92d9-7ed5823a9158\alphadetail_hero_premium_1775503938161.png"
+          src=""
           alt="Premium Car Detailing"></div>
       <div class="hero-grid"></div>
       <div class="hero-vign"></div>
@@ -252,51 +252,43 @@
           <h2 class="s-h2">BUNDLE PACKAGES</h2>
           <p class="s-desc">Everything you need, one order, best price — with automatic discount applied at cart.</p>
         </div>
-        <div class="bundle-grid">
-          <!-- STARTER / BASIC -->
-          <div class="bcard reveal-l" onclick="addBundleToCart('starter')" style="cursor:pointer;">
+        <div class="bundle-grid" id="bundleGrid">
+          <!-- STARTER KIT — dynamically populated -->
+          <div class="bcard reveal-l" id="starterKitCard" onclick="addBundleToCart('starter')" style="cursor:pointer;">
             <div class="bcard-badge">Starter</div>
-            <div class="bcard-name">Alpha Starter Kit</div>
-            <p class="bcard-tagline">"Everything you need to get started. Nothing you don't."</p>
-            <ul class="bcard-items">
-              <li>Nano Foam — Vehicle Foam Shampoo · 473ml</li>
-              <li>Gleam-X — Glass Cleaner &amp; Protector · 473ml</li>
-              <li>Cabin Glow — Interior Surface Cleaner · 473ml</li>
-              <li>Surface Revive — Plastic &amp; Rubber Restorer · 473ml</li>
+            <div class="bcard-name" id="starterKitName">Alpha Starter Kit</div>
+            <p class="bcard-tagline" id="starterKitTagline">"Everything you need to get started. Nothing you don't."</p>
+            <ul class="bcard-items" id="starterKitItems">
+              <li class="kit-loading">Loading products…</li>
             </ul>
             <div class="bcard-price-wrap">
-              <div class="bcard-original">₹3,820</div>
-              <div class="bcard-discount-tag">5% AUTO DISCOUNT AT CART</div>
-              <div class="bcard-price">₹3,628</div>
-              <div class="bcard-save">You save ₹192 automatically</div>
+              <div class="bcard-original" id="starterKitOriginal">—</div>
+              <div class="bcard-discount-tag" id="starterKitDiscTag">5% AUTO DISCOUNT AT CART</div>
+              <div class="bcard-price" id="starterKitPrice">—</div>
+              <div class="bcard-save" id="starterKitSave">—</div>
             </div>
             <button class="bcard-btn-o">Add Bundle to Cart</button>
           </div>
-          <!-- PRO -->
-          <div class="bcard bcard-feat reveal-r" onclick="addBundleToCart('pro')" style="cursor:pointer;">
+          <!-- PRO KIT — dynamically populated -->
+          <div class="bcard bcard-feat reveal-r" id="proKitCard" onclick="addBundleToCart('pro')" style="cursor:pointer;">
             <div class="bcard-badge">Best Value <i class="fa-solid fa-star"></i></div>
-            <div class="bcard-name">Alpha Pro Kit</div>
-            <p class="bcard-tagline">"The complete AlphaDetail arsenal. Every surface. Inside and out."</p>
-            <ul class="bcard-items">
-              <li>Nano Foam — Vehicle Foam Shampoo · 473ml</li>
-              <li>Fusion Wash — Wash &amp; Wax · 473ml</li>
-              <li>Gleam-X — Glass Cleaner &amp; Protector · 473ml</li>
-              <li>Hyper DRESS — Multi-Surface Dressing · 473ml</li>
-              <li>Cabin Glow — Interior Surface Cleaner · 473ml</li>
-              <li>Surface Revive — Plastic &amp; Rubber Restorer · 473ml</li>
-              <li>Graphene Tyre Coat — Tyre Shine · 473ml</li>
+            <div class="bcard-name" id="proKitName">Alpha Pro Kit</div>
+            <p class="bcard-tagline" id="proKitTagline">"The complete AlphaDetail arsenal. Every surface. Inside and out."</p>
+            <ul class="bcard-items" id="proKitItems">
+              <li class="kit-loading">Loading products…</li>
             </ul>
             <div class="bcard-price-wrap">
-              <div class="bcard-original">₹8,222</div>
-              <div class="bcard-discount-tag">10% AUTO DISCOUNT AT CART</div>
-              <div class="bcard-price">₹7,400</div>
-              <div class="bcard-save">You save ₹822 automatically</div>
+              <div class="bcard-original" id="proKitOriginal">—</div>
+              <div class="bcard-discount-tag" id="proKitDiscTag">10% AUTO DISCOUNT AT CART</div>
+              <div class="bcard-price" id="proKitPrice">—</div>
+              <div class="bcard-save" id="proKitSave">—</div>
             </div>
             <button class="bcard-btn">Get Pro Kit →</button>
           </div>
         </div>
       </div>
     </section>
+
     <!-- PROMISE -->
     <section class="promise-sec reveal" id="promise-sec">
       <div class="promise-bg"></div>
@@ -668,10 +660,22 @@
             placeholder="you@example.com">
           <div class="fe" id="lEmailE">Enter a valid email</div>
         </div>
-        <div class="fg"><label class="fl">Password</label><input class="fi" type="password" id="lPass"
-            placeholder="Your password" onkeydown="if(event.key==='Enter')doLogin()">
-          <div class="fe" id="lPassE">Min 6 characters</div>
-        </div>
+      <div class="fg">
+  <label class="fl">Password</label>
+
+  <div class="pass-wrap">
+    <input class="fi" type="password" id="lPass"
+      placeholder="Your password"
+      onkeydown="if(event.key==='Enter')doLogin()">
+
+    <button type="button" class="pass-toggle"
+      onclick="togglePassword('lPass', this)">
+      <i class="fa-solid fa-eye"></i>
+    </button>
+  </div>
+
+  <div class="fe" id="lPassE">Min 6 characters</div>
+</div>
         <div class="fcheck"><input type="checkbox" id="remMe"><label for="remMe">Remember me</label></div>
         <button class="auth-sub-btn" id="loginBtn" onclick="doLogin()">Sign In →</button>
         <div class="auth-div"><span>or</span></div>
@@ -705,14 +709,36 @@
             placeholder="+91 98765 43210" maxlength="10" oninput="this.value=this.value.replace(/\D/g,'')">
           <div class="fe" id="rPhoneE">Required (10 digits)</div>
         </div>
-        <div class="fg"><label class="fl">Password</label><input class="fi" type="password" id="rPass"
-            placeholder="Min 6 characters">
-          <div class="fe" id="rPassE">Min 6 characters</div>
-        </div>
-        <div class="fg"><label class="fl">Confirm Password</label><input class="fi" type="password" id="rConf"
-            placeholder="Repeat password">
-          <div class="fe" id="rConfE">Passwords do not match</div>
-        </div>
+   <div class="fg">
+  <label class="fl">Password</label>
+
+  <div class="pass-wrap">
+    <input class="fi" type="password" id="rPass"
+      placeholder="Min 6 characters">
+
+    <button type="button" class="pass-toggle"
+      onclick="togglePassword('rPass', this)">
+      <i class="fa-solid fa-eye"></i>
+    </button>
+  </div>
+
+  <div class="fe" id="rPassE">Min 6 characters</div>
+</div>
+     <div class="fg">
+  <label class="fl">Confirm Password</label>
+
+  <div class="pass-wrap">
+    <input class="fi" type="password" id="rConf"
+      placeholder="Repeat password">
+
+    <button type="button" class="pass-toggle"
+      onclick="togglePassword('rConf', this)">
+      <i class="fa-solid fa-eye"></i>
+    </button>
+  </div>
+
+  <div class="fe" id="rConfE">Passwords do not match</div>
+</div>
         <div class="fcheck"><input type="checkbox" id="agree"><label for="agree">I agree to the <a
               onclick="showPage('privacy')">Terms &amp; Privacy Policy</a></label></div>
         <button class="auth-sub-btn" id="regBtn" onclick="doRegister()">Create Account →</button>
@@ -1033,7 +1059,7 @@
         </div>
         <div class="ft-socials">
           <!-- <div class="ft-soc"><i class="fa-brands fa-facebook-f"></i></div> -->
-          <div class="ft-soc"><i class="fa-brands fa-instagram"></i></div>
+          <!-- <div class="ft-soc"><i class="fa-brands fa-instagram"></i></div> -->
           <!-- <div class="ft-soc"><i class="fa-brands fa-youtube"></i></div> -->
           <div class="ft-soc"><a href="https://wa.me/+917025225245"><i class="fa-brands fa-whatsapp"></i></a></div>
         </div>
@@ -1082,6 +1108,8 @@
   </div>
   <!-- ══ IMAGE UPLOADER ══ -->
 
+  <!-- ══ ENV CONFIG — must load before script.js ══ -->
+  <script src="config.js"></script>
   <script src="script.js"></script>
 </body>
 

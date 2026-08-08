@@ -112,7 +112,7 @@ ul {
   height: 100%;
   background: linear-gradient(90deg, var(--gold), var(--gold2));
   width: 0;
-  animation: loaderFill 2s ease forwards;
+  animation: loaderFill 0.5s ease forwards;
 }
 
 .loader-glow {
@@ -124,7 +124,7 @@ ul {
   height: 500px;
   background: radial-gradient(circle, rgba(201, 168, 76, .08) 0%, transparent 65%);
   pointer-events: none;
-  animation: breathe 3s ease-in-out infinite;
+  animation: breathe 1s ease-in-out infinite;
 }
 
 @keyframes loaderPulse {
@@ -1401,7 +1401,29 @@ header.scrolled {
   color: var(--black);
 }
 
-/* ══ PROMISE ══ */
+/* Kit item price tag shown inline per product */
+.kit-item-price {
+  margin-left: auto;
+  font-size: 11px;
+  color: var(--gold);
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  flex-shrink: 0;
+}
+
+/* Placeholder while kit data loads from backend */
+.kit-loading {
+  color: var(--muted) !important;
+  font-style: italic;
+  animation: kitPulse 1.4s ease-in-out infinite;
+}
+
+@keyframes kitPulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 1; }
+}
+
+
 .promise-sec {
   padding: 120px 48px;
   text-align: center;
@@ -1412,7 +1434,7 @@ header.scrolled {
 .promise-bg {
   position: absolute;
   inset: 0;
-  background: url('C:\\Users\\ASUS\\.gemini\\antigravity\\brain\\6a56fd03-2cb0-41bb-92d9-7ed5823a9158\\alphadetail_promise_bg_1775503973551.png') center/cover;
+  background: url('') center/cover;
   filter: brightness(.12);
 }
 
@@ -1497,6 +1519,11 @@ header.scrolled {
   transition: opacity .7s .8s;
   margin-top: 24px;
 }
+.container {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+}
 
 .promise-src.vis {
   opacity: 1;
@@ -1513,7 +1540,7 @@ header.scrolled {
 .india-bg {
   position: absolute;
   inset: 0;
-  background: url('C:\\Users\\ASUS\\.gemini\\antigravity\\brain\\6a56fd03-2cb0-41bb-92d9-7ed5823a9158\\alphadetail_india_bg_new_1775504175291.png') center/cover;
+  background: url('') center/cover;
   filter: brightness(.12);
 }
 
@@ -3543,6 +3570,39 @@ header.scrolled {
   font-family: 'Bebas Neue', sans-serif;
   font-size: 32px;
   color: var(--gold);
+}
+
+.pass-wrap{
+    position:relative;
+    display:flex;
+    align-items:center;
+}
+
+.pass-wrap .fi{
+    width:100%;
+    padding-right:48px;
+}
+
+.pass-toggle{
+    position:absolute;
+    right:14px;
+    top:50%;
+    transform:translateY(-50%);
+    background:none;
+    border:none;
+    color:#999;
+    cursor:pointer;
+    font-size:16px;
+    padding:0;
+    transition:.2s;
+}
+
+.pass-toggle:hover{
+    color:#d4af37;
+}
+
+.pass-toggle:focus{
+    outline:none;
 }
 
 .ps-lbl {

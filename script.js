@@ -3,7 +3,7 @@
 
   // ── API Base ─────────────────────────────────────────────────────────
   // Resolved from config.js (window.ENV). Never hardcode URLs here.
-  const API_BASE = (window.ENV && window.ENV.API_BASE_URL);
+  const API_BASE = (window.ENV && window.ENV.API_BASE);
 
 
 
@@ -49,7 +49,7 @@
       opt.headers = { ...opt.headers, 'Authorization': `Bearer ${currentUser.token}` };
     }
     try {
-      const res = await fetch(API_BASE_URL + path, opt);
+      const res = await fetch(API_BASE + path, opt);
       const data = await res.json();
       if (!res.ok) {
         const err = new Error(data.error || 'Request failed');

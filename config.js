@@ -9,10 +9,8 @@
 window.ENV = {
   // ── API ──────────────────────────────────────────────────────────────
   // Local dev
-  API_BASE: "http://localhost:5000/api",
-  // API_BASE_URL=https://alphadetailserver.vercel.app/api
-
- 
+  // API_BASE: "http://localhost:5000/api",
+  API_BASE_URL: "https://alphadetailserver.vercel.app/api",
 
   // ── Razorpay (public key only — secret stays in server .env) ─────────
   // RAZORPAY_KEY_ID is returned by the server on /payments/create-id,

@@ -1,45 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-<<<<<<< HEAD
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AlphaDetail.Formulated to Finish</title>
-
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-  
-  <link rel="stylesheet" href="style.css?v=2.0.1">
-  <style>
-    /* Featured section: 3 products on PC; 3 products + 4th View All column in Mobile */
-    .hf-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 24px;
-    }
-    @media (max-width: 900px) {
-      .hf-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 16px;
-      }
-    }
-    @media (max-width: 500px) {
-      .hf-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 12px;
-      }
-    }
-  </style>
-
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
-  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-
-  <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
-  <link rel="manifest" href="site.webmanifest">
-=======
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -49,27 +9,17 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
         <script src="https://checkout.razorpay.com/v1/checkout.js">
         </script>
-    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
-    <link rel="manifest" href="site.webmanifest">
->>>>>>> 2401a9006f0875628a9461bc7a2947f3b718e8ce
+    <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
+    <link rel="manifest" href="images/site.webmanifest">
 </head>
 <body>
-<<<<<<< HEAD
-  <!-- ══ LOADER ══ -->
-  <div id="loader">
-    <div class="loader-glow"></div>
-    <div class="loader-brand"><img src="images/logo.png" alt="AlphaDetail" style="height: 90px; width: auto;"></div>
-    <div class="loader-bar-wrap">
-      <div class="loader-bar"></div>
-=======
     <div id="loader">
         <div class="loader-glow">
         </div>
     <div class="loader-brand">
-        <img src="logo.png" alt="AlphaDetail" style="height: 90px; width: auto;">
->>>>>>> 2401a9006f0875628a9461bc7a2947f3b718e8ce
+        <img src="images/logo.png" alt="AlphaDetail" style="height: 90px; width: auto;">
     </div>
 <div class="loader-bar-wrap">
     <div class="loader-bar">
@@ -80,28 +30,15 @@
 </div>
 <header>
     <div class="logo-wrap" onclick="showPage('home')">
-<<<<<<< HEAD
-      <img src="images/logo.png" alt="AlphaDetail Logo" class="logo-img">
-    </div>
-    <div class="nav-center pc-only">
-      <img src="images/alphahead.png" alt="AlphaHead"
-        style="height: 204px; width: auto; object-fit: contain; margin-top: 35px;">
-    </div>
-    <div class="nav-right">
-      <button class="nav-item" data-pg="home" onclick="showPage('home')">Home</button>
-      <button class="nav-item" data-pg="shop" onclick="showPage('shop')">Shop</button>
-      <div id="navAuth" style="display:flex;align-items:center;gap:4px;">
-=======
-        <img src="logo.png" alt="AlphaDetail Logo" class="logo-img">
+        <img src="images/logo.png" alt="AlphaDetail Logo" class="logo-img">
     </div>
 <div class="nav-center pc-only">
-    <img src="alphahead.png" alt="AlphaHead" style="height: 204px; width: auto; object-fit: contain; margin-top: 35px;">
+    <img src="images/alphahead.png" alt="AlphaHead" style="height: 204px; width: auto; object-fit: contain; margin-top: 35px;">
 </div>
 <div class="nav-right">
     <button class="nav-item" data-pg="home" onclick="showPage('home')">Home</button>
     <button class="nav-item" data-pg="shop" onclick="showPage('shop')">Shop</button>
     <div id="navAuth" style="display:flex;align-items:center;gap:4px;">
->>>>>>> 2401a9006f0875628a9461bc7a2947f3b718e8ce
         <button class="nav-item" data-pg="login" onclick="showPage('login')">Login</button>
         <button class="nav-btn" onclick="showPage('register')">Register</button>
     </div>
@@ -152,69 +89,11 @@
 </div>
 <div class="page active" id="page-home">
     <section class="hero-sec">
-<<<<<<< HEAD
-      <div class="hero-bg-img"><img
-          src="images/hero_bg.png"
-          alt="Premium Car Detailing"></div>
-      <div class="hero-grid"></div>
-      <div class="hero-vign"></div>
-      <div class="hero-glow"></div>
-      <div class="hero-content">
-        <div class="hero-eye">DIY Car Care &nbsp;·&nbsp; Formulated to Finish &nbsp;·&nbsp; Kerala, India</div>
-        <h1 class="hero-h1">ALPHA<em>DETAIL</em></h1>
-        <p class="hero-tagline">Professional Grade. Your Driveway.</p>
-        <p class="hero-p">Not every product deserves a place in your garage. <strong>Ours had to earn it.</strong> Seven
-          imported formulas built for Indian roads, Indian heat, and Indian weather.</p>
-        <div class="hero-ctas">
-          <button class="btn-g" onclick="showPage('shop')">Shop All Products</button>
-          <button class="btn-o" onclick="document.getElementById('why-sec').scrollIntoView({behavior:'smooth'})">Our
-            Standard</button>
-=======
         <div class="hero-bg-img">
-            <img src="" alt="Premium Car Detailing">
->>>>>>> 2401a9006f0875628a9461bc7a2947f3b718e8ce
+            <img src="images/hero_bg.png" alt="Premium Car Detailing">
         </div>
     <div class="hero-grid">
     </div>
-<<<<<<< HEAD
-    <!-- FEATURED -->
-    <section class="sec-dark">
-      <div class="wrap">
-        <div
-          style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:40px;flex-wrap:wrap;gap:14px;">
-          <div class="reveal">
-            <div class="s-eye">Best Sellers</div>
-            <h2 class="s-h2">FEATURED PRODUCTS</h2>
-          </div>
-        </div>
-        <div class="hf-grid" id="homeFeatured"></div>
-      </div>
-
-    </section>
-
-    <!-- CAR GALLERY STRIP -->
-    <div class="car-strip reveal">
-      <div class="cs-item"><img src="https://images.unsplash.com/photo-1617814076367-b759c7d7e738?w=800&q=80" alt="">
-        <div class="cs-ov"></div>
-        <div class="cs-lbl">Formulated to Finish</div>
-      </div>
-      <div class="cs-item"><img src="https://images.unsplash.com/photo-1580274455191-1c62238fa333?w=800&q=80" alt="">
-        <div class="cs-ov"></div>
-        <div class="cs-lbl">AlphaDetail</div>
-      </div>
-      <div class="cs-item"><img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=800&q=80" alt="">
-        <div class="cs-ov"></div>
-        <div class="cs-lbl">Built for India</div>
-      </div>
-      <div class="cs-item"><img src="https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=800&q=80" alt="">
-        <div class="cs-ov"></div>
-        <div class="cs-lbl">Pro Grade</div>
-      </div>
-      <div class="cs-item"><img src="https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=800&q=80" alt="">
-        <div class="cs-ov"></div>
-        <div class="cs-lbl">Your Driveway</div>
-      </div>
-=======
 <div class="hero-vign">
 </div>
 <div class="hero-glow">
@@ -233,7 +112,6 @@
     <div>
         <div class="hs-num">7</div>
         <div class="hs-lbl">Products</div>
->>>>>>> 2401a9006f0875628a9461bc7a2947f3b718e8ce
     </div>
 <div>
     <div class="hs-num">200+</div>
@@ -309,68 +187,6 @@
         <img src="https://images.unsplash.com/photo-1617814076367-b759c7d7e738?w=800&q=80" alt="">
         <div class="cs-ov">
         </div>
-<<<<<<< HEAD
-        <div class="pillars-grid">
-          <div class="pillar reveal d1">
-            <div class="p-bg-num">01</div>
-            <div class="p-icon"><i class="fa-solid fa-flask"></i></div>
-            <div class="p-name">Formulation First</div>
-            <p class="p-text">"Tested on real cars. In real Indian heat. Before it reached you."</p>
-          </div>
-          <div class="pillar reveal d2">
-            <div class="p-bg-num">02</div>
-            <div class="p-icon"><i class="fa-solid fa-bullseye"></i></div>
-            <div class="p-name">Purpose-Built</div>
-            <p class="p-text">"One product. One job. Done right."</p>
-          </div>
-          <div class="pillar reveal d3">
-            <div class="p-bg-num">03</div>
-            <div class="p-icon"><i class="fa-solid fa-shield-halved"></i></div>
-            <div class="p-name">Surface Respect</div>
-            <p class="p-text">"Safe on your paint, your coating, your investment."</p>
-          </div>
-          <div class="pillar reveal d4">
-            <div class="p-bg-num">04</div>
-            <div class="p-icon"><i class="fa-solid fa-screwdriver-wrench"></i></div>
-            <div class="p-name">Detailer Tested</div>
-            <p class="p-text">"Built in driveways, not just laboratories."</p>
-          </div>
-          <div class="pillar reveal d5">
-            <div class="p-bg-num">05</div>
-            <div class="p-icon"><i class="fa-solid fa-scale-balanced"></i></div>
-            <div class="p-name">Balanced Performance</div>
-            <p class="p-text">"Cleans deep. Never damages."</p>
-          </div>
-          <div class="pillar reveal d6">
-            <div class="p-bg-num">06</div>
-            <div class="p-icon"><i class="fa-solid fa-thumbs-up"></i></div>
-            <div class="p-name">Consistency</div>
-            <p class="p-text">"Same result. First bottle. Fiftieth bottle."</p>
-          </div>
-          <div class="pillar reveal d7">
-            <div class="p-bg-num">07</div>
-            <div class="p-icon"><i class="fa-solid fa-location-dot"></i></div>
-            <div class="p-name">Made for India</div>
-            <p class="p-text">"Built for 38°C summers, monsoon roads, and everything in between."</p>
-          </div>
-          <!-- <div class="pillar reveal d7" style="background:linear-gradient(135deg,#1a1500,#0e0e0e);border:1px solid rgba(201,168,76,.15);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:28px;"> -->
-          <!-- <div style="font-size:11px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:18px;">MSME · IDSS · UGC</div> -->
-          <!-- <div style="font-size:10px;color:var(--muted);line-height:1.7;font-style:italic;">"Registered, verified,<br>and built to last."</div> -->
-          <!-- </div> -->
-        </div>
-      </div>
-    </section>
-
-    <!-- FULLSCREEN ALPHA IMAGE -->
-    <section class="alpha-fullscreen-img">
-      <img src="images/alphahead.png" alt="AlphaDetail Fullscreen"
-        style="width: 100%; height: 100%; object-fit: cover; object-position: center;">
-    </section>
-
-    <!-- BUNDLES -->
-    <section class="sec" style="background:var(--black);">
-      <div class="wrap">
-=======
     <div class="cs-lbl">Formulated to Finish</div>
 </div>
 <div class="cs-item">
@@ -475,13 +291,12 @@
 </div>
 </section>
 <section class="alpha-fullscreen-img">
-    <img src="alphahead.png" alt="AlphaDetail Fullscreen" style="width: 100%; height: 100%; object-fit: cover; object-position: center;">
+    <img src="images/alphahead.png" alt="AlphaDetail Fullscreen" style="width: 100%; height: 100%; object-fit: cover; object-position: center;">
 </section>
 <section class="sec" style="background:var(--black);">
     <div class="wrap">
->>>>>>> 2401a9006f0875628a9461bc7a2947f3b718e8ce
         <div class="reveal-l">
-            <div class="s-eye">Save Mor  e</div>
+            <div class="s-eye">Save More</div>
             <h2 class="s-h2">BUNDLE PACKAGES</h2>
             <p class="s-desc">Everything you need, one order, best price — with automatic discount applied at cart.</p>
         </div>
@@ -754,172 +569,6 @@
                         <div class="fe" id="cLastE">Required</div>
                     </div>
             </div>
-<<<<<<< HEAD
-            </div>
-            <div class="fe" id="chkGlobalE" style="font-size:12px;margin-top:12px;"></div>
-            <button class="place-btn" onclick="placeOrder()">Place Order →</button>
-            <!-- <button class="place-btn wa-btn" onclick="orderViaWhatsApp()">Order through WhatsApp <i
-                class="fa-brands fa-whatsapp"></i></button> -->
-
-          </div>
-        </div>
-        <div class="order-sum">
-          <div class="os-title">Your Order</div>
-          <div id="osItems"></div>
-          <div style="margin-top:14px;">
-            <div class="sum-row"><span>Subtotal</span><span class="sum-val" id="osSub">₹0</span></div>
-            <div class="sum-row"><span>Shipping</span><span class="sum-val" id="osShip">₹0</span></div>
-            <div class="sum-discount-row" id="osDiscRow"><span id="osDiscLabel">Bundle Discount</span><span
-                class="sum-disc-val" id="osDisc">-₹0</span></div>
-            <div class="sum-total"><span class="sum-total-lbl">Total</span><span class="sum-total-val"
-                id="osTotal">₹0</span></div>
-          </div>
-        </div>
-      </div><!-- end checkoutMain -->
-    </div>
-
-  </div>
-  </div>
-  <!-- ════════════ ORDER SUCCESS PAGE ════════════ -->
-  <div class="page" id="page-orderSuccess" style="text-align:center; padding: 80px 20px 60px;">
-    <div class="success-anim" style="margin: 0 auto 30px; position:relative;">
-      <div class="success-circle"
-        style="width: 100px; height: 100px; background: rgba(212,175,55,0.1); border: 2px solid var(--gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 40px; color: var(--gold); margin: 0 auto; position: relative; z-index: 5;">
-        <i class="fa-solid fa-check"></i>
-      </div>
-      <div class="success-glow"
-        style="position: absolute; top: 50%; left: 50%; width: 140px; height: 140px; background: var(--gold); filter: blur(40px); opacity: 0.15; transform: translate(-50%, -50%); border-radius: 50%; z-index: 1;">
-      </div>
-    </div>
-    <div class="osuc-title reveal"
-      style="font-family:'Bebas Neue', sans-serif; font-size: 48px; letter-spacing: 2px; color: #fff; margin-bottom: 20px;">
-      ORDER PLACED!</div>
-    <div class="success-box reveal"
-      style="padding: 15px 30px; background: #0a0a0a; border: 1px solid var(--border); display: inline-block; margin-bottom: 30px;">
-      <div class="osuc-num" style="font-size: 16px; letter-spacing: 3px; color: var(--gold);">Order #<span
-          id="orderNum"></span></div>
-    </div>
-    <p class="osuc-p reveal"
-      style="font-size: 16px; color: var(--muted); max-width: 500px; margin: 0 auto 20px; line-height: 1.6;">Thank
-      you! Your AlphaDetail products are confirmed and will be dispatched shortly.</p>
-    <div id="orderDetails" class="reveal"
-      style="max-width:500px; margin: 0 auto 30px; text-align:left; background:#111; border:1px solid var(--border); padding:20px; border-radius:4px;"></div>
-    <div class="osuc-btns reveal" style="display:flex; justify-content:center; gap:15px; flex-wrap:wrap;">
-      <button class="btn-g"
-        style="padding: 14px 28px; background: var(--gold); color: #000; border: none; font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; cursor: pointer;"
-        onclick="showPage('home');clearCart()">Back to Home</button>
-      <button class="btn-o"
-        style="padding: 14px 28px; background: none; border: 1px solid #333; color: #fff; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; cursor: pointer;"
-        onclick="printOrder()"><i class="fa-solid fa-file-invoice" style="margin-right: 8px;"></i> Download
-        Invoice</button>
-      <button class="btn-o"
-        style="padding: 14px 28px; background: none; border: 1px solid #333; color: #fff; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; cursor: pointer;"
-        onclick="showProfileTab('orders')">Track Order</button>
-    </div>
-  </div>
-  <!-- ════════════ LOGIN PAGE ════════════ -->
-  <div class="page" id="page-login">
-    <div class="auth-pg">
-      <button class="back-btn" onclick="showPage('home')"
-        style="position:absolute; top:30px; left:30px; z-index:10; background:none; border:none; color:var(--gold); cursor:pointer; font-size:11px; letter-spacing:2px; text-transform:uppercase; display:flex; align-items:center; gap:8px;"><i
-          class="fa-solid fa-arrow-left"></i> Back</button>
-      <div class="auth-bg-img"></div>
-      <div class="auth-glow"></div>
-      <div class="auth-box">
-        <div class="auth-brand">AlphaDetail</div>
-        <div class="auth-title">WELCOME BACK</div>
-        <p class="auth-sub">Sign in to your account to continue shopping</p>
-        <div class="auth-err" id="loginErr">Invalid email or password. Please try again.</div>
-        <div class="fg"><label class="fl">Email Address</label><input class="fi" type="email" id="lEmail"
-            placeholder="you@example.com">
-          <div class="fe" id="lEmailE">Enter a valid email</div>
-        </div>
-      <div class="fg">
-  <label class="fl">Password</label>
-
-  <div class="pass-wrap">
-    <input class="fi" type="password" id="lPass"
-      placeholder="Your password"
-      onkeydown="if(event.key==='Enter')doLogin()">
-
-    <button type="button" class="pass-toggle"
-      onclick="togglePassword('lPass', this)">
-      <i class="fa-solid fa-eye"></i>
-    </button>
-  </div>
-
-  <div class="fe" id="lPassE">Min 6 characters</div>
-</div>
-        <div class="fcheck"><input type="checkbox" id="remMe"><label for="remMe">Remember me</label></div>
-        <button class="auth-sub-btn" id="loginBtn" onclick="doLogin()">Sign In →</button>
-        <div class="auth-div"><span>or</span></div>
-        <div class="auth-switch">Don't have an account? <a onclick="showPage('register')">Create one free →</a></div>
-      </div>
-    </div>
-  </div>
-  <!-- ════════════ REGISTER PAGE ════════════ -->
-  <div class="page" id="page-register">
-    <div class="auth-pg">
-      <button class="back-btn" onclick="showPage('home')"
-        style="position:absolute; top:30px; left:30px; z-index:10; background:none; border:none; color:var(--gold); cursor:pointer; font-size:11px; letter-spacing:2px; text-transform:uppercase; display:flex; align-items:center; gap:8px;"><i
-          class="fa-solid fa-arrow-left"></i> Back</button>
-      <div class="auth-bg-img"></div>
-      <div class="auth-glow"></div>
-      <div class="auth-box">
-        <div class="auth-brand">AlphaDetail</div>
-        <div class="auth-title">CREATE ACCOUNT</div>
-        <p class="auth-sub">Join AlphaDetail for exclusive deals &amp; order tracking</p>
-        <div class="fg2">
-          <div class="fg"><label class="fl">First Name</label><input class="fi" id="rFirst" placeholder="John">
-            <div class="fe" id="rFirstE">Required</div>
-          </div>
-          <div class="fg"><label class="fl">Last Name</label><input class="fi" id="rLast" placeholder="Doe"></div>
-        </div>
-        <div class="fg"><label class="fl">Email Address</label><input class="fi" type="email" id="rEmail"
-            placeholder="you@example.com">
-          <div class="fe" id="rEmailE">Valid email required</div>
-        </div>
-        <div class="fg"><label class="fl">Phone Number</label><input class="fi" type="tel" id="rPhone"
-            placeholder="+91 98765 43210" maxlength="10" oninput="this.value=this.value.replace(/\D/g,'')">
-          <div class="fe" id="rPhoneE">Required (10 digits)</div>
-        </div>
-   <div class="fg">
-  <label class="fl">Password</label>
-
-  <div class="pass-wrap">
-    <input class="fi" type="password" id="rPass"
-      placeholder="Min 6 characters">
-
-    <button type="button" class="pass-toggle"
-      onclick="togglePassword('rPass', this)">
-      <i class="fa-solid fa-eye"></i>
-    </button>
-  </div>
-
-  <div class="fe" id="rPassE">Min 6 characters</div>
-</div>
-     <div class="fg">
-  <label class="fl">Confirm Password</label>
-
-  <div class="pass-wrap">
-    <input class="fi" type="password" id="rConf"
-      placeholder="Repeat password">
-
-    <button type="button" class="pass-toggle"
-      onclick="togglePassword('rConf', this)">
-      <i class="fa-solid fa-eye"></i>
-    </button>
-  </div>
-
-  <div class="fe" id="rConfE">Passwords do not match</div>
-</div>
-        <div class="fcheck"><input type="checkbox" id="agree"><label for="agree">I agree to the <a
-              onclick="showPage('privacy')">Terms &amp; Privacy Policy</a></label></div>
-        <button class="auth-sub-btn" id="regBtn" onclick="doRegister()">Create Account →</button>
-        <div class="auth-div"><span>or</span></div>
-        <div class="auth-switch">Already have an account? <a onclick="showPage('login')">Sign in →</a></div>
-      </div>
-=======
         <div class="fg2">
             <div class="fg">
                 <label class="fl">Email *</label>
@@ -933,7 +582,6 @@
                 <input class="fi" id="cPhone" type="tel" placeholder="10 Digits" style="flex:1;" maxlength="10" oninput="this.value=this.value.replace(/\D/g,'')">
             </div>
         <div class="fe" id="cPhoneE">Required</div>
->>>>>>> 2401a9006f0875628a9461bc7a2947f3b718e8ce
     </div>
 </div>
 <div class="fg2">

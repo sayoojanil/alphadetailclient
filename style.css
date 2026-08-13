@@ -112,7 +112,7 @@ ul {
   height: 100%;
   background: linear-gradient(90deg, var(--gold), var(--gold2));
   width: 0;
-  animation: loaderFill 2s ease forwards;
+  animation: loaderFill 0.5s ease forwards;
 }
 
 .loader-glow {
@@ -124,7 +124,7 @@ ul {
   height: 500px;
   background: radial-gradient(circle, rgba(201, 168, 76, .08) 0%, transparent 65%);
   pointer-events: none;
-  animation: breathe 3s ease-in-out infinite;
+  animation: breathe 1s ease-in-out infinite;
 }
 
 @keyframes loaderPulse {
@@ -1044,6 +1044,9 @@ header.scrolled {
   grid-template-columns: repeat(3, 1fr);
   gap: 24px;
 }
+.hf-grid .hf-card:nth-child(4) {
+  display: none;
+}
 
 .hf-card {
   background: var(--grey);
@@ -1052,8 +1055,6 @@ header.scrolled {
   cursor: pointer;
   transition: all .4s cubic-bezier(0.165, 0.84, 0.44, 1);
   position: relative;
-  display: flex;
-  flex-direction: column;
 }
 
 .hf-card:hover {
@@ -1063,7 +1064,7 @@ header.scrolled {
 }
 
 .hf-img {
-  height: 220px;
+  height: 300px;
   position: relative;
   overflow: hidden;
   background: var(--mid);
@@ -1099,7 +1100,7 @@ header.scrolled {
 }
 
 .hf-body {
-  padding: 16px 20px;
+  padding: 24px;
 }
 
 .hf-code {
@@ -1107,168 +1108,24 @@ header.scrolled {
   letter-spacing: 4px;
   text-transform: uppercase;
   color: var(--gold);
-  margin-bottom: 6px;
+  margin-bottom: 8px;
   font-weight: 700;
 }
 
 .hf-name {
   font-family: 'Bebas Neue', sans-serif;
-  font-size: 24px;
-  letter-spacing: 1.5px;
+  font-size: 28px;
+  letter-spacing: 2px;
   color: var(--white);
-  margin-bottom: 4px;
+  margin-bottom: 6px;
   line-height: 1;
 }
 
 .hf-price {
   font-family: 'Bebas Neue', sans-serif;
-  font-size: 22px;
+  font-size: 24px;
   color: var(--gold);
   letter-spacing: 1px;
-}
-
-/* ══ FEATURED VIEW ALL CARD (MATCHING REFERENCE IMAGE EXACTLY) ══ */
-.hf-view-all {
-  display: none !important; /* Hidden on PC / Desktop view */
-  position: relative;
-  width: 100%;
-  min-height: 280px;
-  background: #090909;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 12px;
-  overflow: hidden;
-  cursor: pointer;
-  flex-direction: column;
-  justify-content: space-between;
-  text-align: center;
-  transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), box-shadow 0.4s ease, border-color 0.4s ease;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
-}
-
-@media (max-width: 900px) {
-  .hf-view-all {
-    display: flex !important; /* Shown in Mobile / Tablet view */
-  }
-  .hf-img {
-    height: 165px;
-  }
-  .hf-body {
-    padding: 12px 14px;
-  }
-  .hf-name {
-    font-size: 20px;
-  }
-  .hf-price {
-    font-size: 18px;
-  }
-}
-
-.hf-view-all:hover {
-  transform: translateY(-5px);
-  border-color: rgba(212, 175, 55, 0.5);
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.8), 0 0 20px rgba(212, 175, 55, 0.15);
-}
-
-/* Top Left Diagonal Pattern & Line */
-.hf-va-top-svg {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 110px;
-  pointer-events: none;
-  z-index: 1;
-}
-
-/* Top Right Bag Icon */
-.hf-va-icon-wrap {
-  position: absolute;
-  top: 20px;
-  right: 16px;
-  z-index: 2;
-  transition: transform 0.3s ease;
-}
-
-.hf-view-all:hover .hf-va-icon-wrap {
-  transform: scale(1.1) rotate(-4deg);
-}
-
-/* Central Content */
-.hf-va-content {
-  position: relative;
-  z-index: 2;
-  padding: 68px 12px 12px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  flex: 1;
-}
-
-.hf-va-eyebrow {
-  font-size: 9.5px;
-  font-weight: 600;
-  letter-spacing: 3px;
-  color: #d4af37;
-  text-transform: uppercase;
-  margin-bottom: 6px;
-}
-
-.hf-va-main-title {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 34px;
-  letter-spacing: 2px;
-  color: #ffffff;
-  line-height: 1;
-  margin-bottom: 12px;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
-}
-
-.hf-va-desc {
-  font-size: 9.5px;
-  font-weight: 500;
-  letter-spacing: 2px;
-  color: #999999;
-  text-transform: uppercase;
-  line-height: 1.5;
-  margin: 0;
-}
-
-/* Bottom Angled Gold Banner */
-.hf-va-gold-banner {
-  position: relative;
-  width: 100%;
-  height: 75px;
-  background: linear-gradient(135deg, #d4af37 0%, #f4d03f 45%, #aa8214 100%);
-  clip-path: polygon(0 50px, 100% 12px, 100% 100%, 0 100%);
-  display: flex;
-  align-items: flex-end;
-  justify-content: flex-end;
-  padding: 0 18px 14px 0;
-  margin-top: auto;
-  z-index: 2;
-  transition: filter 0.3s ease;
-}
-
-.hf-view-all:hover .hf-va-gold-banner {
-  filter: brightness(1.1);
-}
-
-.hf-va-gold-banner span {
-  font-family: 'DM Sans', sans-serif;
-  font-weight: 800;
-  font-size: 12px;
-  letter-spacing: 1.5px;
-  color: #000000;
-  text-transform: uppercase;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  transition: transform 0.3s ease;
-}
-
-.hf-view-all:hover .hf-va-gold-banner span {
-  transform: translateX(4px);
 }
 
 /* ══ CAR GALLERY ══ */
@@ -1547,7 +1404,29 @@ header.scrolled {
   color: var(--black);
 }
 
-/* ══ PROMISE ══ */
+/* Kit item price tag shown inline per product */
+.kit-item-price {
+  margin-left: auto;
+  font-size: 11px;
+  color: var(--gold);
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  flex-shrink: 0;
+}
+
+/* Placeholder while kit data loads from backend */
+.kit-loading {
+  color: var(--muted) !important;
+  font-style: italic;
+  animation: kitPulse 1.4s ease-in-out infinite;
+}
+
+@keyframes kitPulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 1; }
+}
+
+
 .promise-sec {
   padding: 120px 48px;
   text-align: center;
@@ -1558,7 +1437,7 @@ header.scrolled {
 .promise-bg {
   position: absolute;
   inset: 0;
-  background: url('C:\\Users\\ASUS\\.gemini\\antigravity\\brain\\6a56fd03-2cb0-41bb-92d9-7ed5823a9158\\alphadetail_promise_bg_1775503973551.png') center/cover;
+  background: url('') center/cover;
   filter: brightness(.12);
 }
 
@@ -1643,6 +1522,11 @@ header.scrolled {
   transition: opacity .7s .8s;
   margin-top: 24px;
 }
+.container {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+}
 
 .promise-src.vis {
   opacity: 1;
@@ -1659,7 +1543,7 @@ header.scrolled {
 .india-bg {
   position: absolute;
   inset: 0;
-  background: url('C:\\Users\\ASUS\\.gemini\\antigravity\\brain\\6a56fd03-2cb0-41bb-92d9-7ed5823a9158\\alphadetail_india_bg_new_1775504175291.png') center/cover;
+  background: url('') center/cover;
   filter: brightness(.12);
 }
 
@@ -3489,16 +3373,14 @@ header.scrolled {
 
 @media (max-width: 768px) {
   .pc-atc {
-    font-size: 10px;
+    font-size: 7px;
     padding: 6px 10px;
     width: 100%;
-    height: 30px;
+    height: 20px;
     letter-spacing: 0.5px;
     white-space: nowrap;
   }
 }
-
-
   .cart-layout,
   .checkout-layout {
     grid-template-columns: 1fr;
@@ -3576,11 +3458,14 @@ header.scrolled {
 
 @media(max-width:600px) {
 
-  .shop-grid,
-  .hf-grid,
-  .pillars-grid {
+  .hf-grid .hf-card:nth-child(4) {
+    display: block;
+  }
+
+  .hf-grid {
     grid-template-columns: 1fr;
   }
+  
 
   .ft-grid {
     grid-template-columns: 1fr;
@@ -4260,5 +4145,4 @@ header.scrolled {
   transform: translateY(-1px);
   box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
 }
-
 

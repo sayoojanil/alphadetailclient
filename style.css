@@ -1044,6 +1044,9 @@ header.scrolled {
   grid-template-columns: repeat(3, 1fr);
   gap: 24px;
 }
+.hf-grid .hf-card:nth-child(4) {
+  display: none;
+}
 
 .hf-card {
   background: var(--grey);
@@ -3455,11 +3458,14 @@ header.scrolled {
 
 @media(max-width:600px) {
 
-  .shop-grid,
-  .hf-grid,
-  .pillars-grid {
+  .hf-grid .hf-card:nth-child(4) {
+    display: block;
+  }
+
+  .hf-grid {
     grid-template-columns: 1fr;
   }
+  
 
   .ft-grid {
     grid-template-columns: 1fr;

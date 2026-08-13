@@ -1,8 +1,7 @@
 (function () {
   'use strict';
 
-  // ── API Base ─────────────────────────────────────────────────────────
-  // Resolved from config.js (window.ENV). Never hardcode URLs here.
+
   const API_BASE = (window.ENV && window.ENV.API_BASE);
 
 
@@ -248,7 +247,7 @@ if (!pg) {
   function renderFeatured() {
     const el = document.getElementById('homeFeatured');
     if (!el || PRODS.length === 0) return;
-    const feat = PRODS.slice(0, 3);
+    const feat = PRODS.slice(0, 4);
     el.innerHTML = feat.map(p => `
     <div class="hf-card reveal" onclick="openPD('${p.id}')">
       <div class="hf-img">${makeImgHTML(p.id, p.name, 'width:100%;height:100%;object-fit:cover;transition:transform .6s;')}<div class="hf-ov"></div></div>

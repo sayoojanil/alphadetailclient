@@ -1,1 +1,1215 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>AlphaDetail.Formulated to Finish</title><link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"><link rel="stylesheet" href="style.css?v=2.0.1"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"> <script src="https://checkout.razorpay.com/v1/checkout.js"></script> <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png"><link rel="manifest" href="site.webmanifest"></head><body><div id="loader"><div class="loader-glow"></div><div class="loader-brand"><img src="logo.png" alt="AlphaDetail" style="height: 90px; width: auto;"></div><div class="loader-bar-wrap"><div class="loader-bar"></div></div></div><div id="sonner" class="sonner-container"></div><header><div class="logo-wrap" onclick="showPage('home')"><img src="logo.png" alt="AlphaDetail Logo" class="logo-img"></div><div class="nav-center pc-only"><img src="alphahead.png" alt="AlphaHead" style="height: 204px; width: auto; object-fit: contain; margin-top: 35px;"></div><div class="nav-right"><button class="nav-item" data-pg="home" onclick="showPage('home')">Home</button><button class="nav-item" data-pg="shop" onclick="showPage('shop')">Shop</button><div id="navAuth" style="display:flex;align-items:center;gap:4px;"><button class="nav-item" data-pg="login" onclick="showPage('login')">Login</button><button class="nav-btn" onclick="showPage('register')">Register</button></div><div id="navUser" style="display:none;" class="nav-user"><span class="nav-uname" id="navUname" onclick="showPage('profile')" style="cursor:pointer;"></span><button class="nav-logout" onclick="showPage('logout')">Sign Out</button></div><button class="nav-cart" onclick="showPage('cart')"><i class="fa-solid fa-cart-shopping"></i> Cart <span class="cart-badge" id="cartBadge">0</span></button><button class="hamburger" onclick="toggleMob()"><span></span><span></span><span></span></button></div></header><div class="mob-menu" id="mobMenu"><button class="mob-close-btn" onclick="closeMob()"><i class="fa-solid fa-xmark"></i></button><button class="mob-item" onclick="showPage('home');closeMob()">Home <i class="fa-solid fa-house" style="font-size: 18px;"></i></button><button class="mob-item" onclick="showPage('shop');closeMob()">Shop <i class="fa-solid fa-bag-shopping" style="font-size: 18px;"></i></button><button class="mob-item" onclick="showPage('cart');closeMob()">Cart <span class="count" id="mobCartBadge">0</span></button><button class="mob-item" id="mobLogin" onclick="showPage('login');closeMob()">Login <i class="fa-solid fa-right-to-bracket" style="font-size: 18px;"></i></button><button class="mob-item" id="mobReg" onclick="showPage('register');closeMob()">Register <i class="fa-solid fa-user-plus" style="font-size: 18px;"></i></button><button class="mob-item" id="mobProfile" style="display:none;" onclick="showPage('profile');closeMob()">Profile <i class="fa-solid fa-user-gear" style="font-size: 18px;"></i></button><button class="mob-item" id="mobLogout" style="display:none;color:var(--red);" onclick="doLogout();closeMob()">Sign Out <i class="fa-solid fa-arrow-right-from-bracket" style="font-size: 18px;"></i></button></div><div class="page active" id="page-home"><section class="hero-sec"><div class="hero-bg-img"><img src="" alt="Premium Car Detailing"></div><div class="hero-grid"></div><div class="hero-vign"></div><div class="hero-glow"></div><div class="hero-content"><div class="hero-eye">DIY Car Care &nbsp;·&nbsp; Formulated to Finish &nbsp;·&nbsp; Kerala, India</div><h1 class="hero-h1">ALPHA<em>DETAIL</em></h1><p class="hero-tagline">Professional Grade. Your Driveway.</p><p class="hero-p">Not every product deserves a place in your garage. <strong>Ours had to earn it.</strong> Seven imported formulas built for Indian roads, Indian heat, and Indian weather.</p><div class="hero-ctas"><button class="btn-g" onclick="showPage('shop')">Shop All Products</button><button class="btn-o" onclick="document.getElementById('why-sec').scrollIntoView({behavior:'smooth'})">Our Standard</button></div><div class="hero-stats"><div><div class="hs-num">7</div><div class="hs-lbl">Products</div></div><div><div class="hs-num">200+</div><div class="hs-lbl">Washes/Bottle</div></div><div><div class="hs-num">1:800</div><div class="hs-lbl">Dilution Ratio</div></div><div><div class="hs-num">₹5</div><div class="hs-lbl">Cost/Wash</div></div></div></div><div class="scroll-ind"><div class="scroll-line"></div><span style="font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--muted);">Scroll</span></div></section><div class="marquee-wrap" aria-hidden="true"><div class="marquee-track"><span class="mi">Nano Foam</span><span class="md">✦</span><span class="mi">Fusion Wash</span><span class="md">✦</span><span class="mi">Gleam-X</span><span class="md">✦</span><span class="mi">Hyper DRESS</span><span class="md">✦</span><span class="mi">Cabin Glow</span><span class="md">✦</span><span class="mi">Surface Revive</span><span class="md">✦</span><span class="mi">Graphene Tyre Coat</span><span class="md">✦</span><span class="mi">Formulated to Finish</span><span class="md">✦</span><span class="mi">Nano Foam</span><span class="md">✦</span><span class="mi">Fusion Wash</span><span class="md">✦</span><span class="mi">Gleam-X</span><span class="md">✦</span><span class="mi">Hyper DRESS</span><span class="md">✦</span><span class="mi">Cabin Glow</span><span class="md">✦</span><span class="mi">Surface Revive</span><span class="md">✦</span><span class="mi">Graphene Tyre Coat</span><span class="md">✦</span><span class="mi">Formulated to Finish</span><span class="md">✦</span></div></div><section class="sec-dark"><div class="wrap"><div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:40px;flex-wrap:wrap;gap:14px;"><div class="reveal"><div class="s-eye">Best Sellers</div><h2 class="s-h2">FEATURED PRODUCTS</h2></div><button class="btn-o reveal" onclick="showPage('shop')">View All →</button></div><div class="hf-grid" id="homeFeatured"></div></div></section><div class="car-strip reveal"><div class="cs-item"><img src="https://images.unsplash.com/photo-1617814076367-b759c7d7e738?w=800&q=80" alt=""><div class="cs-ov"></div><div class="cs-lbl">Formulated to Finish</div></div><div class="cs-item"><img src="https://images.unsplash.com/photo-1580274455191-1c62238fa333?w=800&q=80" alt=""><div class="cs-ov"></div><div class="cs-lbl">AlphaDetail</div></div><div class="cs-item"><img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=800&q=80" alt=""><div class="cs-ov"></div><div class="cs-lbl">Built for India</div></div><div class="cs-item"><img src="https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=800&q=80" alt=""><div class="cs-ov"></div><div class="cs-lbl">Pro Grade</div></div><div class="cs-item"><img src="https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=800&q=80" alt=""><div class="cs-ov"></div><div class="cs-lbl">Your Driveway</div></div></div><section class="sec" style="background:var(--grey);" id="why-sec"><div class="wrap"><div style="display:grid;grid-template-columns:1fr 1fr;gap:50px;align-items:end;margin-bottom:44px;flex-wrap:wrap;"><div class="reveal-l"><div class="s-eye">Why AlphaDetail</div><h2 class="s-h2">THE ALPHA<br>STANDARD</h2></div><p class="reveal-r" style="font-size:18px;color:#aaa;line-height:1.65;font-style:italic;border-left:3px solid var(--gold);padding-left:22px;"> "Not every product deserves a place in your garage. <strong style="color:var(--white);font-style:normal;font-weight:500;">Ours had to earn it.</strong>"</p></div><div class="pillars-grid"><div class="pillar reveal d1"><div class="p-bg-num">01</div><div class="p-icon"><i class="fa-solid fa-flask"></i></div><div class="p-name">Formulation First</div><p class="p-text">"Tested on real cars. In real Indian heat. Before it reached you."</p></div><div class="pillar reveal d2"><div class="p-bg-num">02</div><div class="p-icon"><i class="fa-solid fa-bullseye"></i></div><div class="p-name">Purpose-Built</div><p class="p-text">"One product. One job. Done right."</p></div><div class="pillar reveal d3"><div class="p-bg-num">03</div><div class="p-icon"><i class="fa-solid fa-shield-halved"></i></div><div class="p-name">Surface Respect</div><p class="p-text">"Safe on your paint, your coating, your investment."</p></div><div class="pillar reveal d4"><div class="p-bg-num">04</div><div class="p-icon"><i class="fa-solid fa-screwdriver-wrench"></i></div><div class="p-name">Detailer Tested</div><p class="p-text">"Built in driveways, not just laboratories."</p></div><div class="pillar reveal d5"><div class="p-bg-num">05</div><div class="p-icon"><i class="fa-solid fa-scale-balanced"></i></div><div class="p-name">Balanced Performance</div><p class="p-text">"Cleans deep. Never damages."</p></div><div class="pillar reveal d6"><div class="p-bg-num">06</div><div class="p-icon"><i class="fa-solid fa-thumbs-up"></i></div><div class="p-name">Consistency</div><p class="p-text">"Same result. First bottle. Fiftieth bottle."</p></div><div class="pillar reveal d7"><div class="p-bg-num">07</div><div class="p-icon"><i class="fa-solid fa-location-dot"></i></div><div class="p-name">Made for India</div><p class="p-text">"Built for 38°C summers, monsoon roads, and everything in between."</p></div></div></div></section><section class="alpha-fullscreen-img"><img src="alphahead.png" alt="AlphaDetail Fullscreen" style="width: 100%; height: 100%; object-fit: cover; object-position: center;"></section><section class="sec" style="background:var(--black);"><div class="wrap"><div class="reveal-l"><div class="s-eye">Save Mor  e</div><h2 class="s-h2">BUNDLE PACKAGES</h2><p class="s-desc">Everything you need, one order, best price — with automatic discount applied at cart.</p></div><div class="bundle-grid" id="bundleGrid"><div class="bcard reveal-l" id="starterKitCard" onclick="addBundleToCart('starter')" style="cursor:pointer;"><div class="bcard-badge">Starter</div><div class="bcard-name" id="starterKitName">Alpha Starter Kit</div><p class="bcard-tagline" id="starterKitTagline">"Everything you need to get started. Nothing you don't."</p><ul class="bcard-items" id="starterKitItems"><li class="kit-loading">Loading products…</li></ul><div class="bcard-price-wrap"><div class="bcard-original" id="starterKitOriginal">—</div><div class="bcard-discount-tag" id="starterKitDiscTag">5% AUTO DISCOUNT AT CART</div><div class="bcard-price" id="starterKitPrice">—</div><div class="bcard-save" id="starterKitSave">—</div></div><button class="bcard-btn-o">Add Bundle to Cart</button></div><div class="bcard bcard-feat reveal-r" id="proKitCard" onclick="addBundleToCart('pro')" style="cursor:pointer;"><div class="bcard-badge">Best Value <i class="fa-solid fa-star"></i></div><div class="bcard-name" id="proKitName">Alpha Pro Kit</div><p class="bcard-tagline" id="proKitTagline">"The complete AlphaDetail arsenal. Every surface. Inside and out."</p><ul class="bcard-items" id="proKitItems"><li class="kit-loading">Loading products…</li></ul><div class="bcard-price-wrap"><div class="bcard-original" id="proKitOriginal">—</div><div class="bcard-discount-tag" id="proKitDiscTag">10% AUTO DISCOUNT AT CART</div><div class="bcard-price" id="proKitPrice">—</div><div class="bcard-save" id="proKitSave">—</div></div><button class="bcard-btn">Get Pro Kit →</button></div></div></div></section><section class="promise-sec reveal" id="promise-sec"><div class="promise-bg"></div><div class="promise-inner"><div class="promise-eye" id="promEye">The AlphaDetail Promise</div><div class="promise-divider" id="promDiv"></div><div class="promise-line l1" id="pl1">"Professional results.</div><div class="promise-line l2" id="pl2"><span>Your driveway.</span></div><div class="promise-line l3" id="pl3">Your schedule.</div><div class="promise-line l4" id="pl4"><span>Your price."</span></div><div class="promise-src" id="promSrc">AlphaDetail DIY Car Care Solutions — Kerala, India</div></div></section><section class="india-sec"><div class="india-bg"></div><div class="india-inner"><div style="font-size:50px;color:var(--gold);" class="reveal"><i class="fa-solid fa-flag"></i></div><h2 class="india-h2 reveal">BUILT FOR<br><span>INDIA.</span></h2><p class="india-p reveal">Most car care products are engineered for <strong>European winters.</strong> Your car lives through <strong>45°C summers, 85% humidity,</strong> and monsoon roads. AlphaDetail is built for where you actually drive.</p><div class="india-stats reveal"><div class="is-stat"><div class="is-num">45°C</div><div class="is-lbl">Summer Heat</div></div><div class="is-stat"><div class="is-num">85%</div><div class="is-lbl">Humidity</div></div><div class="is-stat"><div class="is-num">Kerala</div><div class="is-lbl">Home Ground</div></div></div></div></section></div><div class="page" id="page-shop"><div class="wrap" style="padding-top:20px;"><button class="back-btn" onclick="showPage('home')" style="background:none; border:none; color:var(--gold); cursor:pointer; font-size:11px; letter-spacing:2px; text-transform:uppercase; display:flex; align-items:center; gap:8px;"><i class="fa-solid fa-arrow-left"></i> Back to Home</button></div><div class="shop-hero"><div class="wrap"><div class="s-eye">Series AL-S1</div><h1 class="s-h2">ALL PRODUCTS</h1><p class="s-desc">7 imported formulas. Each 473ml. Each built for one job.</p></div></div><div class="wrap shop-wrap-main"><div class="shop-filters"><div class="ftabs"><button class="ftab act" onclick="filterP('all',this)">All (7)</button><button class="ftab" onclick="filterP('exterior',this)">Exterior</button><button class="ftab" onclick="filterP('interior',this)">Interior</button><button class="ftab" onclick="filterP('tyre',this)">Tyre &amp; Trim</button></div><select class="sort-sel" onchange="sortP(this.value)"><option value="default">Sort: Featured</option><option value="low">Price: Low to High</option><option value="high">Price: High to Low</option></select></div><div class="shop-grid" id="shopGrid"></div></div></div><div class="page" id="page-product"><div class="wrap" style="padding-top:40px; padding-bottom:80px;"><button class="back-btn" onclick="showPage('shop')" style="margin-bottom:30px; background:none; border:none; color:var(--gold); cursor:pointer; font-size:12px; letter-spacing:2px; text-transform:uppercase; display:flex; align-items:center; gap:8px;"><i class="fa-solid fa-arrow-left"></i> Back to Shop</button><div class="pd-full"><div class="pd-gal"><div class="pd-main-wrap" id="pdMainWrap"></div><div class="pd-thumbs" id="pdThumbs"></div></div><div class="pd-info"><div class="pd-header-sec"><div class="pd-code" id="pdCode"></div><h1 class="pd-name" id="pdName"></h1><div class="pd-sub" id="pdSub"></div></div><div class="pd-mid-grid"><div class="pd-info-left"><div class="pd-price-box"><div class="pd-mrp-lbl">MRP</div><div class="pd-price" id="pdPrice"></div></div><div class="pd-tag-grid" id="pdTags"></div><div class="pd-action"><div class="pd-ml">Standard Bottle · 473ml</div><div class="pd-qty-add-wrap"><div class="pd-qty-ctrl"><button class="pd-add" id="pdAddBtn">Add to Cart →</button><button type="button" class="pd-qty-btn" id="pdQtyMinus" onclick="changePdQty(-1)">−</button><input type="number" id="pdQtyInput" class="pd-qty-input" value="1" min="1" readonly><button type="button" class="pd-qty-btn" id="pdQtyPlus" onclick="changePdQty(1)">+</button></div></div></div></div><div class="pd-info-right"><h2 class="pd-hook" id="pdHook"></h2><div class="pd-desc" id="pdDesc"></div><div class="pd-adv-box"><div class="pab-h">THE ALPHA ADVANTAGE</div><div class="pab-c" id="pdAdv"></div></div><div class="pd-sec-wrap"><div class="pd-sec-h">KEY BENEFITS</div><ul class="pd-feats" id="pdFeats"></ul></div><div class="pd-sec-wrap"><div class="pd-sec-h" style="margin-bottom:20px;">HOW TO USE</div><div id="pdUsage"></div></div></div></div></div></div></div></div><div class="page" id="page-cart"><div class="wrap" style="padding-top:40px;padding-bottom:80px;"><button class="back-btn" onclick="showPage('shop')" style="margin-bottom:20px; background:none; border:none; color:var(--gold); cursor:pointer; font-size:11px; letter-spacing:2px; text-transform:uppercase; display:flex; align-items:center; gap:8px;"><i class="fa-solid fa-arrow-left"></i> Back to Shop</button><div class="s-eye">Your Selection</div><h1 class="s-h2">SHOPPING CART</h1><div class="cart-layout"><div><div class="cart-box"><div class="cart-head"><div class="ch-lbl">Product</div><div class="ch-lbl">Price</div><div class="ch-lbl">Quantity</div><div class="ch-lbl">Total</div><div class="ch-lbl"></div></div><div class="cart-discount-notice" id="cartDiscNotice"><span class="cdn-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></span><span class="cdn-text" id="cdnText">Bundle discount applied!</span><span class="cdn-amount" id="cdnAmount"></span></div><div id="cartList"></div><div class="cart-empty" id="cartEmpty"><div class="ce-icon"><i class="fa-solid fa-cart-shopping"></i></div><div class="ce-title">Your Cart is Empty</div><button class="btn-g" onclick="showPage('shop')">Browse Products</button></div></div></div><div class="sum-box"><div class="sum-title">Order Summary</div><div class="sum-row"><span>Subtotal</span><span class="sum-val" id="sumSub">₹0</span></div><div class="sum-row"><span>Shipping</span><span class="sum-val" id="sumShip">₹0</span></div><div class="sum-discount-row" id="sumDiscRow"><span id="sumDiscLabel">Bundle Discount</span><span class="sum-disc-val" id="sumDisc">-₹0</span></div><div class="sum-total"><span class="sum-total-lbl">Total</span><span class="sum-total-val" id="sumTotal">₹0</span></div><button class="chk-btn" onclick="proceedCheckout()">Proceed to Checkout →</button><span class="cont-shop" onclick="showPage('shop')">← Continue Shopping</span></div></div></div></div><div class="page" id="page-checkout"><div class="wrap" style="padding-top:40px;padding-bottom:80px;"><button class="back-btn" onclick="showPage('cart')" style="margin-bottom:20px; background:none; border:none; color:var(--gold); cursor:pointer; font-size:11px; letter-spacing:2px; text-transform:uppercase; display:flex; align-items:center; gap:8px;"><i class="fa-solid fa-arrow-left"></i> Back to Cart</button><div id="checkoutMain"><div class="s-eye">Almost There</div><h1 class="s-h2">CHECKOUT</h1><div class="checkout-layout" id="chkContent"><div><div class="chk-form"><div class="chk-sec-h">Delivery Information</div><div class="fg2"><div class="fg"><label class="fl">First Name *</label><input class="fi" id="cFirst" placeholder="John"><div class="fe" id="cFirstE">Required</div></div><div class="fg"><label class="fl">Last Name</label><input class="fi" id="cLast" placeholder="Doe"><div class="fe" id="cLastE">Required</div></div></div><div class="fg2"><div class="fg"><label class="fl">Email *</label><input class="fi" id="cEmail" type="email" placeholder="you@example.com"><div class="fe" id="cEmailE">Valid email required</div></div><div class="fg"><label class="fl">Phone *</label><div style="display:flex; gap:5px;"><input class="fi" id="cPhoneCode" style="width:70px;" value="+91" placeholder="+91"><input class="fi" id="cPhone" type="tel" placeholder="10 Digits" style="flex:1;" maxlength="10" oninput="this.value=this.value.replace(/\D/g,'')"></div><div class="fe" id="cPhoneE">Required</div></div></div><div class="fg2"><div class="fg"><label class="fl">Secondary Phone</label><input class="fi" id="cSecondaryPhone" type="tel" placeholder="Optional Number" maxlength="10" oninput="this.value=this.value.replace(/\D/g,'')"></div><div class="fg"><label class="fl">Country *</label><input class="fi" id="cCountry" value="India"><div class="fe" id="cCountryE">Required</div></div></div><div class="fg2"><div class="fg"><label class="fl">Flat / House No. *</label><input class="fi" id="cHouse" placeholder="e.g. 4B, Emerald Court"><div class="fe" id="cHouseE">Required</div></div><div class="fg"><label class="fl">Area / Street *</label><input class="fi" id="cAddr" placeholder="e.g. MG Road, Panampilly Nagar"><div class="fe" id="cAddrE">Required</div></div></div><div class="fg"><label class="fl">Landmark</label><input class="fi" id="cLandmark" placeholder="e.g. Near HDFC Bank"></div><div class="fg2"><div class="fg"><label class="fl">City *</label><input class="fi" id="cCity" placeholder="Kochi"><div class="fe" id="cCityE">Required</div></div><div class="fg"><label class="fl">District *</label><input class="fi" id="cDistrict" placeholder="Ernakulam"><div class="fe" id="cDistrictE">Required</div></div><div class="fg"><label class="fl">PIN Code *</label><input class="fi" id="cPin" placeholder="682308" maxlength="6" oninput="this.value=this.value.replace(/\D/g,'')"><div class="fe" id="cPinE">Required</div></div></div><div class="fg"><label class="fl">State *</label><input class="fi" id="cState" value="Kerala"><div class="fe" id="cStateE">Required</div></div><div class="hr"></div><div class="chk-sec-h">Payment Method</div><div class="pay-opts"><label class="pay-opt sel" id="pm-upi" onclick="selPM(this,'upi')"><input type="radio" name="pm" checked><span class="pay-lbl">UPI / PhonePe / GPay</span><span class="pay-icon"><i class="fa-solid fa-mobile-screen-button"></i></span></label></div><div id="upiF" style="display:none;margin-top:13px;"><div class="fg"><label class="fl">UPI ID</label><input class="fi" placeholder="name@upi"></div></div><div id="cardF" style="display:none;margin-top:13px;"><div class="fg"><label class="fl">Card Number</label><input class="fi" placeholder="1234 5678 9012 3456"></div><div class="fg2"><div class="fg"><label class="fl">Expiry</label><input class="fi" placeholder="MM / YY"></div><div class="fg"><label class="fl">CVV</label><input class="fi" placeholder="•••"></div></div></div><div class="chk-trust"><div class="ct-label"><i class="fa-solid fa-shield-halved"></i> 100% SECURE CHECKOUT</div><div class="ct-logos"><img src="https://razorpay.com/assets/razorpay-glyph.svg" alt="Razorpay" style="height:18px;"><span style="font-size:10px; font-weight:700; letter-spacing:1px; color:var(--muted); margin-left:6px; margin-top:2px;">SECURED BY RAZORPAY</span><div class="ct-divider"></div><div class="ct-icons"><i class="fa-brands fa-cc-visa"></i><i class="fa-brands fa-cc-mastercard"></i><i class="fa-brands fa-google-pay"></i><i class="fa-solid fa-bolt" title="UPI"></i></div></div></div><div class="fe" id="chkGlobalE" style="font-size:12px;margin-top:12px;"></div><button class="place-btn" onclick="placeOrder()">Place Order →</button></div></div><div class="order-sum"><div class="os-title">Your Order</div><div id="osItems"></div><div style="margin-top:14px;"><div class="sum-row"><span>Subtotal</span><span class="sum-val" id="osSub">₹0</span></div><div class="sum-row"><span>Shipping</span><span class="sum-val" id="osShip">₹0</span></div><div class="sum-discount-row" id="osDiscRow"><span id="osDiscLabel">Bundle Discount</span><span class="sum-disc-val" id="osDisc">-₹0</span></div><div class="sum-total"><span class="sum-total-lbl">Total</span><span class="sum-total-val" id="osTotal">₹0</span></div></div></div></div></div></div></div><div class="page" id="page-orderSuccess" style="text-align:center; padding: 80px 20px 60px;"><div class="success-anim" style="margin: 0 auto 30px; position:relative;"><div class="success-circle" style="width: 100px; height: 100px; background: rgba(212,175,55,0.1); border: 2px solid var(--gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 40px; color: var(--gold); margin: 0 auto; position: relative; z-index: 5;"><i class="fa-solid fa-check"></i></div><div class="success-glow" style="position: absolute; top: 50%; left: 50%; width: 140px; height: 140px; background: var(--gold); filter: blur(40px); opacity: 0.15; transform: translate(-50%, -50%); border-radius: 50%; z-index: 1;"></div></div><div class="osuc-title reveal" style="font-family:'Bebas Neue', sans-serif; font-size: 48px; letter-spacing: 2px; color: #fff; margin-bottom: 20px;"> ORDER PLACED!</div><div class="success-box reveal" style="padding: 15px 30px; background: #0a0a0a; border: 1px solid var(--border); display: inline-block; margin-bottom: 30px;"><div class="osuc-num" style="font-size: 16px; letter-spacing: 3px; color: var(--gold);">Order #<span id="orderNum"></span></div></div><p class="osuc-p reveal" style="font-size: 16px; color: var(--muted); max-width: 500px; margin: 0 auto 20px; line-height: 1.6;">Thank you! Your AlphaDetail products are confirmed and will be dispatched shortly.</p><div id="orderDetails" class="reveal" style="max-width:500px; margin: 0 auto 30px; text-align:left; background:#111; border:1px solid var(--border); padding:20px; border-radius:4px;"></div><div class="osuc-btns reveal" style="display:flex; justify-content:center; gap:15px; flex-wrap:wrap;"><button class="btn-g" style="padding: 14px 28px; background: var(--gold); color: #000; border: none; font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; cursor: pointer;" onclick="showPage('home');clearCart()">Back to Home</button><button class="btn-o" style="padding: 14px 28px; background: none; border: 1px solid #333; color: #fff; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; cursor: pointer;" onclick="printOrder()"><i class="fa-solid fa-file-invoice" style="margin-right: 8px;"></i> Download Invoice</button><button class="btn-o" style="padding: 14px 28px; background: none; border: 1px solid #333; color: #fff; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; cursor: pointer;" onclick="showProfileTab('orders')">Track Order</button></div></div><div class="page" id="page-login"><div class="auth-pg"><button class="back-btn" onclick="showPage('home')" style="position:absolute; top:30px; left:30px; z-index:10; background:none; border:none; color:var(--gold); cursor:pointer; font-size:11px; letter-spacing:2px; text-transform:uppercase; display:flex; align-items:center; gap:8px;"><i class="fa-solid fa-arrow-left"></i> Back</button><div class="auth-bg-img"></div><div class="auth-glow"></div><div class="auth-box"><div class="auth-brand">AlphaDetail</div><div class="auth-title">WELCOME BACK</div><p class="auth-sub">Sign in to your account to continue shopping</p><div class="auth-err" id="loginErr">Invalid email or password. Please try again.</div><div class="fg"><label class="fl">Email Address</label><input class="fi" type="email" id="lEmail" placeholder="you@example.com"><div class="fe" id="lEmailE">Enter a valid email</div></div><div class="fg"><label class="fl">Password</label><div class="pass-wrap"><input class="fi" type="password" id="lPass" placeholder="Your password" onkeydown="if(event.key==='Enter')doLogin()"><button type="button" class="pass-toggle" onclick="togglePassword('lPass', this)"><i class="fa-solid fa-eye"></i></button></div><div class="fe" id="lPassE">Min 6 characters</div></div><div class="fcheck"><input type="checkbox" id="remMe"><label for="remMe">Remember me</label></div><button class="auth-sub-btn" id="loginBtn" onclick="doLogin()">Sign In →</button><div class="auth-div"><span>or</span></div><div class="auth-switch">Don't have an account? <a onclick="showPage('register')">Create one free →</a></div></div></div></div><div class="page" id="page-register"><div class="auth-pg"><button class="back-btn" onclick="showPage('home')" style="position:absolute; top:30px; left:30px; z-index:10; background:none; border:none; color:var(--gold); cursor:pointer; font-size:11px; letter-spacing:2px; text-transform:uppercase; display:flex; align-items:center; gap:8px;"><i class="fa-solid fa-arrow-left"></i> Back</button><div class="auth-bg-img"></div><div class="auth-glow"></div><div class="auth-box"><div class="auth-brand">AlphaDetail</div><div class="auth-title">CREATE ACCOUNT</div><p class="auth-sub">Join AlphaDetail for exclusive deals &amp; order tracking</p><div class="fg2"><div class="fg"><label class="fl">First Name</label><input class="fi" id="rFirst" placeholder="John"><div class="fe" id="rFirstE">Required</div></div><div class="fg"><label class="fl">Last Name</label><input class="fi" id="rLast" placeholder="Doe"></div></div><div class="fg"><label class="fl">Email Address</label><input class="fi" type="email" id="rEmail" placeholder="you@example.com"><div class="fe" id="rEmailE">Valid email required</div></div><div class="fg"><label class="fl">Phone Number</label><input class="fi" type="tel" id="rPhone" placeholder="+91 98765 43210" maxlength="10" oninput="this.value=this.value.replace(/\D/g,'')"><div class="fe" id="rPhoneE">Required (10 digits)</div></div><div class="fg"><label class="fl">Password</label><div class="pass-wrap"><input class="fi" type="password" id="rPass" placeholder="Min 6 characters"><button type="button" class="pass-toggle" onclick="togglePassword('rPass', this)"><i class="fa-solid fa-eye"></i></button></div><div class="fe" id="rPassE">Min 6 characters</div></div><div class="fg"><label class="fl">Confirm Password</label><div class="pass-wrap"><input class="fi" type="password" id="rConf" placeholder="Repeat password"><button type="button" class="pass-toggle" onclick="togglePassword('rConf', this)"><i class="fa-solid fa-eye"></i></button></div><div class="fe" id="rConfE">Passwords do not match</div></div><div class="fcheck"><input type="checkbox" id="agree"><label for="agree">I agree to the <a onclick="showPage('privacy')">Terms &amp; Privacy Policy</a></label></div><button class="auth-sub-btn" id="regBtn" onclick="doRegister()">Create Account →</button><div class="auth-div"><span>or</span></div><div class="auth-switch">Already have an account? <a onclick="showPage('login')">Sign in →</a></div></div></div></div><div class="page" id="page-profile"><div class="wrap" style="padding-top:40px;padding-bottom:80px;"><button class="back-btn" onclick="showPage('home')" style="margin-bottom:20px; background:none; border:none; color:var(--gold); cursor:pointer; font-size:11px; letter-spacing:2px; text-transform:uppercase; display:flex; align-items:center; gap:8px;"><i class="fa-solid fa-arrow-left"></i> Back to Home</button><div class="s-eye">Member Area</div><h1 class="s-h2">MY PROFILE</h1><div class="profile-layout"><div class="prof-sidebar"><div class="prof-card"><div class="prof-avatar-wrap" onclick="document.getElementById('pAvatarInp').click()"><img id="profAvatar" src="" alt="Avatar" class="prof-avatar-img"><div class="pa-ov"><i class="fa-solid fa-camera"></i></div></div><input type="file" id="pAvatarInp" style="display:none;" accept="image/*" onchange="previewAvatar(this)"><div class="prof-name" id="profName">User Name</div><div class="prof-email" id="profEmail">email@example.com</div><div class="prof-email" id="profPhone">Phone</div><div class="prof-email" style="margin-top:8px;">Member since: <span id="profJoined" style="color:var(--white);">Date</span></div><div class="hr" style="margin:16px 0;"></div><div class="prof-stat"><div class="ps-val" id="profOrderCount">0</div><div class="ps-lbl">Orders Placed</div></div></div><div class="prof-nav-menu"><button class="prof-nav-btn active" data-tab="details" onclick="switchProfileTab('details')"><i class="fa-solid fa-user"></i> Personal Details </button><button class="prof-nav-btn" data-tab="orders" onclick="switchProfileTab('orders')"><i class="fa-solid fa-box-open"></i> Order Details </button></div><button class="mob-item" style="border:none;background:var(--mid);margin-top:12px;padding-left:20px;" onclick="doLogout()">Sign Out ⬅</button></div><div class="prof-main"><div class="prof-tab-content active" id="profTabDetails"><div class="chk-form" style="margin-top:0; padding:24px; background:var(--grey); border:1px solid var(--border); margin-bottom:40px;"><div class="chk-sec-h" style="margin-top:0;">Personal Details</div><div class="fg2"><div class="fg"><label class="fl">First Name *</label><input class="fi" id="pFirst" placeholder="First Name"><div class="fe" id="pFirstE">Required</div></div><div class="fg"><label class="fl">Last Name</label><input class="fi" id="pLast" placeholder="Last Name"><div class="fe" id="pLastE">Required</div></div></div><div class="fg"><label class="fl">Email Address *</label><input class="fi" id="pEmail" type="email" placeholder="Email" readonly style="background:var(--mid); cursor:not-allowed; opacity:0.8;"><div class="fe" id="pEmailE">Valid email required</div></div><div class="fg2"><div class="fg"><label class="fl">Phone *</label><div style="display:flex; gap:5px;"><input class="fi" id="pPhoneCode" style="width:70px;" value="+91" placeholder="+91"><input class="fi" id="pPhone" type="tel" placeholder="Phone" style="flex:1;" maxlength="10" oninput="this.value=this.value.replace(/\D/g,'')"></div><div class="fe" id="pPhoneE">Required (10 digits)</div></div><div class="fg"><label class="fl">Secondary Phone</label><input class="fi" id="pSecondaryPhone" type="tel" placeholder="Optional" maxlength="10" oninput="this.value=this.value.replace(/\D/g,'')"></div></div><div class="fg2"><div class="fg"><label class="fl">Country *</label><input class="fi" id="pCountry" value="India"><div class="fe" id="pCountryE">Required</div></div><div class="fg"><label class="fl">State *</label><input class="fi" id="pState" value="Kerala"><div class="fe" id="pStateE">Required</div></div></div><div class="hr" style="margin:20px 0;"></div><div class="chk-sec-h" style="margin-top:0;">Delivery Address</div><div class="fg2"><div class="fg"><label class="fl">Flat / House No. *</label><input class="fi" id="pHouse" placeholder="Flat No."><div class="fe" id="pHouseE">Required</div></div><div class="fg"><label class="fl">Area / Street *</label><input class="fi" id="pAddr" placeholder="Street Address"><div class="fe" id="pAddrE">Required</div></div></div><div class="fg"><label class="fl">Landmark</label><input class="fi" id="pLandmark" placeholder="Near ..."></div><div class="fg2"><div class="fg"><label class="fl">City *</label><input class="fi" id="pCity" placeholder="City"><div class="fe" id="pCityE">Required</div></div><div class="fg"><label class="fl">District *</label><input class="fi" id="pDistrict" placeholder="District"><div class="fe" id="pDistrictE">Required</div></div><div class="fg"><label class="fl">PIN Code *</label><input class="fi" id="pPin" placeholder="682xxx" maxlength="6" oninput="this.value=this.value.replace(/\D/g,'')"><div class="fe" id="pPinE">Required (6 digits)</div></div></div><button class="place-btn" onclick="updateProfile()" id="profUpdateBtn" style="margin-top:20px;">Save Profile Changes</button></div></div><div class="prof-tab-content" id="profTabOrders"><div class="chk-sec-h" style="margin-top:0;">Order Details &amp; History</div><div id="profOrdersList" class="prof-orders-list"><div class="cart-empty" style="padding:40px 0;"><div class="ce-icon" style="font-size:30px;"><i class="fa-solid fa-box-open"></i></div><div class="ce-title" style="font-size:18px;">No orders yet</div><button class="btn-o" onclick="showPage('shop')">Start Shopping</button></div></div></div></div></div></div></div></div><div class="page" id="page-logout"><div class="auth-pg"><div class="auth-bg-img"></div><div class="auth-glow"></div><div class="auth-box" style="border-top-color:var(--red);text-align:center;"><div class="auth-title">SIGN OUT?</div><p class="auth-sub" style="margin-bottom:26px;">Are you sure you want to sign out of your AlphaDetail account? </p><div style="display:flex;gap:10px;"><button class="btn-r" style="flex:1;" onclick="doLogout()">Yes, Sign Out</button><button class="btn-o" style="flex:1;" onclick="showPage('home')">Cancel</button></div></div></div></div><div class="page" id="page-terms"><div class="wrap" style="padding-top:80px; padding-bottom:120px;"><button class="back-btn" onclick="showPage('home')" style="margin-bottom:40px; background:none; border:none; color:var(--gold); cursor:pointer; font-size:12px; letter-spacing:2px; text-transform:uppercase; display:flex; align-items:center; gap:8px;"><i class="fa-solid fa-arrow-left"></i> Back to Home</button><div class="s-eye">Legal & Policies</div><h1 class="s-h2">TERMS & SERVICE</h1><p class="s-desc" style="margin-bottom:60px;">Last updated: April 2024</p><div style="max-width:800px; color:#ccc; line-height:1.8; font-size:15px;"><section style="margin-bottom:40px;"><h3 style="color:var(--white); font-family:'Bebas Neue', sans-serif; font-size:24px; letter-spacing:1px; margin-bottom:15px;"> 1. ACCEPTANCE OF TERMS</h3><p>By accessing or using AlphaDetail DIY Car Care Solutions website, you agree to be bound by these Terms and Service. If you do not agree with any part of these terms, you must not use our services or purchase our products.</p></section><section style="margin-bottom:40px;"><h3 style="color:var(--white); font-family:'Bebas Neue', sans-serif; font-size:24px; letter-spacing:1px; margin-bottom:15px;"> 2. PRODUCT USAGE & SAFETY</h3><p>Our products are professional-grade imported formulas. Users must follow all safety instructions provided on the packaging and our website. AlphaDetail is not liable for damages caused by misuse, improper application, or failure to follow dilution ratios (where applicable).</p></section><section style="margin-bottom:40px;"><h3 style="color:var(--white); font-family:'Bebas Neue', sans-serif; font-size:24px; letter-spacing:1px; margin-bottom:15px;"> 3. PRICING & PAYMENTS</h3><p>All prices are in Indian Rupees (INR) and include applicable taxes unless stated otherwise. We reserve the right to change prices without prior notice. Payments are processed securely through our partners. Orders through WhatsApp are subject to confirmation of availability.</p></section><section style="margin-bottom:40px;"><h3 style="color:var(--white); font-family:'Bebas Neue', sans-serif; font-size:24px; letter-spacing:1px; margin-bottom:15px;"> 4. SHIPPING & DELIVERY</h3><p>We aim to dispatch products within 24-48 hours. Delivery times vary based on location (standard 3-7 business days). Shipping charges are calculated at checkout. Free shipping may apply to specific kits as mentioned in our shop.</p></section><section style="margin-bottom:40px;"><h3 style="color:var(--white); font-family:'Bebas Neue', sans-serif; font-size:24px; letter-spacing:1px; margin-bottom:15px;"> 5. RETURNS & REFUNDS</h3><p>Due to the nature of chemical car care products, we only accept returns if the product is damaged during transit or if the wrong item was delivered. Please contact us via email with photos of the damage within 24 hours of delivery.</p></section><div style="padding:30px; background:var(--mid); border-left:3px solid var(--gold); font-style:italic;"> Need clarification? Reach out to us at <strong>alphadetailf2f@gmail.com</strong></div></div></div></div><div class="page" id="page-privacy"><div class="wrap" style="padding-top:80px; padding-bottom:120px;"><button class="back-btn" onclick="showPage('home')" style="margin-bottom:40px; background:none; border:none; color:var(--gold); cursor:pointer; font-size:12px; letter-spacing:2px; text-transform:uppercase; display:flex; align-items:center; gap:8px;"><i class="fa-solid fa-arrow-left"></i> Back to Home</button><div class="s-eye">Support & Legal</div><h1 class="s-h2">PRIVACY & REFUND POLICY</h1><p class="s-desc" style="margin-bottom:40px;">Effective Date: April 16, 2024</p><div style="max-width:850px; color:#ccc; line-height:1.8; font-size:14px;"><div style="background:rgba(212,175,55,0.03); border:1px solid rgba(212,175,55,0.1); padding:40px; border-radius:8px; margin-bottom:60px;"><h2 style="color:var(--gold); font-family:'Bebas Neue', sans-serif; font-size:28px; letter-spacing:2px; margin-bottom:20px;"> REFUND & RETURN POLICY</h2><p>At Alpha Detail, customer satisfaction is our priority. We take pride in delivering premium-quality car detailing products. If you are not fully satisfied with your purchase, please review our refund and return policy below.</p><h3 style="color:#fff; margin-top:30px; margin-bottom:15px; font-size:16px;"><i class="fa-solid fa-cart-shopping" style="color:var(--gold); margin-right:10px;"></i> Returns Eligibility </h3><p>We accept returns only under the following conditions:</p><ul style="margin-left:20px; margin-bottom:20px; list-style-type:square;"><li>The product was damaged during transit</li><li>The product received is incorrect or incomplete</li><li>The product has a manufacturing defect</li></ul><p><strong>To be eligible for a return:</strong></p><ul style="margin-left:20px; margin-bottom:20px;"><li>The request must be raised within <strong>48 hours</strong> of delivery</li><li>The product must be unused, unopened, and in original packaging</li><li>Original invoice or proof of purchase is required</li></ul><h3 style="color:#fff; margin-top:30px; margin-bottom:15px; font-size:16px;"><i class="fa-solid fa-rotate" style="color:var(--gold); margin-right:10px;"></i> Return Process</h3><p>To initiate a return, please contact us at:</p><p style="margin-bottom:10px;">📧 <strong>alphadetailf2f@gmail.com</strong></p><p>Please include: Order ID, Product images/video, and a description of the issue. Once approved, our team will guide you through the process.</p><h3 style="color:#fff; margin-top:30px; margin-bottom:15px; font-size:16px;">Refund Policy</h3><ul style="margin-left:20px; margin-bottom:20px;"><li>Approved refunds processed after inspection of returned product</li><li>Refunds issued to the <strong>original payment method</strong></li><li>Processing time: 5–7 business days after approval</li><li>Shipping charges are non-refundable</li></ul><h3 style="color:#fff; margin-top:30px; margin-bottom:15px; font-size:16px;">Replacement Policy</h3><p>In eligible cases, customers may opt for a replacement of the same product or store credit (at Alpha Detail’s discretion), subject to stock availability.</p></div><section style="margin-bottom:40px; padding:0 20px;"><h3 style="color:var(--white); font-family:'Bebas Neue', sans-serif; font-size:22px; letter-spacing:1px; margin-bottom:15px;"> PRODUCT USAGE DISCLAIMER</h3><p>Alpha Detail products are professional-grade formulations. Results may vary depending on surface condition, application method, and environmental factors. Please follow usage instructions carefully. Alpha Detail is not responsible for damages caused by misuse, improper dilution, or application errors.</p></section><section style="margin-bottom:40px; padding:0 20px;"><h3 style="color:var(--white); font-family:'Bebas Neue', sans-serif; font-size:22px; letter-spacing:1px; margin-bottom:15px;"> SHIPPING DAMAGE CLAIMS</h3><p>If your product arrives damaged: Do not accept delivery if possible, record an unboxing video, and contact us within 48 hours. Claims without proper evidence may not be approved.</p></section></div></div></div><footer class="site-footer"><div class="ft-grid wrap"><div><div class="ft-brand">AlphaDetail</div><p class="ft-about">Professional-grade imported formulas built for Indian conditions. Specially engineered for 45°C summers, monsoon roads, and high humidity.</p><div class="ft-contact"><div><i class="fa-solid fa-envelope" style="width:20px; color:var(--gold);"></i> alphadetailf2f@gmail.com </div><div><i class="fa-solid fa-earth-americas" style="width:20px; color:var(--gold);"></i> alphadetailf2f.com </div><div><i class="fa-solid fa-location-dot" style="width:20px; color:var(--gold);"></i> Puthencruze, Kochi, Kerala</div></div><div class="ft-socials"><div class="ft-soc"><a href="https://wa.me/+917025225245"><i class="fa-brands fa-whatsapp"></i></a></div></div></div><div><div class="ft-col-h">Products</div><ul class="ft-links"><li><a onclick="showPage('shop')">Nano Foam</a></li><li><a onclick="showPage('shop')">Fusion Wash</a></li><li><a onclick="showPage('shop')">Gleam-X</a></li><li><a onclick="showPage('shop')">Hyper DRESS</a></li><li><a onclick="showPage('shop')">Cabin Glow</a></li><li><a onclick="showPage('shop')">Surface Revive</a></li><li><a onclick="showPage('shop')">Graphene Tyre Coat</a></li></ul></div><div><div class="ft-col-h">Quick Links</div><ul class="ft-links"><li><a onclick="showPage('home')">Home</a></li><li><a onclick="showPage('shop')">Shop</a></li><li><a onclick="showPage('cart')">Cart</a></li><li id="ftLogin"><a onclick="showPage('login')">Login</a></li><li id="ftReg"><a onclick="showPage('register')">Register</a></li><li id="ftProfile" style="display:none;"><a onclick="showPage('profile')">My Profile</a></li><li id="ftLogout" style="display:none;"><a onclick="doLogout()">Sign Out</a></li><li><a onclick="showPage('privacy')">Privacy & Policy</a></li></ul></div></div><div class="ft-bottom wrap"><div class="ft-copy">© 2024 AlphaDetail DIY Car Care Solutions LLP · All Rights Reserved</div><div style="font-size:10px; color:#444; letter-spacing:1px; text-transform:uppercase;">Formulated to Finish</div></div></footer><div style="display:none;"><img id="uploaded_img_cabin" src="" alt="Cabin Glow"><img id="uploaded_img_fusion" src="" alt="Fusion Wash"><img id="uploaded_img_graphene" src="" alt="Graphene Tyre Coat"><img id="uploaded_img_hyper" src="" alt="Hyper DRESS"><img id="uploaded_img_gleam" src="" alt="Gleam-X"><img id="uploaded_img_surface" src="" alt="Surface Revive"><img id="uploaded_img_nano" src="" alt="Nano Foam"></div> <script src="config.js"></script> <script src="script.js"></script> </body></html>
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>AlphaDetail.Formulated to Finish</title>
+        <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="style.css?v=2.0.1">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+        <script src="https://checkout.razorpay.com/v1/checkout.js">
+        </script>
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="manifest" href="site.webmanifest">
+</head>
+<body>
+    <div id="loader">
+        <div class="loader-glow">
+        </div>
+    <div class="loader-brand">
+        <img src="logo.png" alt="AlphaDetail" style="height: 90px; width: auto;">
+    </div>
+<div class="loader-bar-wrap">
+    <div class="loader-bar">
+    </div>
+</div>
+</div>
+<div id="sonner" class="sonner-container">
+</div>
+<header>
+    <div class="logo-wrap" onclick="showPage('home')">
+        <img src="logo.png" alt="AlphaDetail Logo" class="logo-img">
+    </div>
+<div class="nav-center pc-only">
+    <img src="alphahead.png" alt="AlphaHead" style="height: 204px; width: auto; object-fit: contain; margin-top: 35px;">
+</div>
+<div class="nav-right">
+    <button class="nav-item" data-pg="home" onclick="showPage('home')">Home</button>
+    <button class="nav-item" data-pg="shop" onclick="showPage('shop')">Shop</button>
+    <div id="navAuth" style="display:flex;align-items:center;gap:4px;">
+        <button class="nav-item" data-pg="login" onclick="showPage('login')">Login</button>
+        <button class="nav-btn" onclick="showPage('register')">Register</button>
+    </div>
+<div id="navUser" style="display:none;" class="nav-user">
+    <span class="nav-uname" id="navUname" onclick="showPage('profile')" style="cursor:pointer;">
+    </span>
+<button class="nav-logout" onclick="showPage('logout')">Sign Out</button>
+</div>
+<button class="nav-cart" onclick="showPage('cart')">
+    <i class="fa-solid fa-cart-shopping">
+    </i> Cart <span class="cart-badge" id="cartBadge">0</span>
+</button>
+<button class="hamburger" onclick="toggleMob()">
+    <span>
+    </span>
+<span>
+</span>
+<span>
+</span>
+</button>
+</div>
+</header>
+<div class="mob-menu" id="mobMenu">
+    <button class="mob-close-btn" onclick="closeMob()">
+        <i class="fa-solid fa-xmark">
+        </i>
+</button>
+<button class="mob-item" onclick="showPage('home');closeMob()">Home <i class="fa-solid fa-house" style="font-size: 18px;">
+    </i>
+</button>
+<button class="mob-item" onclick="showPage('shop');closeMob()">Shop <i class="fa-solid fa-bag-shopping" style="font-size: 18px;">
+    </i>
+</button>
+<button class="mob-item" onclick="showPage('cart');closeMob()">Cart <span class="count" id="mobCartBadge">0</span>
+</button>
+<button class="mob-item" id="mobLogin" onclick="showPage('login');closeMob()">Login <i class="fa-solid fa-right-to-bracket" style="font-size: 18px;">
+    </i>
+</button>
+<button class="mob-item" id="mobReg" onclick="showPage('register');closeMob()">Register <i class="fa-solid fa-user-plus" style="font-size: 18px;">
+    </i>
+</button>
+<button class="mob-item" id="mobProfile" style="display:none;" onclick="showPage('profile');closeMob()">Profile <i class="fa-solid fa-user-gear" style="font-size: 18px;">
+    </i>
+</button>
+<button class="mob-item" id="mobLogout" style="display:none;color:var(--red);" onclick="doLogout();closeMob()">Sign Out <i class="fa-solid fa-arrow-right-from-bracket" style="font-size: 18px;">
+    </i>
+</button>
+</div>
+<div class="page active" id="page-home">
+    <section class="hero-sec">
+        <div class="hero-bg-img">
+            <img src="" alt="Premium Car Detailing">
+        </div>
+    <div class="hero-grid">
+    </div>
+<div class="hero-vign">
+</div>
+<div class="hero-glow">
+</div>
+<div class="hero-content">
+    <div class="hero-eye">DIY Car Care &nbsp;·&nbsp; Formulated to Finish &nbsp;·&nbsp; Kerala, India</div>
+    <h1 class="hero-h1">ALPHA<em>DETAIL</em>
+    </h1>
+<p class="hero-tagline">Professional Grade. Your Driveway.</p>
+<p class="hero-p">Not every product deserves a place in your garage. <strong>Ours had to earn it.</strong> Seven imported formulas built for Indian roads, Indian heat, and Indian weather.</p>
+<div class="hero-ctas">
+    <button class="btn-g" onclick="showPage('shop')">Shop All Products</button>
+    <button class="btn-o" onclick="document.getElementById('why-sec').scrollIntoView({behavior:'smooth'})">Our Standard</button>
+</div>
+<div class="hero-stats">
+    <div>
+        <div class="hs-num">7</div>
+        <div class="hs-lbl">Products</div>
+    </div>
+<div>
+    <div class="hs-num">200+</div>
+    <div class="hs-lbl">Washes/Bottle</div>
+</div>
+<div>
+    <div class="hs-num">1:800</div>
+    <div class="hs-lbl">Dilution Ratio</div>
+</div>
+<div>
+    <div class="hs-num">₹5</div>
+    <div class="hs-lbl">Cost/Wash</div>
+</div>
+</div>
+</div>
+<div class="scroll-ind">
+    <div class="scroll-line">
+    </div>
+<span style="font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--muted);">Scroll</span>
+</div>
+</section>
+<div class="marquee-wrap" aria-hidden="true">
+    <div class="marquee-track">
+        <span class="mi">Nano Foam</span>
+        <span class="md">✦</span>
+        <span class="mi">Fusion Wash</span>
+        <span class="md">✦</span>
+        <span class="mi">Gleam-X</span>
+        <span class="md">✦</span>
+        <span class="mi">Hyper DRESS</span>
+        <span class="md">✦</span>
+        <span class="mi">Cabin Glow</span>
+        <span class="md">✦</span>
+        <span class="mi">Surface Revive</span>
+        <span class="md">✦</span>
+        <span class="mi">Graphene Tyre Coat</span>
+        <span class="md">✦</span>
+        <span class="mi">Formulated to Finish</span>
+        <span class="md">✦</span>
+        <span class="mi">Nano Foam</span>
+        <span class="md">✦</span>
+        <span class="mi">Fusion Wash</span>
+        <span class="md">✦</span>
+        <span class="mi">Gleam-X</span>
+        <span class="md">✦</span>
+        <span class="mi">Hyper DRESS</span>
+        <span class="md">✦</span>
+        <span class="mi">Cabin Glow</span>
+        <span class="md">✦</span>
+        <span class="mi">Surface Revive</span>
+        <span class="md">✦</span>
+        <span class="mi">Graphene Tyre Coat</span>
+        <span class="md">✦</span>
+        <span class="mi">Formulated to Finish</span>
+        <span class="md">✦</span>
+    </div>
+</div>
+<section class="sec-dark">
+    <div class="wrap">
+        <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:40px;flex-wrap:wrap;gap:14px;">
+            <div class="reveal">
+                <div class="s-eye">Best Sellers</div>
+                <h2 class="s-h2">FEATURED PRODUCTS</h2>
+            </div>
+        <button class="btn-o reveal" onclick="showPage('shop')">View All →</button>
+    </div>
+<div class="hf-grid" id="homeFeatured">
+</div>
+</div>
+</section>
+<div class="car-strip reveal">
+    <div class="cs-item">
+        <img src="https://images.unsplash.com/photo-1617814076367-b759c7d7e738?w=800&q=80" alt="">
+        <div class="cs-ov">
+        </div>
+    <div class="cs-lbl">Formulated to Finish</div>
+</div>
+<div class="cs-item">
+    <img src="https://images.unsplash.com/photo-1580274455191-1c62238fa333?w=800&q=80" alt="">
+    <div class="cs-ov">
+    </div>
+<div class="cs-lbl">AlphaDetail</div>
+</div>
+<div class="cs-item">
+    <img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=800&q=80" alt="">
+    <div class="cs-ov">
+    </div>
+<div class="cs-lbl">Built for India</div>
+</div>
+<div class="cs-item">
+    <img src="https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=800&q=80" alt="">
+    <div class="cs-ov">
+    </div>
+<div class="cs-lbl">Pro Grade</div>
+</div>
+<div class="cs-item">
+    <img src="https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=800&q=80" alt="">
+    <div class="cs-ov">
+    </div>
+<div class="cs-lbl">Your Driveway</div>
+</div>
+</div>
+<section class="sec" style="background:var(--grey);" id="why-sec">
+    <div class="wrap">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:50px;align-items:end;margin-bottom:44px;flex-wrap:wrap;">
+            <div class="reveal-l">
+                <div class="s-eye">Why AlphaDetail</div>
+                <h2 class="s-h2">THE ALPHA<br>STANDARD</h2>
+            </div>
+        <p class="reveal-r" style="font-size:18px;color:#aaa;line-height:1.65;font-style:italic;border-left:3px solid var(--gold);padding-left:22px;"> "Not every product deserves a place in your garage. <strong style="color:var(--white);font-style:normal;font-weight:500;">Ours had to earn it.</strong>"</p>
+    </div>
+<div class="pillars-grid">
+    <div class="pillar reveal d1">
+        <div class="p-bg-num">01</div>
+        <div class="p-icon">
+            <i class="fa-solid fa-flask">
+            </i>
+    </div>
+<div class="p-name">Formulation First</div>
+<p class="p-text">"Tested on real cars. In real Indian heat. Before it reached you."</p>
+</div>
+<div class="pillar reveal d2">
+    <div class="p-bg-num">02</div>
+    <div class="p-icon">
+        <i class="fa-solid fa-bullseye">
+        </i>
+</div>
+<div class="p-name">Purpose-Built</div>
+<p class="p-text">"One product. One job. Done right."</p>
+</div>
+<div class="pillar reveal d3">
+    <div class="p-bg-num">03</div>
+    <div class="p-icon">
+        <i class="fa-solid fa-shield-halved">
+        </i>
+</div>
+<div class="p-name">Surface Respect</div>
+<p class="p-text">"Safe on your paint, your coating, your investment."</p>
+</div>
+<div class="pillar reveal d4">
+    <div class="p-bg-num">04</div>
+    <div class="p-icon">
+        <i class="fa-solid fa-screwdriver-wrench">
+        </i>
+</div>
+<div class="p-name">Detailer Tested</div>
+<p class="p-text">"Built in driveways, not just laboratories."</p>
+</div>
+<div class="pillar reveal d5">
+    <div class="p-bg-num">05</div>
+    <div class="p-icon">
+        <i class="fa-solid fa-scale-balanced">
+        </i>
+</div>
+<div class="p-name">Balanced Performance</div>
+<p class="p-text">"Cleans deep. Never damages."</p>
+</div>
+<div class="pillar reveal d6">
+    <div class="p-bg-num">06</div>
+    <div class="p-icon">
+        <i class="fa-solid fa-thumbs-up">
+        </i>
+</div>
+<div class="p-name">Consistency</div>
+<p class="p-text">"Same result. First bottle. Fiftieth bottle."</p>
+</div>
+<div class="pillar reveal d7">
+    <div class="p-bg-num">07</div>
+    <div class="p-icon">
+        <i class="fa-solid fa-location-dot">
+        </i>
+</div>
+<div class="p-name">Made for India</div>
+<p class="p-text">"Built for 38°C summers, monsoon roads, and everything in between."</p>
+</div>
+</div>
+</div>
+</section>
+<section class="alpha-fullscreen-img">
+    <img src="alphahead.png" alt="AlphaDetail Fullscreen" style="width: 100%; height: 100%; object-fit: cover; object-position: center;">
+</section>
+<section class="sec" style="background:var(--black);">
+    <div class="wrap">
+        <div class="reveal-l">
+            <div class="s-eye">Save Mor  e</div>
+            <h2 class="s-h2">BUNDLE PACKAGES</h2>
+            <p class="s-desc">Everything you need, one order, best price — with automatic discount applied at cart.</p>
+        </div>
+    <div class="bundle-grid" id="bundleGrid">
+        <div class="bcard reveal-l" id="starterKitCard" onclick="addBundleToCart('starter')" style="cursor:pointer;">
+            <div class="bcard-badge">Starter</div>
+            <div class="bcard-name" id="starterKitName">Alpha Starter Kit</div>
+            <p class="bcard-tagline" id="starterKitTagline">"Everything you need to get started. Nothing you don't."</p>
+            <ul class="bcard-items" id="starterKitItems">
+                <li class="kit-loading">Loading products…</li>
+            </ul>
+        <div class="bcard-price-wrap">
+            <div class="bcard-original" id="starterKitOriginal">—</div>
+            <div class="bcard-discount-tag" id="starterKitDiscTag">5% AUTO DISCOUNT AT CART</div>
+            <div class="bcard-price" id="starterKitPrice">—</div>
+            <div class="bcard-save" id="starterKitSave">—</div>
+        </div>
+    <button class="bcard-btn-o">Add Bundle to Cart</button>
+</div>
+<div class="bcard bcard-feat reveal-r" id="proKitCard" onclick="addBundleToCart('pro')" style="cursor:pointer;">
+    <div class="bcard-badge">Best Value <i class="fa-solid fa-star">
+        </i>
+</div>
+<div class="bcard-name" id="proKitName">Alpha Pro Kit</div>
+<p class="bcard-tagline" id="proKitTagline">"The complete AlphaDetail arsenal. Every surface. Inside and out."</p>
+<ul class="bcard-items" id="proKitItems">
+    <li class="kit-loading">Loading products…</li>
+</ul>
+<div class="bcard-price-wrap">
+    <div class="bcard-original" id="proKitOriginal">—</div>
+    <div class="bcard-discount-tag" id="proKitDiscTag">10% AUTO DISCOUNT AT CART</div>
+    <div class="bcard-price" id="proKitPrice">—</div>
+    <div class="bcard-save" id="proKitSave">—</div>
+</div>
+<button class="bcard-btn">Get Pro Kit →</button>
+</div>
+</div>
+</div>
+</section>
+<section class="promise-sec reveal" id="promise-sec">
+    <div class="promise-bg">
+    </div>
+<div class="promise-inner">
+    <div class="promise-eye" id="promEye">The AlphaDetail Promise</div>
+    <div class="promise-divider" id="promDiv">
+    </div>
+<div class="promise-line l1" id="pl1">"Professional results.</div>
+<div class="promise-line l2" id="pl2">
+    <span>Your driveway.</span>
+</div>
+<div class="promise-line l3" id="pl3">Your schedule.</div>
+<div class="promise-line l4" id="pl4">
+    <span>Your price."</span>
+</div>
+<div class="promise-src" id="promSrc">AlphaDetail DIY Car Care Solutions — Kerala, India</div>
+</div>
+</section>
+<section class="india-sec">
+    <div class="india-bg">
+    </div>
+<div class="india-inner">
+    <div style="font-size:50px;color:var(--gold);" class="reveal">
+        <i class="fa-solid fa-flag">
+        </i>
+</div>
+<h2 class="india-h2 reveal">BUILT FOR<br>
+    <span>INDIA.</span>
+</h2>
+<p class="india-p reveal">Most car care products are engineered for <strong>European winters.</strong> Your car lives through <strong>45°C summers, 85% humidity,</strong> and monsoon roads. AlphaDetail is built for where you actually drive.</p>
+<div class="india-stats reveal">
+    <div class="is-stat">
+        <div class="is-num">45°C</div>
+        <div class="is-lbl">Summer Heat</div>
+    </div>
+<div class="is-stat">
+    <div class="is-num">85%</div>
+    <div class="is-lbl">Humidity</div>
+</div>
+<div class="is-stat">
+    <div class="is-num">Kerala</div>
+    <div class="is-lbl">Home Ground</div>
+</div>
+</div>
+</div>
+</section>
+</div>
+<div class="page" id="page-shop">
+    <div class="wrap" style="padding-top:20px;">
+        <button class="back-btn" onclick="showPage('home')" style="background:none; border:none; color:var(--gold); cursor:pointer; font-size:11px; letter-spacing:2px; text-transform:uppercase; display:flex; align-items:center; gap:8px;">
+            <i class="fa-solid fa-arrow-left">
+            </i> Back to Home</button>
+</div>
+<div class="shop-hero">
+    <div class="wrap">
+        <div class="s-eye">Series AL-S1</div>
+        <h1 class="s-h2">ALL PRODUCTS</h1>
+        <p class="s-desc">7 imported formulas. Each 473ml. Each built for one job.</p>
+    </div>
+</div>
+<div class="wrap shop-wrap-main">
+    <div class="shop-filters">
+        <div class="ftabs">
+            <button class="ftab act" onclick="filterP('all',this)">All (7)</button>
+            <button class="ftab" onclick="filterP('exterior',this)">Exterior</button>
+            <button class="ftab" onclick="filterP('interior',this)">Interior</button>
+            <button class="ftab" onclick="filterP('tyre',this)">Tyre &amp; Trim</button>
+        </div>
+    <select class="sort-sel" onchange="sortP(this.value)">
+        <option value="default">Sort: Featured</option>
+        <option value="low">Price: Low to High</option>
+        <option value="high">Price: High to Low</option>
+    </select>
+</div>
+<div class="shop-grid" id="shopGrid">
+</div>
+</div>
+</div>
+<div class="page" id="page-product">
+    <div class="wrap" style="padding-top:40px; padding-bottom:80px;">
+        <button class="back-btn" onclick="showPage('shop')" style="margin-bottom:30px; background:none; border:none; color:var(--gold); cursor:pointer; font-size:12px; letter-spacing:2px; text-transform:uppercase; display:flex; align-items:center; gap:8px;">
+            <i class="fa-solid fa-arrow-left">
+            </i> Back to Shop</button>
+    <div class="pd-full">
+        <div class="pd-gal">
+            <div class="pd-main-wrap" id="pdMainWrap">
+            </div>
+        <div class="pd-thumbs" id="pdThumbs">
+        </div>
+</div>
+<div class="pd-info">
+    <div class="pd-header-sec">
+        <div class="pd-code" id="pdCode">
+        </div>
+    <h1 class="pd-name" id="pdName">
+    </h1>
+<div class="pd-sub" id="pdSub">
+</div>
+</div>
+<div class="pd-mid-grid">
+    <div class="pd-info-left">
+        <div class="pd-price-box">
+            <div class="pd-mrp-lbl">MRP</div>
+            <div class="pd-price" id="pdPrice">
+            </div>
+    </div>
+<div class="pd-tag-grid" id="pdTags">
+</div>
+<div class="pd-action">
+    <div class="pd-ml">Standard Bottle · 473ml</div>
+    <div class="pd-qty-add-wrap">
+        <div class="pd-qty-ctrl">
+            <button class="pd-add" id="pdAddBtn">Add to Cart →</button>
+            <button type="button" class="pd-qty-btn" id="pdQtyMinus" onclick="changePdQty(-1)">−</button>
+            <input type="number" id="pdQtyInput" class="pd-qty-input" value="1" min="1" readonly>
+            <button type="button" class="pd-qty-btn" id="pdQtyPlus" onclick="changePdQty(1)">+</button>
+        </div>
+</div>
+</div>
+</div>
+<div class="pd-info-right">
+    <h2 class="pd-hook" id="pdHook">
+    </h2>
+<div class="pd-desc" id="pdDesc">
+</div>
+<div class="pd-adv-box">
+    <div class="pab-h">THE ALPHA ADVANTAGE</div>
+    <div class="pab-c" id="pdAdv">
+    </div>
+</div>
+<div class="pd-sec-wrap">
+    <div class="pd-sec-h">KEY BENEFITS</div>
+    <ul class="pd-feats" id="pdFeats">
+    </ul>
+</div>
+<div class="pd-sec-wrap">
+    <div class="pd-sec-h" style="margin-bottom:20px;">HOW TO USE</div>
+    <div id="pdUsage">
+    </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="page" id="page-cart">
+    <div class="wrap" style="padding-top:40px;padding-bottom:80px;">
+        <button class="back-btn" onclick="showPage('shop')" style="margin-bottom:20px; background:none; border:none; color:var(--gold); cursor:pointer; font-size:11px; letter-spacing:2px; text-transform:uppercase; display:flex; align-items:center; gap:8px;">
+            <i class="fa-solid fa-arrow-left">
+            </i> Back to Shop</button>
+    <div class="s-eye">Your Selection</div>
+    <h1 class="s-h2">SHOPPING CART</h1>
+    <div class="cart-layout">
+        <div>
+            <div class="cart-box">
+                <div class="cart-head">
+                    <div class="ch-lbl">Product</div>
+                    <div class="ch-lbl">Price</div>
+                    <div class="ch-lbl">Quantity</div>
+                    <div class="ch-lbl">Total</div>
+                    <div class="ch-lbl">
+                    </div>
+            </div>
+        <div class="cart-discount-notice" id="cartDiscNotice">
+            <span class="cdn-icon">
+                <i class="fa-solid fa-wand-magic-sparkles">
+                </i>
+        </span>
+    <span class="cdn-text" id="cdnText">Bundle discount applied!</span>
+    <span class="cdn-amount" id="cdnAmount">
+    </span>
+</div>
+<div id="cartList">
+</div>
+<div class="cart-empty" id="cartEmpty">
+    <div class="ce-icon">
+        <i class="fa-solid fa-cart-shopping">
+        </i>
+</div>
+<div class="ce-title">Your Cart is Empty</div>
+<button class="btn-g" onclick="showPage('shop')">Browse Products</button>
+</div>
+</div>
+</div>
+<div class="sum-box">
+    <div class="sum-title">Order Summary</div>
+    <div class="sum-row">
+        <span>Subtotal</span>
+        <span class="sum-val" id="sumSub">₹0</span>
+    </div>
+<div class="sum-row">
+    <span>Shipping</span>
+    <span class="sum-val" id="sumShip">₹0</span>
+</div>
+<div class="sum-discount-row" id="sumDiscRow">
+    <span id="sumDiscLabel">Bundle Discount</span>
+    <span class="sum-disc-val" id="sumDisc">-₹0</span>
+</div>
+<div class="sum-total">
+    <span class="sum-total-lbl">Total</span>
+    <span class="sum-total-val" id="sumTotal">₹0</span>
+</div>
+<button class="chk-btn" onclick="proceedCheckout()">Proceed to Checkout →</button>
+<span class="cont-shop" onclick="showPage('shop')">← Continue Shopping</span>
+</div>
+</div>
+</div>
+</div>
+<div class="page" id="page-checkout">
+    <div class="wrap" style="padding-top:40px;padding-bottom:80px;">
+        <button class="back-btn" onclick="showPage('cart')" style="margin-bottom:20px; background:none; border:none; color:var(--gold); cursor:pointer; font-size:11px; letter-spacing:2px; text-transform:uppercase; display:flex; align-items:center; gap:8px;">
+            <i class="fa-solid fa-arrow-left">
+            </i> Back to Cart</button>
+    <div id="checkoutMain">
+        <div class="s-eye">Almost There</div>
+        <h1 class="s-h2">CHECKOUT</h1>
+        <div class="checkout-layout" id="chkContent">
+            <div>
+                <div class="chk-form">
+                    <div class="chk-sec-h">Delivery Information</div>
+                    <div class="fg2">
+                        <div class="fg">
+                            <label class="fl">First Name *</label>
+                            <input class="fi" id="cFirst" placeholder="John">
+                            <div class="fe" id="cFirstE">Required</div>
+                        </div>
+                    <div class="fg">
+                        <label class="fl">Last Name</label>
+                        <input class="fi" id="cLast" placeholder="Doe">
+                        <div class="fe" id="cLastE">Required</div>
+                    </div>
+            </div>
+        <div class="fg2">
+            <div class="fg">
+                <label class="fl">Email *</label>
+                <input class="fi" id="cEmail" type="email" placeholder="you@example.com">
+                <div class="fe" id="cEmailE">Valid email required</div>
+            </div>
+        <div class="fg">
+            <label class="fl">Phone *</label>
+            <div style="display:flex; gap:5px;">
+                <input class="fi" id="cPhoneCode" style="width:70px;" value="+91" placeholder="+91">
+                <input class="fi" id="cPhone" type="tel" placeholder="10 Digits" style="flex:1;" maxlength="10" oninput="this.value=this.value.replace(/\D/g,'')">
+            </div>
+        <div class="fe" id="cPhoneE">Required</div>
+    </div>
+</div>
+<div class="fg2">
+    <div class="fg">
+        <label class="fl">Secondary Phone</label>
+        <input class="fi" id="cSecondaryPhone" type="tel" placeholder="Optional Number" maxlength="10" oninput="this.value=this.value.replace(/\D/g,'')">
+    </div>
+<div class="fg">
+    <label class="fl">Country *</label>
+    <input class="fi" id="cCountry" value="India">
+    <div class="fe" id="cCountryE">Required</div>
+</div>
+</div>
+<div class="fg2">
+    <div class="fg">
+        <label class="fl">Flat / House No. *</label>
+        <input class="fi" id="cHouse" placeholder="e.g. 4B, Emerald Court">
+        <div class="fe" id="cHouseE">Required</div>
+    </div>
+<div class="fg">
+    <label class="fl">Area / Street *</label>
+    <input class="fi" id="cAddr" placeholder="e.g. MG Road, Panampilly Nagar">
+    <div class="fe" id="cAddrE">Required</div>
+</div>
+</div>
+<div class="fg">
+    <label class="fl">Landmark</label>
+    <input class="fi" id="cLandmark" placeholder="e.g. Near HDFC Bank">
+</div>
+<div class="fg2">
+    <div class="fg">
+        <label class="fl">City *</label>
+        <input class="fi" id="cCity" placeholder="Kochi">
+        <div class="fe" id="cCityE">Required</div>
+    </div>
+<div class="fg">
+    <label class="fl">District *</label>
+    <input class="fi" id="cDistrict" placeholder="Ernakulam">
+    <div class="fe" id="cDistrictE">Required</div>
+</div>
+<div class="fg">
+    <label class="fl">PIN Code *</label>
+    <input class="fi" id="cPin" placeholder="682308" maxlength="6" oninput="this.value=this.value.replace(/\D/g,'')">
+    <div class="fe" id="cPinE">Required</div>
+</div>
+</div>
+<div class="fg">
+    <label class="fl">State *</label>
+    <input class="fi" id="cState" value="Kerala">
+    <div class="fe" id="cStateE">Required</div>
+</div>
+<div class="hr">
+</div>
+<div class="chk-sec-h">Payment Method</div>
+<div class="pay-opts">
+    <label class="pay-opt sel" id="pm-upi" onclick="selPM(this,'upi')">
+        <input type="radio" name="pm" checked>
+        <span class="pay-lbl">UPI / PhonePe / GPay</span>
+        <span class="pay-icon">
+            <i class="fa-solid fa-mobile-screen-button">
+            </i>
+    </span>
+</label>
+</div>
+<div id="upiF" style="display:none;margin-top:13px;">
+    <div class="fg">
+        <label class="fl">UPI ID</label>
+        <input class="fi" placeholder="name@upi">
+    </div>
+</div>
+<div id="cardF" style="display:none;margin-top:13px;">
+    <div class="fg">
+        <label class="fl">Card Number</label>
+        <input class="fi" placeholder="1234 5678 9012 3456">
+    </div>
+<div class="fg2">
+    <div class="fg">
+        <label class="fl">Expiry</label>
+        <input class="fi" placeholder="MM / YY">
+    </div>
+<div class="fg">
+    <label class="fl">CVV</label>
+    <input class="fi" placeholder="•••">
+</div>
+</div>
+</div>
+<div class="chk-trust">
+    <div class="ct-label">
+        <i class="fa-solid fa-shield-halved">
+        </i> 100% SECURE CHECKOUT</div>
+<div class="ct-logos">
+    <img src="https://razorpay.com/assets/razorpay-glyph.svg" alt="Razorpay" style="height:18px;">
+    <span style="font-size:10px; font-weight:700; letter-spacing:1px; color:var(--muted); margin-left:6px; margin-top:2px;">SECURED BY RAZORPAY</span>
+    <div class="ct-divider">
+    </div>
+<div class="ct-icons">
+    <i class="fa-brands fa-cc-visa">
+    </i>
+<i class="fa-brands fa-cc-mastercard">
+</i>
+<i class="fa-brands fa-google-pay">
+</i>
+<i class="fa-solid fa-bolt" title="UPI">
+</i>
+</div>
+</div>
+</div>
+<div class="fe" id="chkGlobalE" style="font-size:12px;margin-top:12px;">
+</div>
+<button class="place-btn" onclick="placeOrder()">Place Order →</button>
+</div>
+</div>
+<div class="order-sum">
+    <div class="os-title">Your Order</div>
+    <div id="osItems">
+    </div>
+<div style="margin-top:14px;">
+    <div class="sum-row">
+        <span>Subtotal</span>
+        <span class="sum-val" id="osSub">₹0</span>
+    </div>
+<div class="sum-row">
+    <span>Shipping</span>
+    <span class="sum-val" id="osShip">₹0</span>
+</div>
+<div class="sum-discount-row" id="osDiscRow">
+    <span id="osDiscLabel">Bundle Discount</span>
+    <span class="sum-disc-val" id="osDisc">-₹0</span>
+</div>
+<div class="sum-total">
+    <span class="sum-total-lbl">Total</span>
+    <span class="sum-total-val" id="osTotal">₹0</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="page" id="page-orderSuccess" style="text-align:center; padding: 80px 20px 60px;">
+    <div class="success-anim" style="margin: 0 auto 30px; position:relative;">
+        <div class="success-circle" style="width: 100px; height: 100px; background: rgba(212,175,55,0.1); border: 2px solid var(--gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 40px; color: var(--gold); margin: 0 auto; position: relative; z-index: 5;">
+            <i class="fa-solid fa-check">
+            </i>
+    </div>
+<div class="success-glow" style="position: absolute; top: 50%; left: 50%; width: 140px; height: 140px; background: var(--gold); filter: blur(40px); opacity: 0.15; transform: translate(-50%, -50%); border-radius: 50%; z-index: 1;">
+</div>
+</div>
+<div class="osuc-title reveal" style="font-family:'Bebas Neue', sans-serif; font-size: 48px; letter-spacing: 2px; color: #fff; margin-bottom: 20px;"> ORDER PLACED!</div>
+<div class="success-box reveal" style="padding: 15px 30px; background: #0a0a0a; border: 1px solid var(--border); display: inline-block; margin-bottom: 30px;">
+    <div class="osuc-num" style="font-size: 16px; letter-spacing: 3px; color: var(--gold);">Order #<span id="orderNum">
+        </span>
+</div>
+</div>
+<p class="osuc-p reveal" style="font-size: 16px; color: var(--muted); max-width: 500px; margin: 0 auto 20px; line-height: 1.6;">Thank you! Your AlphaDetail products are confirmed and will be dispatched shortly.</p>
+<div id="orderDetails" class="reveal" style="max-width:500px; margin: 0 auto 30px; text-align:left; background:#111; border:1px solid var(--border); padding:20px; border-radius:4px;">
+</div>
+<div class="osuc-btns reveal" style="display:flex; justify-content:center; gap:15px; flex-wrap:wrap;">
+    <button class="btn-g" style="padding: 14px 28px; background: var(--gold); color: #000; border: none; font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; cursor: pointer;" onclick="showPage('home');clearCart()">Back to Home</button>
+    <button class="btn-o" style="padding: 14px 28px; background: none; border: 1px solid #333; color: #fff; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; cursor: pointer;" onclick="printOrder()">
+        <i class="fa-solid fa-file-invoice" style="margin-right: 8px;">
+        </i> Download Invoice</button>
+<button class="btn-o" style="padding: 14px 28px; background: none; border: 1px solid #333; color: #fff; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; cursor: pointer;" onclick="showProfileTab('orders')">Track Order</button>
+</div>
+</div>
+<div class="page" id="page-login">
+    <div class="auth-pg">
+        <button class="back-btn" onclick="showPage('home')" style="position:absolute; top:30px; left:30px; z-index:10; background:none; border:none; color:var(--gold); cursor:pointer; font-size:11px; letter-spacing:2px; text-transform:uppercase; display:flex; align-items:center; gap:8px;">
+            <i class="fa-solid fa-arrow-left">
+            </i> Back</button>
+    <div class="auth-bg-img">
+    </div>
+<div class="auth-glow">
+</div>
+<div class="auth-box">
+    <div class="auth-brand">AlphaDetail</div>
+    <div class="auth-title">WELCOME BACK</div>
+    <p class="auth-sub">Sign in to your account to continue shopping</p>
+    <div class="auth-err" id="loginErr">Invalid email or password. Please try again.</div>
+    <div class="fg">
+        <label class="fl">Email Address</label>
+        <input class="fi" type="email" id="lEmail" placeholder="you@example.com">
+        <div class="fe" id="lEmailE">Enter a valid email</div>
+    </div>
+<div class="fg">
+    <label class="fl">Password</label>
+    <div class="pass-wrap">
+        <input class="fi" type="password" id="lPass" placeholder="Your password" onkeydown="if(event.key==='Enter')doLogin()">
+        <button type="button" class="pass-toggle" onclick="togglePassword('lPass', this)">
+            <i class="fa-solid fa-eye">
+            </i>
+    </button>
+</div>
+<div class="fe" id="lPassE">Min 6 characters</div>
+</div>
+<div class="fcheck">
+    <input type="checkbox" id="remMe">
+    <label for="remMe">Remember me</label>
+</div>
+<button class="auth-sub-btn" id="loginBtn" onclick="doLogin()">Sign In →</button>
+<div class="auth-div">
+    <span>or</span>
+</div>
+<div class="auth-switch">Don't have an account? <a onclick="showPage('register')">Create one free →</a>
+</div>
+</div>
+</div>
+</div>
+<div class="page" id="page-register">
+    <div class="auth-pg">
+        <button class="back-btn" onclick="showPage('home')" style="position:absolute; top:30px; left:30px; z-index:10; background:none; border:none; color:var(--gold); cursor:pointer; font-size:11px; letter-spacing:2px; text-transform:uppercase; display:flex; align-items:center; gap:8px;">
+            <i class="fa-solid fa-arrow-left">
+            </i> Back</button>
+    <div class="auth-bg-img">
+    </div>
+<div class="auth-glow">
+</div>
+<div class="auth-box">
+    <div class="auth-brand">AlphaDetail</div>
+    <div class="auth-title">CREATE ACCOUNT</div>
+    <p class="auth-sub">Join AlphaDetail for exclusive deals &amp; order tracking</p>
+    <div class="fg2">
+        <div class="fg">
+            <label class="fl">First Name</label>
+            <input class="fi" id="rFirst" placeholder="John">
+            <div class="fe" id="rFirstE">Required</div>
+        </div>
+    <div class="fg">
+        <label class="fl">Last Name</label>
+        <input class="fi" id="rLast" placeholder="Doe">
+    </div>
+</div>
+<div class="fg">
+    <label class="fl">Email Address</label>
+    <input class="fi" type="email" id="rEmail" placeholder="you@example.com">
+    <div class="fe" id="rEmailE">Valid email required</div>
+</div>
+<div class="fg">
+    <label class="fl">Phone Number</label>
+    <input class="fi" type="tel" id="rPhone" placeholder="+91 98765 43210" maxlength="10" oninput="this.value=this.value.replace(/\D/g,'')">
+    <div class="fe" id="rPhoneE">Required (10 digits)</div>
+</div>
+<div class="fg">
+    <label class="fl">Password</label>
+    <div class="pass-wrap">
+        <input class="fi" type="password" id="rPass" placeholder="Min 6 characters">
+        <button type="button" class="pass-toggle" onclick="togglePassword('rPass', this)">
+            <i class="fa-solid fa-eye">
+            </i>
+    </button>
+</div>
+<div class="fe" id="rPassE">Min 6 characters</div>
+</div>
+<div class="fg">
+    <label class="fl">Confirm Password</label>
+    <div class="pass-wrap">
+        <input class="fi" type="password" id="rConf" placeholder="Repeat password">
+        <button type="button" class="pass-toggle" onclick="togglePassword('rConf', this)">
+            <i class="fa-solid fa-eye">
+            </i>
+    </button>
+</div>
+<div class="fe" id="rConfE">Passwords do not match</div>
+</div>
+<div class="fcheck">
+    <input type="checkbox" id="agree">
+    <label for="agree">I agree to the <a onclick="showPage('privacy')">Terms &amp; Privacy Policy</a>
+    </label>
+</div>
+<button class="auth-sub-btn" id="regBtn" onclick="doRegister()">Create Account →</button>
+<div class="auth-div">
+    <span>or</span>
+</div>
+<div class="auth-switch">Already have an account? <a onclick="showPage('login')">Sign in →</a>
+</div>
+</div>
+</div>
+</div>
+<div class="page" id="page-profile">
+    <div class="wrap" style="padding-top:40px;padding-bottom:80px;">
+        <button class="back-btn" onclick="showPage('home')" style="margin-bottom:20px; background:none; border:none; color:var(--gold); cursor:pointer; font-size:11px; letter-spacing:2px; text-transform:uppercase; display:flex; align-items:center; gap:8px;">
+            <i class="fa-solid fa-arrow-left">
+            </i> Back to Home</button>
+    <div class="s-eye">Member Area</div>
+    <h1 class="s-h2">MY PROFILE</h1>
+    <div class="profile-layout">
+        <div class="prof-sidebar">
+            <div class="prof-card">
+                <div class="prof-avatar-wrap" onclick="document.getElementById('pAvatarInp').click()">
+                    <img id="profAvatar" src="" alt="Avatar" class="prof-avatar-img">
+                    <div class="pa-ov">
+                        <i class="fa-solid fa-camera">
+                        </i>
+                </div>
+        </div>
+    <input type="file" id="pAvatarInp" style="display:none;" accept="image/*" onchange="previewAvatar(this)">
+    <div class="prof-name" id="profName">User Name</div>
+    <div class="prof-email" id="profEmail">email@example.com</div>
+    <div class="prof-email" id="profPhone">Phone</div>
+    <div class="prof-email" style="margin-top:8px;">Member since: <span id="profJoined" style="color:var(--white);">Date</span>
+    </div>
+<div class="hr" style="margin:16px 0;">
+</div>
+<div class="prof-stat">
+    <div class="ps-val" id="profOrderCount">0</div>
+    <div class="ps-lbl">Orders Placed</div>
+</div>
+</div>
+<div class="prof-nav-menu">
+    <button class="prof-nav-btn active" data-tab="details" onclick="switchProfileTab('details')">
+        <i class="fa-solid fa-user">
+        </i> Personal Details </button>
+<button class="prof-nav-btn" data-tab="orders" onclick="switchProfileTab('orders')">
+    <i class="fa-solid fa-box-open">
+    </i> Order Details </button>
+</div>
+<button class="mob-item" style="border:none;background:var(--mid);margin-top:12px;padding-left:20px;" onclick="doLogout()">Sign Out ⬅</button>
+</div>
+<div class="prof-main">
+    <div class="prof-tab-content active" id="profTabDetails">
+        <div class="chk-form" style="margin-top:0; padding:24px; background:var(--grey); border:1px solid var(--border); margin-bottom:40px;">
+            <div class="chk-sec-h" style="margin-top:0;">Personal Details</div>
+            <div class="fg2">
+                <div class="fg">
+                    <label class="fl">First Name *</label>
+                    <input class="fi" id="pFirst" placeholder="First Name">
+                    <div class="fe" id="pFirstE">Required</div>
+                </div>
+            <div class="fg">
+                <label class="fl">Last Name</label>
+                <input class="fi" id="pLast" placeholder="Last Name">
+                <div class="fe" id="pLastE">Required</div>
+            </div>
+    </div>
+<div class="fg">
+    <label class="fl">Email Address *</label>
+    <input class="fi" id="pEmail" type="email" placeholder="Email" readonly style="background:var(--mid); cursor:not-allowed; opacity:0.8;">
+    <div class="fe" id="pEmailE">Valid email required</div>
+</div>
+<div class="fg2">
+    <div class="fg">
+        <label class="fl">Phone *</label>
+        <div style="display:flex; gap:5px;">
+            <input class="fi" id="pPhoneCode" style="width:70px;" value="+91" placeholder="+91">
+            <input class="fi" id="pPhone" type="tel" placeholder="Phone" style="flex:1;" maxlength="10" oninput="this.value=this.value.replace(/\D/g,'')">
+        </div>
+    <div class="fe" id="pPhoneE">Required (10 digits)</div>
+</div>
+<div class="fg">
+    <label class="fl">Secondary Phone</label>
+    <input class="fi" id="pSecondaryPhone" type="tel" placeholder="Optional" maxlength="10" oninput="this.value=this.value.replace(/\D/g,'')">
+</div>
+</div>
+<div class="fg2">
+    <div class="fg">
+        <label class="fl">Country *</label>
+        <input class="fi" id="pCountry" value="India">
+        <div class="fe" id="pCountryE">Required</div>
+    </div>
+<div class="fg">
+    <label class="fl">State *</label>
+    <input class="fi" id="pState" value="Kerala">
+    <div class="fe" id="pStateE">Required</div>
+</div>
+</div>
+<div class="hr" style="margin:20px 0;">
+</div>
+<div class="chk-sec-h" style="margin-top:0;">Delivery Address</div>
+<div class="fg2">
+    <div class="fg">
+        <label class="fl">Flat / House No. *</label>
+        <input class="fi" id="pHouse" placeholder="Flat No.">
+        <div class="fe" id="pHouseE">Required</div>
+    </div>
+<div class="fg">
+    <label class="fl">Area / Street *</label>
+    <input class="fi" id="pAddr" placeholder="Street Address">
+    <div class="fe" id="pAddrE">Required</div>
+</div>
+</div>
+<div class="fg">
+    <label class="fl">Landmark</label>
+    <input class="fi" id="pLandmark" placeholder="Near ...">
+</div>
+<div class="fg2">
+    <div class="fg">
+        <label class="fl">City *</label>
+        <input class="fi" id="pCity" placeholder="City">
+        <div class="fe" id="pCityE">Required</div>
+    </div>
+<div class="fg">
+    <label class="fl">District *</label>
+    <input class="fi" id="pDistrict" placeholder="District">
+    <div class="fe" id="pDistrictE">Required</div>
+</div>
+<div class="fg">
+    <label class="fl">PIN Code *</label>
+    <input class="fi" id="pPin" placeholder="682xxx" maxlength="6" oninput="this.value=this.value.replace(/\D/g,'')">
+    <div class="fe" id="pPinE">Required (6 digits)</div>
+</div>
+</div>
+<button class="place-btn" onclick="updateProfile()" id="profUpdateBtn" style="margin-top:20px;">Save Profile Changes</button>
+</div>
+</div>
+<div class="prof-tab-content" id="profTabOrders">
+    <div class="chk-sec-h" style="margin-top:0;">Order Details &amp; History</div>
+    <div id="profOrdersList" class="prof-orders-list">
+        <div class="cart-empty" style="padding:40px 0;">
+            <div class="ce-icon" style="font-size:30px;">
+                <i class="fa-solid fa-box-open">
+                </i>
+        </div>
+    <div class="ce-title" style="font-size:18px;">No orders yet</div>
+    <button class="btn-o" onclick="showPage('shop')">Start Shopping</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="page" id="page-logout">
+    <div class="auth-pg">
+        <div class="auth-bg-img">
+        </div>
+    <div class="auth-glow">
+    </div>
+<div class="auth-box" style="border-top-color:var(--red);text-align:center;">
+    <div class="auth-title">SIGN OUT?</div>
+    <p class="auth-sub" style="margin-bottom:26px;">Are you sure you want to sign out of your AlphaDetail account? </p>
+    <div style="display:flex;gap:10px;">
+        <button class="btn-r" style="flex:1;" onclick="doLogout()">Yes, Sign Out</button>
+        <button class="btn-o" style="flex:1;" onclick="showPage('home')">Cancel</button>
+    </div>
+</div>
+</div>
+</div>
+<div class="page" id="page-terms">
+    <div class="wrap" style="padding-top:80px; padding-bottom:120px;">
+        <button class="back-btn" onclick="showPage('home')" style="margin-bottom:40px; background:none; border:none; color:var(--gold); cursor:pointer; font-size:12px; letter-spacing:2px; text-transform:uppercase; display:flex; align-items:center; gap:8px;">
+            <i class="fa-solid fa-arrow-left">
+            </i> Back to Home</button>
+    <div class="s-eye">Legal & Policies</div>
+    <h1 class="s-h2">TERMS & SERVICE</h1>
+    <p class="s-desc" style="margin-bottom:60px;">Last updated: April 2024</p>
+    <div style="max-width:800px; color:#ccc; line-height:1.8; font-size:15px;">
+        <section style="margin-bottom:40px;">
+            <h3 style="color:var(--white); font-family:'Bebas Neue', sans-serif; font-size:24px; letter-spacing:1px; margin-bottom:15px;"> 1. ACCEPTANCE OF TERMS</h3>
+            <p>By accessing or using AlphaDetail DIY Car Care Solutions website, you agree to be bound by these Terms and Service. If you do not agree with any part of these terms, you must not use our services or purchase our products.</p>
+        </section>
+    <section style="margin-bottom:40px;">
+        <h3 style="color:var(--white); font-family:'Bebas Neue', sans-serif; font-size:24px; letter-spacing:1px; margin-bottom:15px;"> 2. PRODUCT USAGE & SAFETY</h3>
+        <p>Our products are professional-grade imported formulas. Users must follow all safety instructions provided on the packaging and our website. AlphaDetail is not liable for damages caused by misuse, improper application, or failure to follow dilution ratios (where applicable).</p>
+    </section>
+<section style="margin-bottom:40px;">
+    <h3 style="color:var(--white); font-family:'Bebas Neue', sans-serif; font-size:24px; letter-spacing:1px; margin-bottom:15px;"> 3. PRICING & PAYMENTS</h3>
+    <p>All prices are in Indian Rupees (INR) and include applicable taxes unless stated otherwise. We reserve the right to change prices without prior notice. Payments are processed securely through our partners. Orders through WhatsApp are subject to confirmation of availability.</p>
+</section>
+<section style="margin-bottom:40px;">
+    <h3 style="color:var(--white); font-family:'Bebas Neue', sans-serif; font-size:24px; letter-spacing:1px; margin-bottom:15px;"> 4. SHIPPING & DELIVERY</h3>
+    <p>We aim to dispatch products within 24-48 hours. Delivery times vary based on location (standard 3-7 business days). Shipping charges are calculated at checkout. Free shipping may apply to specific kits as mentioned in our shop.</p>
+</section>
+<section style="margin-bottom:40px;">
+    <h3 style="color:var(--white); font-family:'Bebas Neue', sans-serif; font-size:24px; letter-spacing:1px; margin-bottom:15px;"> 5. RETURNS & REFUNDS</h3>
+    <p>Due to the nature of chemical car care products, we only accept returns if the product is damaged during transit or if the wrong item was delivered. Please contact us via email with photos of the damage within 24 hours of delivery.</p>
+</section>
+<div style="padding:30px; background:var(--mid); border-left:3px solid var(--gold); font-style:italic;"> Need clarification? Reach out to us at <strong>alphadetailf2f@gmail.com</strong>
+</div>
+</div>
+</div>
+</div>
+<div class="page" id="page-privacy">
+    <div class="wrap" style="padding-top:80px; padding-bottom:120px;">
+        <button class="back-btn" onclick="showPage('home')" style="margin-bottom:40px; background:none; border:none; color:var(--gold); cursor:pointer; font-size:12px; letter-spacing:2px; text-transform:uppercase; display:flex; align-items:center; gap:8px;">
+            <i class="fa-solid fa-arrow-left">
+            </i> Back to Home</button>
+    <div class="s-eye">Support & Legal</div>
+    <h1 class="s-h2">PRIVACY & REFUND POLICY</h1>
+    <p class="s-desc" style="margin-bottom:40px;">Effective Date: April 16, 2024</p>
+    <div style="max-width:850px; color:#ccc; line-height:1.8; font-size:14px;">
+        <div style="background:rgba(212,175,55,0.03); border:1px solid rgba(212,175,55,0.1); padding:40px; border-radius:8px; margin-bottom:60px;">
+            <h2 style="color:var(--gold); font-family:'Bebas Neue', sans-serif; font-size:28px; letter-spacing:2px; margin-bottom:20px;"> REFUND & RETURN POLICY</h2>
+            <p>At Alpha Detail, customer satisfaction is our priority. We take pride in delivering premium-quality car detailing products. If you are not fully satisfied with your purchase, please review our refund and return policy below.</p>
+            <h3 style="color:#fff; margin-top:30px; margin-bottom:15px; font-size:16px;">
+                <i class="fa-solid fa-cart-shopping" style="color:var(--gold); margin-right:10px;">
+                </i> Returns Eligibility </h3>
+        <p>We accept returns only under the following conditions:</p>
+        <ul style="margin-left:20px; margin-bottom:20px; list-style-type:square;">
+            <li>The product was damaged during transit</li>
+            <li>The product received is incorrect or incomplete</li>
+            <li>The product has a manufacturing defect</li>
+        </ul>
+    <p>
+        <strong>To be eligible for a return:</strong>
+    </p>
+<ul style="margin-left:20px; margin-bottom:20px;">
+    <li>The request must be raised within <strong>48 hours</strong> of delivery</li>
+    <li>The product must be unused, unopened, and in original packaging</li>
+    <li>Original invoice or proof of purchase is required</li>
+</ul>
+<h3 style="color:#fff; margin-top:30px; margin-bottom:15px; font-size:16px;">
+    <i class="fa-solid fa-rotate" style="color:var(--gold); margin-right:10px;">
+    </i> Return Process</h3>
+<p>To initiate a return, please contact us at:</p>
+<p style="margin-bottom:10px;">📧 <strong>alphadetailf2f@gmail.com</strong>
+</p>
+<p>Please include: Order ID, Product images/video, and a description of the issue. Once approved, our team will guide you through the process.</p>
+<h3 style="color:#fff; margin-top:30px; margin-bottom:15px; font-size:16px;">Refund Policy</h3>
+<ul style="margin-left:20px; margin-bottom:20px;">
+    <li>Approved refunds processed after inspection of returned product</li>
+    <li>Refunds issued to the <strong>original payment method</strong>
+    </li>
+<li>Processing time: 5–7 business days after approval</li>
+<li>Shipping charges are non-refundable</li>
+</ul>
+<h3 style="color:#fff; margin-top:30px; margin-bottom:15px; font-size:16px;">Replacement Policy</h3>
+<p>In eligible cases, customers may opt for a replacement of the same product or store credit (at Alpha Detail’s discretion), subject to stock availability.</p>
+</div>
+<section style="margin-bottom:40px; padding:0 20px;">
+    <h3 style="color:var(--white); font-family:'Bebas Neue', sans-serif; font-size:22px; letter-spacing:1px; margin-bottom:15px;"> PRODUCT USAGE DISCLAIMER</h3>
+    <p>Alpha Detail products are professional-grade formulations. Results may vary depending on surface condition, application method, and environmental factors. Please follow usage instructions carefully. Alpha Detail is not responsible for damages caused by misuse, improper dilution, or application errors.</p>
+</section>
+<section style="margin-bottom:40px; padding:0 20px;">
+    <h3 style="color:var(--white); font-family:'Bebas Neue', sans-serif; font-size:22px; letter-spacing:1px; margin-bottom:15px;"> SHIPPING DAMAGE CLAIMS</h3>
+    <p>If your product arrives damaged: Do not accept delivery if possible, record an unboxing video, and contact us within 48 hours. Claims without proper evidence may not be approved.</p>
+</section>
+</div>
+</div>
+</div>
+<footer class="site-footer">
+    <div class="ft-grid wrap">
+        <div>
+            <div class="ft-brand">AlphaDetail</div>
+            <p class="ft-about">Professional-grade imported formulas built for Indian conditions. Specially engineered for 45°C summers, monsoon roads, and high humidity.</p>
+            <div class="ft-contact">
+                <div>
+                    <i class="fa-solid fa-envelope" style="width:20px; color:var(--gold);">
+                    </i> alphadetailf2f@gmail.com </div>
+            <div>
+                <i class="fa-solid fa-earth-americas" style="width:20px; color:var(--gold);">
+                </i> alphadetailf2f.com </div>
+        <div>
+            <i class="fa-solid fa-location-dot" style="width:20px; color:var(--gold);">
+            </i> Puthencruze, Kochi, Kerala</div>
+</div>
+<div class="ft-socials">
+    <div class="ft-soc">
+        <a href="https://wa.me/+917025225245">
+            <i class="fa-brands fa-whatsapp">
+            </i>
+    </a>
+</div>
+</div>
+</div>
+<div>
+    <div class="ft-col-h">Products</div>
+    <ul class="ft-links">
+        <li>
+            <a onclick="showPage('shop')">Nano Foam</a>
+        </li>
+    <li>
+        <a onclick="showPage('shop')">Fusion Wash</a>
+    </li>
+<li>
+    <a onclick="showPage('shop')">Gleam-X</a>
+</li>
+<li>
+    <a onclick="showPage('shop')">Hyper DRESS</a>
+</li>
+<li>
+    <a onclick="showPage('shop')">Cabin Glow</a>
+</li>
+<li>
+    <a onclick="showPage('shop')">Surface Revive</a>
+</li>
+<li>
+    <a onclick="showPage('shop')">Graphene Tyre Coat</a>
+</li>
+</ul>
+</div>
+<div>
+    <div class="ft-col-h">Quick Links</div>
+    <ul class="ft-links">
+        <li>
+            <a onclick="showPage('home')">Home</a>
+        </li>
+    <li>
+        <a onclick="showPage('shop')">Shop</a>
+    </li>
+<li>
+    <a onclick="showPage('cart')">Cart</a>
+</li>
+<li id="ftLogin">
+    <a onclick="showPage('login')">Login</a>
+</li>
+<li id="ftReg">
+    <a onclick="showPage('register')">Register</a>
+</li>
+<li id="ftProfile" style="display:none;">
+    <a onclick="showPage('profile')">My Profile</a>
+</li>
+<li id="ftLogout" style="display:none;">
+    <a onclick="doLogout()">Sign Out</a>
+</li>
+<li>
+    <a onclick="showPage('privacy')">Privacy & Policy</a>
+</li>
+</ul>
+</div>
+</div>
+<div class="ft-bottom wrap">
+    <div class="ft-copy">© 2024 AlphaDetail DIY Car Care Solutions LLP · All Rights Reserved</div>
+    <div style="font-size:10px; color:#444; letter-spacing:1px; text-transform:uppercase;">Formulated to Finish</div>
+</div>
+</footer>
+<div style="display:none;">
+    <img id="uploaded_img_cabin" src="" alt="Cabin Glow">
+    <img id="uploaded_img_fusion" src="" alt="Fusion Wash">
+    <img id="uploaded_img_graphene" src="" alt="Graphene Tyre Coat">
+    <img id="uploaded_img_hyper" src="" alt="Hyper DRESS">
+    <img id="uploaded_img_gleam" src="" alt="Gleam-X">
+    <img id="uploaded_img_surface" src="" alt="Surface Revive">
+    <img id="uploaded_img_nano" src="" alt="Nano Foam">
+</div>
+<script src="config.js">
+</script>
+<script src="script.js">
+</script>
+</body>
+</html>

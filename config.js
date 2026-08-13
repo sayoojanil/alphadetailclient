@@ -1,6 +1,10 @@
-// Frontend configuration for client
+
 window.ENV = {
-  // Replace with actual data from .env during deployment
-  // API_BASE: "http://localhost:5000/api"
-  API_BASE: "https://alphadetailserver.vercel.app/api"
+
+  // API_BASE: "http://localhost:5000/api",
+  API_BASE: "https://alphadetailserver.vercel.app/api",
+
+
+  APP_NAME: "AlphaDetail",
+  APP_VERSION: "2.0.1",
 };

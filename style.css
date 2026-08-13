@@ -112,7 +112,7 @@ ul {
   height: 100%;
   background: linear-gradient(90deg, var(--gold), var(--gold2));
   width: 0;
-  animation: loaderFill 2s ease forwards;
+  animation: loaderFill 0.5s ease forwards;
 }
 
 .loader-glow {
@@ -124,7 +124,7 @@ ul {
   height: 500px;
   background: radial-gradient(circle, rgba(201, 168, 76, .08) 0%, transparent 65%);
   pointer-events: none;
-  animation: breathe 3s ease-in-out infinite;
+  animation: breathe 1s ease-in-out infinite;
 }
 
 @keyframes loaderPulse {
@@ -1044,6 +1044,9 @@ header.scrolled {
   grid-template-columns: repeat(3, 1fr);
   gap: 24px;
 }
+.hf-grid .hf-card:nth-child(4) {
+  display: none;
+}
 
 .hf-card {
   background: var(--grey);
@@ -1547,7 +1550,29 @@ header.scrolled {
   color: var(--black);
 }
 
-/* ══ PROMISE ══ */
+/* Kit item price tag shown inline per product */
+.kit-item-price {
+  margin-left: auto;
+  font-size: 11px;
+  color: var(--gold);
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  flex-shrink: 0;
+}
+
+/* Placeholder while kit data loads from backend */
+.kit-loading {
+  color: var(--muted) !important;
+  font-style: italic;
+  animation: kitPulse 1.4s ease-in-out infinite;
+}
+
+@keyframes kitPulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 1; }
+}
+
+
 .promise-sec {
   padding: 120px 48px;
   text-align: center;
@@ -1558,7 +1583,11 @@ header.scrolled {
 .promise-bg {
   position: absolute;
   inset: 0;
+<<<<<<< HEAD
   background: url('images/promise_bg.png') center/cover;
+=======
+  background: url('') center/cover;
+>>>>>>> 2401a9006f0875628a9461bc7a2947f3b718e8ce
   filter: brightness(.12);
 }
 
@@ -1643,6 +1672,11 @@ header.scrolled {
   transition: opacity .7s .8s;
   margin-top: 24px;
 }
+.container {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+}
 
 .promise-src.vis {
   opacity: 1;
@@ -1659,7 +1693,11 @@ header.scrolled {
 .india-bg {
   position: absolute;
   inset: 0;
+<<<<<<< HEAD
   background: url('images/india_bg.png') center/cover;
+=======
+  background: url('') center/cover;
+>>>>>>> 2401a9006f0875628a9461bc7a2947f3b718e8ce
   filter: brightness(.12);
 }
 
@@ -3580,11 +3618,14 @@ header.scrolled {
 
 @media(max-width:600px) {
 
-  .shop-grid,
-  .hf-grid,
-  .pillars-grid {
+  .hf-grid .hf-card:nth-child(4) {
+    display: block;
+  }
+
+  .hf-grid {
     grid-template-columns: 1fr;
   }
+  
 
   .ft-grid {
     grid-template-columns: 1fr;

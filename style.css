@@ -1130,7 +1130,8 @@ header.scrolled {
   display: none !important; /* Hidden on PC / Desktop view */
   position: relative;
   width: 100%;
-  min-height: 340px;
+  height: 320px !important;
+    min-height: 260px !important;
   background: #090909;
   border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 12px;

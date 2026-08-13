@@ -9,14 +9,34 @@
 
   
   <link rel="stylesheet" href="style.css?v=2.0.1">
+  <style>
+    /* Featured section: 3 products on PC; 3 products + 4th View All column in Mobile */
+    .hf-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 24px;
+    }
+    @media (max-width: 900px) {
+      .hf-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 16px;
+      }
+    }
+    @media (max-width: 500px) {
+      .hf-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+      }
+    }
+  </style>
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
   <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
-  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
   <link rel="manifest" href="site.webmanifest">
 </head>
 
@@ -24,7 +44,7 @@
   <!-- ══ LOADER ══ -->
   <div id="loader">
     <div class="loader-glow"></div>
-    <div class="loader-brand"><img src="logo.png" alt="AlphaDetail" style="height: 90px; width: auto;"></div>
+    <div class="loader-brand"><img src="images/logo.png" alt="AlphaDetail" style="height: 90px; width: auto;"></div>
     <div class="loader-bar-wrap">
       <div class="loader-bar"></div>
     </div>
@@ -34,10 +54,10 @@
   <!-- ══ HEADER ══ -->
   <header>
     <div class="logo-wrap" onclick="showPage('home')">
-      <img src="logo.png" alt="AlphaDetail Logo" class="logo-img">
+      <img src="images/logo.png" alt="AlphaDetail Logo" class="logo-img">
     </div>
     <div class="nav-center pc-only">
-      <img src="alphahead.png" alt="AlphaHead"
+      <img src="images/alphahead.png" alt="AlphaHead"
         style="height: 204px; width: auto; object-fit: contain; margin-top: 35px;">
     </div>
     <div class="nav-right">
@@ -78,7 +98,7 @@
     <!-- HERO -->
     <section class="hero-sec">
       <div class="hero-bg-img"><img
-          src="C:\Users\ASUS\.gemini\antigravity\brain\6a56fd03-2cb0-41bb-92d9-7ed5823a9158\alphadetail_hero_premium_1775503938161.png"
+          src="images/hero_bg.png"
           alt="Premium Car Detailing"></div>
       <div class="hero-grid"></div>
       <div class="hero-vign"></div>
@@ -142,7 +162,6 @@
             <div class="s-eye">Best Sellers</div>
             <h2 class="s-h2">FEATURED PRODUCTS</h2>
           </div>
-          <button class="btn-o reveal" onclick="showPage('shop')">View All →</button>
         </div>
         <div class="hf-grid" id="homeFeatured"></div>
       </div>
@@ -240,7 +259,7 @@
 
     <!-- FULLSCREEN ALPHA IMAGE -->
     <section class="alpha-fullscreen-img">
-      <img src="alphahead.png" alt="AlphaDetail Fullscreen"
+      <img src="images/alphahead.png" alt="AlphaDetail Fullscreen"
         style="width: 100%; height: 100%; object-fit: cover; object-position: center;">
     </section>
 
@@ -668,10 +687,22 @@
             placeholder="you@example.com">
           <div class="fe" id="lEmailE">Enter a valid email</div>
         </div>
-        <div class="fg"><label class="fl">Password</label><input class="fi" type="password" id="lPass"
-            placeholder="Your password" onkeydown="if(event.key==='Enter')doLogin()">
-          <div class="fe" id="lPassE">Min 6 characters</div>
-        </div>
+      <div class="fg">
+  <label class="fl">Password</label>
+
+  <div class="pass-wrap">
+    <input class="fi" type="password" id="lPass"
+      placeholder="Your password"
+      onkeydown="if(event.key==='Enter')doLogin()">
+
+    <button type="button" class="pass-toggle"
+      onclick="togglePassword('lPass', this)">
+      <i class="fa-solid fa-eye"></i>
+    </button>
+  </div>
+
+  <div class="fe" id="lPassE">Min 6 characters</div>
+</div>
         <div class="fcheck"><input type="checkbox" id="remMe"><label for="remMe">Remember me</label></div>
         <button class="auth-sub-btn" id="loginBtn" onclick="doLogin()">Sign In →</button>
         <div class="auth-div"><span>or</span></div>
@@ -705,14 +736,36 @@
             placeholder="+91 98765 43210" maxlength="10" oninput="this.value=this.value.replace(/\D/g,'')">
           <div class="fe" id="rPhoneE">Required (10 digits)</div>
         </div>
-        <div class="fg"><label class="fl">Password</label><input class="fi" type="password" id="rPass"
-            placeholder="Min 6 characters">
-          <div class="fe" id="rPassE">Min 6 characters</div>
-        </div>
-        <div class="fg"><label class="fl">Confirm Password</label><input class="fi" type="password" id="rConf"
-            placeholder="Repeat password">
-          <div class="fe" id="rConfE">Passwords do not match</div>
-        </div>
+   <div class="fg">
+  <label class="fl">Password</label>
+
+  <div class="pass-wrap">
+    <input class="fi" type="password" id="rPass"
+      placeholder="Min 6 characters">
+
+    <button type="button" class="pass-toggle"
+      onclick="togglePassword('rPass', this)">
+      <i class="fa-solid fa-eye"></i>
+    </button>
+  </div>
+
+  <div class="fe" id="rPassE">Min 6 characters</div>
+</div>
+     <div class="fg">
+  <label class="fl">Confirm Password</label>
+
+  <div class="pass-wrap">
+    <input class="fi" type="password" id="rConf"
+      placeholder="Repeat password">
+
+    <button type="button" class="pass-toggle"
+      onclick="togglePassword('rConf', this)">
+      <i class="fa-solid fa-eye"></i>
+    </button>
+  </div>
+
+  <div class="fe" id="rConfE">Passwords do not match</div>
+</div>
         <div class="fcheck"><input type="checkbox" id="agree"><label for="agree">I agree to the <a
               onclick="showPage('privacy')">Terms &amp; Privacy Policy</a></label></div>
         <button class="auth-sub-btn" id="regBtn" onclick="doRegister()">Create Account →</button>

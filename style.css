@@ -1052,6 +1052,8 @@ header.scrolled {
   cursor: pointer;
   transition: all .4s cubic-bezier(0.165, 0.84, 0.44, 1);
   position: relative;
+  display: flex;
+  flex-direction: column;
 }
 
 .hf-card:hover {
@@ -1061,7 +1063,7 @@ header.scrolled {
 }
 
 .hf-img {
-  height: 300px;
+  height: 220px;
   position: relative;
   overflow: hidden;
   background: var(--mid);
@@ -1097,7 +1099,7 @@ header.scrolled {
 }
 
 .hf-body {
-  padding: 24px;
+  padding: 16px 20px;
 }
 
 .hf-code {
@@ -1105,24 +1107,168 @@ header.scrolled {
   letter-spacing: 4px;
   text-transform: uppercase;
   color: var(--gold);
-  margin-bottom: 8px;
+  margin-bottom: 6px;
   font-weight: 700;
 }
 
 .hf-name {
   font-family: 'Bebas Neue', sans-serif;
-  font-size: 28px;
-  letter-spacing: 2px;
+  font-size: 24px;
+  letter-spacing: 1.5px;
   color: var(--white);
-  margin-bottom: 6px;
+  margin-bottom: 4px;
   line-height: 1;
 }
 
 .hf-price {
   font-family: 'Bebas Neue', sans-serif;
-  font-size: 24px;
+  font-size: 22px;
   color: var(--gold);
   letter-spacing: 1px;
+}
+
+/* ══ FEATURED VIEW ALL CARD (MATCHING REFERENCE IMAGE EXACTLY) ══ */
+.hf-view-all {
+  display: none !important; /* Hidden on PC / Desktop view */
+  position: relative;
+  width: 100%;
+  min-height: 280px;
+  background: #090909;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: center;
+  transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), box-shadow 0.4s ease, border-color 0.4s ease;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
+}
+
+@media (max-width: 900px) {
+  .hf-view-all {
+    display: flex !important; /* Shown in Mobile / Tablet view */
+  }
+  .hf-img {
+    height: 165px;
+  }
+  .hf-body {
+    padding: 12px 14px;
+  }
+  .hf-name {
+    font-size: 20px;
+  }
+  .hf-price {
+    font-size: 18px;
+  }
+}
+
+.hf-view-all:hover {
+  transform: translateY(-5px);
+  border-color: rgba(212, 175, 55, 0.5);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.8), 0 0 20px rgba(212, 175, 55, 0.15);
+}
+
+/* Top Left Diagonal Pattern & Line */
+.hf-va-top-svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 110px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Top Right Bag Icon */
+.hf-va-icon-wrap {
+  position: absolute;
+  top: 20px;
+  right: 16px;
+  z-index: 2;
+  transition: transform 0.3s ease;
+}
+
+.hf-view-all:hover .hf-va-icon-wrap {
+  transform: scale(1.1) rotate(-4deg);
+}
+
+/* Central Content */
+.hf-va-content {
+  position: relative;
+  z-index: 2;
+  padding: 68px 12px 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+}
+
+.hf-va-eyebrow {
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 3px;
+  color: #d4af37;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.hf-va-main-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 34px;
+  letter-spacing: 2px;
+  color: #ffffff;
+  line-height: 1;
+  margin-bottom: 12px;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.hf-va-desc {
+  font-size: 9.5px;
+  font-weight: 500;
+  letter-spacing: 2px;
+  color: #999999;
+  text-transform: uppercase;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* Bottom Angled Gold Banner */
+.hf-va-gold-banner {
+  position: relative;
+  width: 100%;
+  height: 75px;
+  background: linear-gradient(135deg, #d4af37 0%, #f4d03f 45%, #aa8214 100%);
+  clip-path: polygon(0 50px, 100% 12px, 100% 100%, 0 100%);
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  padding: 0 18px 14px 0;
+  margin-top: auto;
+  z-index: 2;
+  transition: filter 0.3s ease;
+}
+
+.hf-view-all:hover .hf-va-gold-banner {
+  filter: brightness(1.1);
+}
+
+.hf-va-gold-banner span {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 800;
+  font-size: 12px;
+  letter-spacing: 1.5px;
+  color: #000000;
+  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: transform 0.3s ease;
+}
+
+.hf-view-all:hover .hf-va-gold-banner span {
+  transform: translateX(4px);
 }
 
 /* ══ CAR GALLERY ══ */
@@ -1412,7 +1558,7 @@ header.scrolled {
 .promise-bg {
   position: absolute;
   inset: 0;
-  background: url('C:\\Users\\ASUS\\.gemini\\antigravity\\brain\\6a56fd03-2cb0-41bb-92d9-7ed5823a9158\\alphadetail_promise_bg_1775503973551.png') center/cover;
+  background: url('images/promise_bg.png') center/cover;
   filter: brightness(.12);
 }
 
@@ -1513,7 +1659,7 @@ header.scrolled {
 .india-bg {
   position: absolute;
   inset: 0;
-  background: url('C:\\Users\\ASUS\\.gemini\\antigravity\\brain\\6a56fd03-2cb0-41bb-92d9-7ed5823a9158\\alphadetail_india_bg_new_1775504175291.png') center/cover;
+  background: url('images/india_bg.png') center/cover;
   filter: brightness(.12);
 }
 
@@ -1820,6 +1966,10 @@ header.scrolled {
   font-family: 'DM Sans', sans-serif;
   transition: background .2s;
 }
+
+  .pc-atc {
+    transform: translateY(5px);
+  }
 
 .pc-atc:hover {
   background: var(--gold2);
@@ -3343,14 +3493,16 @@ header.scrolled {
 
 @media (max-width: 768px) {
   .pc-atc {
-    font-size: 7px;
+    font-size: 10px;
     padding: 6px 10px;
     width: 100%;
-    height: 20px;
+    height: 30px;
     letter-spacing: 0.5px;
     white-space: nowrap;
   }
 }
+
+
   .cart-layout,
   .checkout-layout {
     grid-template-columns: 1fr;
@@ -3543,6 +3695,39 @@ header.scrolled {
   font-family: 'Bebas Neue', sans-serif;
   font-size: 32px;
   color: var(--gold);
+}
+
+.pass-wrap{
+    position:relative;
+    display:flex;
+    align-items:center;
+}
+
+.pass-wrap .fi{
+    width:100%;
+    padding-right:48px;
+}
+
+.pass-toggle{
+    position:absolute;
+    right:14px;
+    top:50%;
+    transform:translateY(-50%);
+    background:none;
+    border:none;
+    color:#999;
+    cursor:pointer;
+    font-size:16px;
+    padding:0;
+    transition:.2s;
+}
+
+.pass-toggle:hover{
+    color:#d4af37;
+}
+
+.pass-toggle:focus{
+    outline:none;
 }
 
 .ps-lbl {

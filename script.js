@@ -105,7 +105,25 @@
       tab.textContent = `${label} (${count})`;
     });
   }
+  window.togglePassword = function (inputId, btn) {
+    const input = document.getElementById(inputId);
+    if (!input) return;
+    const icon = btn ? btn.querySelector("i") : null;
 
+    if (input.type === "password") {
+      input.type = "text";
+      if (icon) {
+        icon.classList.remove("fa-eye");
+        icon.classList.add("fa-eye-slash");
+      }
+    } else {
+      input.type = "password";
+      if (icon) {
+        icon.classList.remove("fa-eye-slash");
+        icon.classList.add("fa-eye");
+      }
+    }
+  };
   // ══ IMAGE HELPERS ══
   function makeImgHTML(prodId, alt, style) {
     const p = PRODS.find(x => x.id === prodId);
@@ -177,6 +195,44 @@ if (!pg) {
       <div class="hf-img">${makeImgHTML(p.id, p.name, 'width:100%;height:100%;object-fit:cover;transition:transform .6s;')}<div class="hf-ov"></div></div>
       <div class="hf-body"><div class="hf-code">${p.code}</div><div class="hf-name">${p.name}</div><div class="pc-sub">${p.sub}</div><div class="hf-price">₹${p.price.toLocaleString('en-IN')}</div></div>
     </div>`).join('');
+
+    // 4th column View All card - rendered for mobile view (matching reference image)
+    el.insertAdjacentHTML('beforeend', `
+      <div class="hf-view-all reveal" onclick="showPage('shop')">
+        <svg class="hf-va-top-svg" viewBox="0 0 300 140" preserveAspectRatio="none">
+          <defs>
+            <pattern id="hfVaStripes" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(35)">
+              <line x1="0" y1="0" x2="0" y2="8" stroke="rgba(255,255,255,0.035)" stroke-width="2" />
+            </pattern>
+            <linearGradient id="hfVaGoldLine" x1="0%" y1="100%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#b38f2a" />
+              <stop offset="50%" stop-color="#f4d03f" />
+              <stop offset="100%" stop-color="#d4af37" />
+            </linearGradient>
+          </defs>
+          <polygon points="0,0 300,0 300,18 0,105" fill="url(#hfVaStripes)" />
+          <line x1="0" y1="105" x2="300" y2="18" stroke="url(#hfVaGoldLine)" stroke-width="2.5" />
+        </svg>
+
+        <div class="hf-va-icon-wrap">
+          <svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="#d4af37" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <path d="M16 10a4 4 0 0 1-8 0"></path>
+          </svg>
+        </div>
+
+        <div class="hf-va-content">
+          <div class="hf-va-eyebrow">EXPLORE MORE</div>
+          <h3 class="hf-va-main-title">VIEW ALL</h3>
+          <p class="hf-va-desc">DISCOVER OUR FULL<br>PRODUCT RANGE</p>
+        </div>
+
+        <div class="hf-va-gold-banner">
+          <span>VIEW ALL &rarr;</span>
+        </div>
+      </div>
+    `);
     observeReveal();
   }
 

@@ -247,12 +247,37 @@ if (!pg) {
   function renderFeatured() {
     const el = document.getElementById('homeFeatured');
     if (!el || PRODS.length === 0) return;
-    const feat = PRODS.slice(0, 4);
+    const feat = PRODS.slice(0, 3);
     el.innerHTML = feat.map(p => `
     <div class="hf-card reveal" onclick="openPD('${p.id}')">
       <div class="hf-img">${makeImgHTML(p.id, p.name, 'width:100%;height:100%;object-fit:cover;transition:transform .6s;')}<div class="hf-ov"></div></div>
       <div class="hf-body"><div class="hf-code">${p.code}</div><div class="hf-name">${p.name}</div><div class="pc-sub">${p.sub}</div><div class="hf-price">₹${p.price.toLocaleString('en-IN')}</div></div>
-    </div>`).join('');
+    </div>`).join('') + `
+    <div class="hf-view-all reveal" onclick="showPage('shop')">
+      <!-- Diagonal line accent SVG -->
+      <svg class="hf-va-top-svg" viewBox="0 0 300 140" preserveAspectRatio="none" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <line x1="0" y1="140" x2="300" y2="0" stroke="rgba(212,175,55,0.18)" stroke-width="1"/>
+        <line x1="0" y1="100" x2="200" y2="0" stroke="rgba(212,175,55,0.08)" stroke-width="1"/>
+      </svg>
+      <!-- Shopping bag icon -->
+      <div class="hf-va-icon-wrap">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <path d="M16 10a4 4 0 01-8 0"/>
+        </svg>
+      </div>
+      <!-- Central text -->
+      <div class="hf-va-content">
+        <div class="hf-va-eyebrow">Explore More</div>
+        <div class="hf-va-main-title">VIEW ALL</div>
+        <p class="hf-va-desc">Discover Our Full<br>Product Range</p>
+      </div>
+      <!-- Gold bottom banner -->
+      <div class="hf-va-gold-banner">
+        <span>VIEW ALL <span style="font-size:18px;">→</span></span>
+      </div>
+    </div>`;
     observeReveal();
   }
 
